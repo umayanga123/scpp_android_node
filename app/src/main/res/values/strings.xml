@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Scpp Client</string>
+    <string name="preference_file_key">scpp.globaleye.com.scppclient.PREFERENCE_FILE_KEY</string>
+</resources>
