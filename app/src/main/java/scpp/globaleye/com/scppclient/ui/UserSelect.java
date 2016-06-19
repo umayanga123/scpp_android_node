@@ -272,11 +272,15 @@ public class UserSelect extends Activity implements View.OnClickListener {
         //SenzorsDbSource dbSource = new SenzorsDbSource(getActivity());
         //dbSource.getOrCreateUser(senz.getSender().getUsername());
 
-        usernameEditText.setText("");
-        Toast.makeText(UserSelect.this, "Successfully shared SenZ", Toast.LENGTH_LONG).show();
 
         //navigate
         Intent intent = new Intent(UserSelect.this, Wallet.class);
+        intent.putExtra("USER" , usernameEditText.getText().toString().trim());
+
+
+        usernameEditText.setText("");
+        Toast.makeText(UserSelect.this, "Successfully shared SenZ", Toast.LENGTH_LONG).show();
+
         UserSelect.this.startActivity(intent);
         UserSelect.this.finish();
 
