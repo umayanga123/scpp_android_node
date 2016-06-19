@@ -154,7 +154,7 @@ public class RemoteSenzService extends Service {
 
         // restart service again
         // its done via broadcast receiver
-        Intent intent = new Intent("com.score.senz.RESTART_SERVICE");
+        Intent intent = new Intent("scpp.globaleye.com.scppclient.RESTART_SERVICE");
         sendBroadcast(intent);
     }
 

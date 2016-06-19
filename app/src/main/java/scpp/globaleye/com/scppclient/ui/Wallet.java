@@ -5,7 +5,7 @@ import android.os.Bundle;
 
 import scpp.globaleye.com.scppclient.R;
 
-public class wallet extends AppCompatActivity {
+public class Wallet extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
