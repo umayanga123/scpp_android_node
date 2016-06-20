@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".ui.wallet">
+    tools:context=".ui.Wallet">
 
     <TextView
         android:layout_width="123dp"
@@ -43,4 +43,31 @@
         android:id="@+id/send_bt"
         android:layout_x="97dp"
         android:layout_y="191dp" />
+
+    <TextView
+        android:layout_width="167dp"
+        android:layout_height="69dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Money Reseive :"
+        android:id="@+id/recivelb"
+        android:layout_x="-2dp"
+        android:layout_y="294dp" />
+
+    <TextView
+        android:layout_width="190dp"
+        android:layout_height="58dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Amount"
+        android:id="@+id/amountlb"
+        android:layout_x="185dp"
+        android:layout_y="294dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Home "
+        android:id="@+id/wlogOutBtn"
+        android:layout_x="115dp"
+        android:layout_y="379dp" />
+
 </AbsoluteLayout>

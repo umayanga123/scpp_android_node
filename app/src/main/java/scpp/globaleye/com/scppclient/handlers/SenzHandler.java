@@ -33,6 +33,7 @@ public class SenzHandler {
     public void handleSenz(String senzMessage) {
         // parse and verify senz
         Senz senz = SenzParser.parse(senzMessage);
+        Log.d(TAG,"Masage"+senzMessage);
         switch (senz.getSenzType()) {
             case PING:
                 Log.d(TAG, "PING received");
@@ -58,6 +59,7 @@ public class SenzHandler {
 
     private void broadcastSenz(Senz senz, Intent intent) {
         intent.putExtra("SENZ", senz);
+        Log.d(TAG,"brodcast");
         context.sendBroadcast(intent);
     }
 

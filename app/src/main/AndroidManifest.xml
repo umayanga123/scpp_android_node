@@ -22,7 +22,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.UserSelect" />
-        <activity android:name=".ui.wallet" />
+        <activity android:name=".ui.Wallet" />
 
         <service
             android:name=".services.RemoteSenzService"
