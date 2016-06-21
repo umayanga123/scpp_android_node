@@ -247,6 +247,7 @@ public class Registration extends Activity implements View.OnClickListener {
     }
 
 
+
     private BroadcastReceiver senzMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -265,6 +266,7 @@ public class Registration extends Activity implements View.OnClickListener {
     private void handleMessage(Intent intent) {
         Senz senz = intent.getExtras().getParcelable("SENZ");
 
+        Log.d(TAG, "Register brod cast handelre");
         if (senz != null && senz.getSenzType() == SenzTypeEnum.DATA) {
             if (senz.getAttributes().containsKey("msg")) {
                 // msg response received
