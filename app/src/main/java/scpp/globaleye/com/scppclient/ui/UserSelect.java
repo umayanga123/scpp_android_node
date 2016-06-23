@@ -29,6 +29,7 @@ import java.util.HashMap;
 
 import scpp.globaleye.com.scppclient.ISenzService;
 import scpp.globaleye.com.scppclient.R;
+import scpp.globaleye.com.scppclient.db.SenzorsDbSource;
 import scpp.globaleye.com.scppclient.services.RemoteSenzService;
 import scpp.globaleye.com.scppclient.utils.ActivityUtils;
 import scpp.globaleye.com.scppclient.utils.NetworkUtil;
@@ -97,15 +98,17 @@ public class UserSelect extends Activity implements View.OnClickListener {
     public void bindConService() {
 
 
+
         // start service from here
-        Intent serviceIntent = new Intent(UserSelect.this, RemoteSenzService.class);
-        startService(serviceIntent);
+        //Intent serviceIntent = new Intent(UserSelect.this, RemoteSenzService.class);
+        //startService(serviceIntent);
 
         // bind with senz service
         // bind to service from here as well
         Intent intent = new Intent();
         intent.setClassName("scpp.globaleye.com.scppclient", "scpp.globaleye.com.scppclient.services.RemoteSenzService");
         bindService(intent, senzServiceConnection, Context.BIND_AUTO_CREATE);
+        isServiceBound=true;
         registerReceiver(senzMessageReceiver, new IntentFilter("scpp.globaleye.com.scppclient.DATA_SENZ"));
         registerReceiver(senzMessageReceiver, new IntentFilter("scpp.globaleye.com.scppclient.NEW_SENZ"));
 
@@ -117,7 +120,9 @@ public class UserSelect extends Activity implements View.OnClickListener {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (isServiceBound) unbindService(senzServiceConnection);
+        if (isServiceBound) {
+            unbindService(senzServiceConnection);
+        }
         unregisterReceiver(senzMessageReceiver);
     }
 
@@ -268,9 +273,9 @@ public class UserSelect extends Activity implements View.OnClickListener {
      * Clear input fields and reset activity components
      */
     private void onPostShare(Senz senz) {
-        // Create user with senz sender(he is a friend)
-        //SenzorsDbSource dbSource = new SenzorsDbSource(getActivity());
-        //dbSource.getOrCreateUser(senz.getSender().getUsername());
+        // Create user with senz sender(Data sender name save in sqllite)
+        SenzorsDbSource dbSource = new SenzorsDbSource(UserSelect.this);
+        dbSource.getOrCreateUser(senz.getSender().getUsername());
 
 
         //navigate

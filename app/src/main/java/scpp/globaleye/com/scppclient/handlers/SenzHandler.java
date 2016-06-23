@@ -33,10 +33,10 @@ public class SenzHandler {
     public void handleSenz(String senzMessage) {
         // parse and verify senz
         Senz senz = SenzParser.parse(senzMessage);
-        Log.d(TAG,"Masage"+senzMessage);
+        //Log.d(TAG,"Masage"+senzMessage);
         switch (senz.getSenzType()) {
             case PING:
-                Log.d(TAG, "PING received");
+                //Log.d(TAG, "PING received");
                 break;
             case SHARE:
                 Log.d(TAG, "SHARE received");

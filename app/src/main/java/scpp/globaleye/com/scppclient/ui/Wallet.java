@@ -101,14 +101,15 @@ public class Wallet extends Activity implements View.OnClickListener {
 
 
         // start service from here
-        Intent serviceIntent = new Intent(Wallet.this, RemoteSenzService.class);
-        startService(serviceIntent);
+        //Intent serviceIntent = new Intent(Wallet.this, RemoteSenzService.class);
+        //startService(serviceIntent);
 
         // bind with senz service
         // bind to service from here as well
         Intent intent = new Intent();
         intent.setClassName("scpp.globaleye.com.scppclient", "scpp.globaleye.com.scppclient.services.RemoteSenzService");
         bindService(intent, senzServiceConnection, Context.BIND_AUTO_CREATE);
+        isServiceBound=true;
         registerReceiver(senzMessageReceiver, new IntentFilter("scpp.globaleye.com.scppclient.DATA_SENZ"));
         registerReceiver(senzMessageReceiver, new IntentFilter("scpp.globaleye.com.scppclient.NEW_SENZ"));
 
@@ -120,7 +121,9 @@ public class Wallet extends Activity implements View.OnClickListener {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (isServiceBound) unbindService(senzServiceConnection);
+        if (isServiceBound){
+            unbindService(senzServiceConnection);
+        }
         unregisterReceiver(senzMessageReceiver);
     }
 
@@ -162,7 +165,7 @@ public class Wallet extends Activity implements View.OnClickListener {
             }
         }else if(v==wlogoutButton){
             Toast.makeText(this, "Thank You", Toast.LENGTH_LONG).show();
-            //navigate
+            //navigate //temprry error
             Intent intent = new Intent(Wallet.this, UserSelect.class);
             Wallet.this.startActivity(intent);
             Wallet.this.finish();

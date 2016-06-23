@@ -217,7 +217,7 @@ public class RemoteSenzService extends Service {
                         socket.receive(receivePacket);
                         String senz = new String(message, 0, receivePacket.getLength());
 
-                        Log.d(TAG, "SenZ received: ");
+                        //Log.d(TAG, "SenZ received: ");
 
                         SenzHandler.getInstance(RemoteSenzService.this).handleSenz(senz);
                     }
