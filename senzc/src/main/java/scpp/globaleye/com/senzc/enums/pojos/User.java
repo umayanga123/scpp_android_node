@@ -13,12 +13,12 @@ public class User implements Parcelable {
 
     String id;
     String username;
-    String password;
+   // String password;
 
-    public User(String id, String username, String password) {
+    public User(String id, String username) {
         this.id = id;
         this.username = username;
-        this.password = password;
+       // this.password = password;
     }
 
 
@@ -30,7 +30,7 @@ public class User implements Parcelable {
     public User(Parcel in) {
         this.id = in.readString();
         this.username = in.readString();
-        this.password = in.readString();
+       // this.password = in.readString();
     }
 
 
@@ -54,7 +54,7 @@ public class User implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(id);
         dest.writeString(username);
-        dest.writeString(password);
+       // dest.writeString(password);
     }
 
     /**
@@ -93,7 +93,7 @@ public class User implements Parcelable {
     public void setUsername(String username) {
         this.username = username;
     }
-
+/*
     public String getPassword() {
         return password;
     }
@@ -101,7 +101,7 @@ public class User implements Parcelable {
     public void setPassword(String password) {
         this.password = password;
     }
-
+*/
     @Override
     public boolean equals(Object obj) {
         if(obj instanceof User) {
