@@ -22,12 +22,13 @@ public class PreferenceUtils {
      * @param user    logged-in user
      */
     public static void saveUser(Context context, User user) {
-        SharedPreferences preferences = context.getSharedPreferences(context.getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        SharedPreferences preferences = context.getSharedPreferences(context.getString(R.string.preference_file_key), Context.MODE_APPEND);
         SharedPreferences.Editor editor = preferences.edit();
 
         //keys should be constants as well, or derived from a constant prefix in a loop.
         editor.putString("id", user.getId());
         editor.putString("username", user.getUsername());
+        editor.putString("password" , user.getPassword());
         editor.commit();
     }
 
@@ -39,15 +40,17 @@ public class PreferenceUtils {
      * @return user object
      */
     public static User getUser(Context context) throws NoUserException {
-        SharedPreferences preferences = context.getSharedPreferences(context.getString(R.string.preference_file_key), Context.MODE_MULTI_PROCESS);
+        SharedPreferences preferences = context.getSharedPreferences(context.getString(R.string.preference_file_key), Context.MODE_APPEND);
         String id = preferences.getString("id", "0");
         String username = preferences.getString("username", "");
+        String password= preferences.getString("password","");
 
         if (username.isEmpty())
             throw new NoUserException();
 
         User user = new User(id, username);
         user.setUsername(username);
+        user.setPassword(password);
         return user;
     }
 
@@ -58,9 +61,11 @@ public class PreferenceUtils {
      * @param context application context
      * @param key     public/private keys(encoded key string)
      * @param keyType public_key, private_key, server_key
+     *
+     *                Context.MODE_MULTI_PROCESS ->change
      */
     public static void saveRsaKey(Context context, String key, String keyType) {
-        SharedPreferences preferences = context.getSharedPreferences(context.getString(R.string.preference_file_key), Context.MODE_MULTI_PROCESS);
+        SharedPreferences preferences = context.getSharedPreferences(context.getString(R.string.preference_file_key), Context.MODE_APPEND);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(keyType, key);
         editor.commit();
@@ -74,7 +79,7 @@ public class PreferenceUtils {
      * @return key string
      */
     public static String getRsaKey(Context context, String keyType) {
-        SharedPreferences preferences = context.getSharedPreferences(context.getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        SharedPreferences preferences = context.getSharedPreferences(context.getString(R.string.preference_file_key), Context.MODE_APPEND);
         return preferences.getString(keyType, "");
     }
 }

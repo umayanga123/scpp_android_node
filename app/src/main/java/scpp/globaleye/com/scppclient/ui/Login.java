@@ -5,17 +5,28 @@ import android.graphics.Typeface;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import scpp.globaleye.com.scppclient.R;
 import scpp.globaleye.com.scppclient.exceptions.NoUserException;
 import scpp.globaleye.com.scppclient.services.RemoteSenzService;
+import scpp.globaleye.com.scppclient.utils.NetworkUtil;
 import scpp.globaleye.com.scppclient.utils.PreferenceUtils;
+import scpp.globaleye.com.senzc.enums.pojos.User;
 
-public class Login extends AppCompatActivity {
+public class Login extends AppCompatActivity   implements View.OnClickListener{
 
     private final int SPLASH_DISPLAY_LENGTH = 2000;
     private static final String TAG = Login.class.getName();
+
+    private EditText loginTextUsername;
+    private EditText passwordTextPasword;
+    private Button loginButton;
+    private Button registraionButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,14 +34,34 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         initUi();
-        initNavigation();
+        //initNavigation();
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void onClick(View v) {
+        if (v == loginButton) {
+            initNavigation();
+        }else if(v ==registraionButton){
+            navigateToRegistration();
+        }
+    }
+
 
     /**
      * Initialize UI components
      */
     private void initUi() {
         //change label font ...etc
+        loginTextUsername = (EditText) findViewById(R.id.luserName_txt);
+        passwordTextPasword = (EditText)findViewById(R.id.lpasswordTxt);
+        loginButton = (Button)findViewById(R.id.lbutton);
+        registraionButton=(Button)findViewById(R.id.lrButton);
+
+        loginButton.setOnClickListener(Login.this);
+        registraionButton.setOnClickListener(Login.this);
+
     }
 
     /**
@@ -41,15 +72,26 @@ public class Login extends AppCompatActivity {
         // 1. goto registration
         // 2. goto home
         try {
-            PreferenceUtils.getUser(this);
-            initSenzService();
-            navigateToHome();
+
+            String username = loginTextUsername.getText().toString().trim();
+            String password =passwordTextPasword.getText().toString().trim();
+
+
+            User user = PreferenceUtils.getUser(this);
+
+            if(user.getPassword().equals(password)){
+                initSenzService();
+                navigateToHome();
+            }else{
+                Toast.makeText(this, "Invalid Password", Toast.LENGTH_LONG).show();
+            }
+
+
 
         } catch (NoUserException e) {
-            e.printStackTrace();
-
+            //e.printStackTrace();
             // no user means navigate to login
-            navigateToRegistration();
+            Toast.makeText(this, "Please  registered", Toast.LENGTH_LONG).show();
         }
     }
 

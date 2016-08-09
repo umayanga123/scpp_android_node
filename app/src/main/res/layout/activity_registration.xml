@@ -15,9 +15,15 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Reg. User Name"
         android:id="@+id/ruserName_lb"
-        android:layout_marginTop="41dp"
+        android:layout_marginTop="42dp"
+        android:textSize="20dp"
+        android:textStyle="normal"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignLeft="@+id/ruserName_txt"
+        android:layout_alignStart="@+id/ruserName_txt"
+        android:layout_alignRight="@+id/ruserName_txt"
+        android:layout_alignEnd="@+id/ruserName_txt"
+        android:textAlignment="center" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -34,9 +40,64 @@
         android:layout_height="wrap_content"
         android:text="Sign Up"
         android:id="@+id/rbutton"
-        android:layout_marginTop="46dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="117dp"
+        android:layout_alignRight="@+id/ruserName_lb"
+        android:layout_alignEnd="@+id/ruserName_lb"
+        android:layout_alignLeft="@+id/cmtextView"
+        android:layout_alignStart="@+id/cmtextView" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="password"
+        android:id="@+id/passwordlable"
+        android:layout_alignRight="@+id/ruserName_lb"
+        android:layout_alignEnd="@+id/ruserName_lb"
         android:layout_below="@+id/ruserName_txt"
-        android:layout_centerHorizontal="true" />
+        android:layout_marginTop="30dp"
+        android:textColor="@android:color/background_dark"
+        android:textSize="20dp"
+        android:textAlignment="center"
+        android:layout_alignLeft="@+id/passwordtxt"
+        android:layout_alignStart="@+id/passwordtxt" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:id="@+id/passwordtxt"
+        android:layout_alignLeft="@+id/ruserName_txt"
+        android:layout_alignStart="@+id/ruserName_txt"
+        android:layout_below="@+id/passwordlable" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:id="@+id/confirmPasswordeditText"
+        android:layout_above="@+id/rbutton"
+        android:layout_alignLeft="@+id/passwordtxt"
+        android:layout_alignStart="@+id/passwordtxt"
+        android:layout_marginBottom="26dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Comfirm password"
+        android:id="@+id/cmtextView"
+        android:textColor="@android:color/background_dark"
+        android:textSize="20dp"
+        android:textAlignment="center"
+        android:layout_above="@+id/confirmPasswordeditText"
+        android:layout_alignRight="@+id/ruserName_lb"
+        android:layout_alignEnd="@+id/ruserName_lb"
+        android:layout_alignLeft="@+id/confirmPasswordeditText"
+        android:layout_alignStart="@+id/confirmPasswordeditText" />
 
 
 </RelativeLayout>

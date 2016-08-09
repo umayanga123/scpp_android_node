@@ -17,14 +17,15 @@
         android:id="@+id/userName_lb"
         android:layout_marginTop="41dp"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:textSize="20dp" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
         android:ems="10"
-        android:id="@+id/userName_txt"
+        android:id="@+id/luserName_txt"
         android:layout_below="@+id/userName_lb"
         android:layout_centerHorizontal="true" />
 
@@ -32,8 +33,44 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Login"
-        android:id="@+id/button"
-        android:layout_marginTop="46dp"
-        android:layout_below="@+id/userName_txt"
+        android:id="@+id/lbutton"
+        android:layout_centerVertical="true"
+        android:layout_alignRight="@+id/lrButton"
+        android:layout_alignEnd="@+id/lrButton"
+        android:layout_alignLeft="@+id/lrButton"
+        android:layout_alignStart="@+id/lrButton" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Passwrod"
+        android:id="@+id/logingpasswordTxt"
+        android:textColor="@android:color/background_dark"
+        android:textAlignment="center"
+        android:textSize="20dp"
+        android:layout_below="@+id/luserName_txt"
         android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:id="@+id/lpasswordTxt"
+        android:layout_below="@+id/logingpasswordTxt"
+        android:layout_alignLeft="@+id/luserName_txt"
+        android:layout_alignStart="@+id/luserName_txt"
+        android:layout_marginTop="24dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Registration"
+        android:id="@+id/lrButton"
+        android:layout_below="@+id/lbutton"
+        android:layout_alignLeft="@+id/userName_lb"
+        android:layout_alignStart="@+id/userName_lb"
+        android:layout_marginTop="25dp" />
+
 </RelativeLayout>

@@ -52,6 +52,8 @@ public class Registration extends Activity implements View.OnClickListener {
 
     // UI fields
     private EditText editTextUsername;
+    private EditText editTextPasword;
+    private EditText editTextConfrimPasword;
     private Button signUpButton;
     private Typeface typeface;
 
@@ -117,6 +119,8 @@ public class Registration extends Activity implements View.OnClickListener {
 
     private void initUi() {
         editTextUsername = (EditText) findViewById(R.id.ruserName_txt);
+        editTextPasword = (EditText)findViewById(R.id.passwordtxt);
+        editTextConfrimPasword =(EditText)findViewById(R.id.confirmPasswordeditText);
         signUpButton = (Button) findViewById(R.id.rbutton);
         signUpButton.setOnClickListener(Registration.this);
 
@@ -147,16 +151,24 @@ public class Registration extends Activity implements View.OnClickListener {
 
         // crate user
         String username = editTextUsername.getText().toString().trim();
-        registeringUser = new User("0", username);
+        String password =editTextPasword.getText().toString().trim();
+        String confirmpassword =editTextConfrimPasword.getText().toString().trim();
 
-        try {
-            ActivityUtils.isValidRegistrationFields(registeringUser);
-            String confirmationMessage = "<font color=#000000>Are you sure you want to register on SenZ with </font> <font color=#306d97>" + "<b>" + registeringUser.getUsername() + "</b>" + "</font>";
-            displayConfirmationMessageDialog(confirmationMessage);
-        } catch (InvalidInputFieldsException e) {
-            Toast.makeText(this, "Invalid username", Toast.LENGTH_LONG).show();
-            e.printStackTrace();
+        if(confirmpassword.equals(password)){
+            registeringUser = new User("0", username ,password);
+            try {
+                ActivityUtils.isValidRegistrationFields(registeringUser);
+                String confirmationMessage = "<font color=#000000>Are you sure you want to register on SenZ with </font> <font color=#306d97>" + "<b>" + registeringUser.getUsername() + "</b>" + "</font>";
+                displayConfirmationMessageDialog(confirmationMessage);
+            } catch (InvalidInputFieldsException e) {
+                Toast.makeText(this, "Invalid username", Toast.LENGTH_LONG).show();
+                //e.printStackTrace();
+            }
+        }else{
+            Toast.makeText(this, "password and confirm password not equal", Toast.LENGTH_LONG).show();
         }
+
+
     }
 
     /**
@@ -268,7 +280,7 @@ public class Registration extends Activity implements View.OnClickListener {
     private void handleMessage(Intent intent) {
         Senz senz = intent.getExtras().getParcelable("SENZ");
 
-        Log.d(TAG, "Register brod cast handelre");
+        Log.d(TAG, "Register broad cast handeler");
         if (senz != null && senz.getSenzType() == SenzTypeEnum.DATA) {
             if (senz.getAttributes().containsKey("msg")) {
                 // msg response received
@@ -284,7 +296,7 @@ public class Registration extends Activity implements View.OnClickListener {
                     // save user
                     // navigate home
                     PreferenceUtils.saveUser(getApplicationContext(), registeringUser);
-                    navigateToHome();
+                    navigateToLogin();
                 } else {
                     String informationMessage = "<font color=#4a4a4a>Seems username </font> <font color=#eada00>" + "<b>" + registeringUser.getUsername() + "</b>" + "</font> <font color=#4a4a4a> already obtained by some other user, try SenZ with different username</font>";
                     displayInformationMessageDialog("Registration fail", informationMessage);
@@ -297,8 +309,8 @@ public class Registration extends Activity implements View.OnClickListener {
      * Switch to home activity
      * This method will be call after successful login
      */
-    private void navigateToHome() {
-        Intent intent = new Intent(Registration.this, UserSelect.class);
+    private void navigateToLogin() {
+        Intent intent = new Intent(Registration.this, Login.class);
         Registration.this.startActivity(intent);
         Registration.this.finish();
     }
