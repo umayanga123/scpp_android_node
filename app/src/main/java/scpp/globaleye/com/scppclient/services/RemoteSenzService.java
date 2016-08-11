@@ -53,6 +53,8 @@ public class RemoteSenzService extends Service {
     // server address
     private InetAddress address;
 
+    private String userName;
+    private String password;
 
     // broadcast receiver to check network status changes
     private final BroadcastReceiver networkStatusReceiver = new BroadcastReceiver() {
@@ -89,12 +91,12 @@ public class RemoteSenzService extends Service {
             sendSenzMessage(senz);
         }
 
-        @Override
+
         public String getUser() throws RemoteException {
             try {
                 return PreferenceUtils.getUser(RemoteSenzService.this).getUsername();
             } catch (NoUserException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
 
                 return null;
             }
@@ -123,6 +125,7 @@ public class RemoteSenzService extends Service {
         IntentFilter alarmFilter = new IntentFilter();
         alarmFilter.addAction("PING_ALARM");
         registerReceiver(pingAlarmReceiver, alarmFilter);
+
     }
 
     /**
@@ -132,8 +135,8 @@ public class RemoteSenzService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "Start service");
         initUdpSocket();
-
         initUdpListener();
+
 
         // If we get killed, after returning from here, restart
         return START_STICKY;
@@ -169,7 +172,7 @@ public class RemoteSenzService extends Service {
                 e.printStackTrace();
             }
         } else {
-            Log.e(TAG, "Socket already initialized");
+            Log.i(TAG, "Socket already initialized");
         }
     }
 
@@ -185,7 +188,7 @@ public class RemoteSenzService extends Service {
                 }
             }).start();
         } else {
-            Log.e(TAG, "Socket not connected");
+            Log.i(TAG, "Socket not connected");
         }
     }
 
@@ -263,7 +266,8 @@ public class RemoteSenzService extends Service {
                         DatagramPacket sendPacket = new DatagramPacket(message.getBytes(), message.length(), address, SENZ_PORT);
                         socket.send(sendPacket);
                     } catch (IOException | NoSuchAlgorithmException | NoUserException | SignatureException | InvalidKeyException | InvalidKeySpecException e) {
-                        e.printStackTrace();
+                        //e.printStackTrace();
+                        Log.i(TAG, "Wait For Registration" + e);
                     }
                 } else {
                     Log.e(TAG, "Cannot send ping, No connection available");
@@ -306,7 +310,7 @@ public class RemoteSenzService extends Service {
                 }
             }).start();
         } else {
-            Log.e(TAG, "Cannot send senz, No connection available");
+            Log.i(TAG, "Cannot send senz, No connection available");
         }
     }
 

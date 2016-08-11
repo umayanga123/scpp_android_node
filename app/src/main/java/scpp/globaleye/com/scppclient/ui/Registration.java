@@ -1,6 +1,5 @@
 package scpp.globaleye.com.scppclient.ui;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
@@ -13,16 +12,15 @@ import android.graphics.Typeface;
 import android.os.CountDownTimer;
 import android.os.IBinder;
 import android.os.RemoteException;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -91,8 +89,7 @@ public class Registration extends Activity implements View.OnClickListener {
         setContentView(R.layout.activity_registration);
         typeface = Typeface.createFromAsset(getAssets(), "fonts/vegur_2.otf");
 
-        senzCountDownTimer = new SenzCountDownTimer(16000, 5000);
-
+        senzCountDownTimer = new SenzCountDownTimer(20000, 5000); //16000
         initUi();
         registerReceiver(senzMessageReceiver, new IntentFilter("scpp.globaleye.com.scppclient.DATA_SENZ"));
     }
@@ -118,13 +115,16 @@ public class Registration extends Activity implements View.OnClickListener {
      */
 
     private void initUi() {
-        editTextUsername = (EditText) findViewById(R.id.ruserName_txt);
-        editTextPasword = (EditText)findViewById(R.id.passwordtxt);
-        editTextConfrimPasword =(EditText)findViewById(R.id.confirmPasswordeditText);
+        editTextUsername = (EditText) findViewById(R.id.tfUpdateUserName);
+        editTextPasword = (EditText)findViewById(R.id.tfupdatpasswordtxt);
+        editTextConfrimPasword =(EditText)findViewById(R.id.tfconfirmPasswordeditText);
         signUpButton = (Button) findViewById(R.id.rbutton);
         signUpButton.setOnClickListener(Registration.this);
 
         editTextUsername.setTypeface(typeface, Typeface.NORMAL);
+
+
+
 
     }
 
@@ -135,11 +135,13 @@ public class Registration extends Activity implements View.OnClickListener {
     public void onClick(View v) {
         if (v == signUpButton) {
             if (NetworkUtil.isAvailableNetwork(this)) {
+
                 onClickRegister();
             } else {
                 Toast.makeText(this, "No network connection available", Toast.LENGTH_LONG).show();
             }
         }
+
     }
 
     /**
@@ -178,14 +180,11 @@ public class Registration extends Activity implements View.OnClickListener {
      * bind service
      */
     private void doPreRegistration() {
-        try {
+
+        try{
             if (!isServiceBound) {
                 // init keys
                 RSAUtils.initKeys(this);
-
-                // start service from here
-                Intent serviceIntent = new Intent(Registration.this, RemoteSenzService.class);
-                startService(serviceIntent);
 
                 // bind to service from here as well
                 Intent bindIntent = new Intent();
@@ -196,9 +195,11 @@ public class Registration extends Activity implements View.OnClickListener {
                 isResponseReceived = false;
                 senzCountDownTimer.start();
             }
-        } catch (NoSuchProviderException | NoSuchAlgorithmException e) {
+        }catch (NoSuchProviderException | NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
+
+
     }
 
 
@@ -265,8 +266,8 @@ public class Registration extends Activity implements View.OnClickListener {
     private BroadcastReceiver senzMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.d(TAG, "Got message from Senz service" + intent.getAction());
-            handleMessage(intent);
+                Log.d(TAG, "Got message from Senz service" + intent.getAction());
+                handleMessage(intent);
         }
     };
 
@@ -292,9 +293,10 @@ public class Registration extends Activity implements View.OnClickListener {
                 if (msg != null && msg.equalsIgnoreCase("REGISTRATION_DONE")) {
                     Toast.makeText(this, "Successfully registered", Toast.LENGTH_LONG).show();
 
-
+                    // init keys
                     // save user
                     // navigate home
+
                     PreferenceUtils.saveUser(getApplicationContext(), registeringUser);
                     navigateToLogin();
                 } else {

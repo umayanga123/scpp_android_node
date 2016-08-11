@@ -100,10 +100,6 @@ public class Wallet extends Activity implements View.OnClickListener {
     public void bindConService() {
 
 
-        // start service from here
-        //Intent serviceIntent = new Intent(Wallet.this, RemoteSenzService.class);
-        //startService(serviceIntent);
-
         // bind with senz service
         // bind to service from here as well
         Intent intent = new Intent();
@@ -164,11 +160,11 @@ public class Wallet extends Activity implements View.OnClickListener {
                 }
             }
         }else if(v==wlogoutButton){
-            Toast.makeText(this, "Thank You", Toast.LENGTH_LONG).show();
-            //navigate //temprry error
-            Intent intent = new Intent(Wallet.this, UserSelect.class);
+            //
+            Intent intent = new Intent(Wallet.this, Login.class);
             Wallet.this.startActivity(intent);
             Wallet.this.finish();
+            Toast.makeText(this, "Log Out", Toast.LENGTH_LONG).show();
         }
 
     }

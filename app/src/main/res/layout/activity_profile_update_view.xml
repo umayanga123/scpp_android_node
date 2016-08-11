@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Reg. User Name"
+            android:id="@+id/ruserName_lb"
+            android:layout_marginTop="42dp"
+            android:textSize="20dp"
+            android:textStyle="normal"
+            android:layout_alignParentTop="true"
+            android:layout_alignLeft="@+id/tfUpdateUserName"
+            android:layout_alignStart="@+id/tfUpdateUserName"
+            android:layout_alignRight="@+id/tfUpdateUserName"
+            android:layout_alignEnd="@+id/tfUpdateUserName"
+            android:textAlignment="center" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/tfUpdateUserName"
+            android:layout_below="@+id/ruserName_lb"
+            android:layout_centerHorizontal="true" />
+
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Update"
+            android:id="@+id/buttonUpdateProfile"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="117dp"
+            android:layout_alignRight="@+id/ruserName_lb"
+            android:layout_alignEnd="@+id/ruserName_lb"
+            android:layout_alignLeft="@+id/cmtextView"
+            android:layout_alignStart="@+id/cmtextView" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="password"
+            android:id="@+id/passwordlable"
+            android:layout_alignRight="@+id/ruserName_lb"
+            android:layout_alignEnd="@+id/ruserName_lb"
+            android:layout_below="@+id/tfUpdateUserName"
+            android:layout_marginTop="30dp"
+            android:textColor="@android:color/background_dark"
+            android:textSize="20dp"
+            android:textAlignment="center"
+            android:layout_alignLeft="@+id/tfupdatpasswordtxt"
+            android:layout_alignStart="@+id/tfupdatpasswordtxt" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:ems="10"
+            android:id="@+id/tfupdatpasswordtxt"
+            android:layout_alignLeft="@+id/tfUpdateUserName"
+            android:layout_alignStart="@+id/tfUpdateUserName"
+            android:layout_below="@+id/passwordlable" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:ems="10"
+            android:id="@+id/tfconfirmPasswordeditText"
+            android:layout_marginBottom="47dp"
+            android:layout_above="@+id/buttonUpdateProfile"
+            android:layout_alignLeft="@+id/tfupdatpasswordtxt"
+            android:layout_alignStart="@+id/tfupdatpasswordtxt" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Comfirm password"
+            android:id="@+id/cmtextView"
+            android:textColor="@android:color/background_dark"
+            android:textSize="20dp"
+            android:textAlignment="center"
+            android:layout_above="@+id/tfconfirmPasswordeditText"
+            android:layout_alignRight="@+id/ruserName_lb"
+            android:layout_alignEnd="@+id/ruserName_lb"
+            android:layout_alignLeft="@+id/tfconfirmPasswordeditText"
+            android:layout_alignStart="@+id/tfconfirmPasswordeditText" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </RelativeLayout>
+</LinearLayout>

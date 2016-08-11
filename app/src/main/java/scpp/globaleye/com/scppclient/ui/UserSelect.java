@@ -97,12 +97,6 @@ public class UserSelect extends Activity implements View.OnClickListener {
      */
     public void bindConService() {
 
-
-
-        // start service from here
-        //Intent serviceIntent = new Intent(UserSelect.this, RemoteSenzService.class);
-        //startService(serviceIntent);
-
         // bind with senz service
         // bind to service from here as well
         Intent intent = new Intent();
@@ -149,8 +143,13 @@ public class UserSelect extends Activity implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if (v == logOutButton) {
-            Toast.makeText(this, "Thank You", Toast.LENGTH_LONG).show();
-            this.finish();
+
+            Intent intent = new Intent(UserSelect.this, Login.class);
+            UserSelect.this.startActivity(intent);
+            UserSelect.this.finish();
+            Toast.makeText(this, "Log Out", Toast.LENGTH_LONG).show();
+
+
         }else if(v== shareButton){
             if (usernameEditText.getText().toString().trim().isEmpty()) {
                 Toast.makeText(UserSelect.this, "Empty username", Toast.LENGTH_LONG).show();
@@ -237,7 +236,7 @@ public class UserSelect extends Activity implements View.OnClickListener {
 
             Log.d("Tag", senz.getSender() + " : " + senz.getSenzType().toString());
             if (senz != null && senz.getSenzType() == SenzTypeEnum.SHARE) {
-                NotificationUtils.showNotification(this, this.getString(R.string.new_senz), "SHARE MEssage Recived" + senz.getSender().getUsername());
+                NotificationUtils.showNotification(this, this.getString(R.string.new_senz), "SHARE Message Recived" + senz.getSender().getUsername());
                 String sender = senz.getSender().getUsername();
                 User sen = new User("", sender);
                 sendResponse(senzService, sen, true);
@@ -263,8 +262,8 @@ public class UserSelect extends Activity implements View.OnClickListener {
             String signature = "";
             SenzTypeEnum senzType = SenzTypeEnum.DATA;
             Senz senz = new Senz(id, signature, senzType, null, receiver, senzAttributes);
-
             senzService.send(senz);
+
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -273,9 +272,11 @@ public class UserSelect extends Activity implements View.OnClickListener {
      * Clear input fields and reset activity components
      */
     private void onPostShare(Senz senz) {
+
+
         // Create user with senz sender(Data sender name save in sqllite)
-        SenzorsDbSource dbSource = new SenzorsDbSource(UserSelect.this);
-        dbSource.getOrCreateUser(senz.getSender().getUsername());
+        //SenzorsDbSource dbSource = new SenzorsDbSource(UserSelect.this);
+        //dbSource.getOrCreateUser(senz.getSender().getUsername());
 
 
         //navigate
@@ -284,8 +285,8 @@ public class UserSelect extends Activity implements View.OnClickListener {
 
 
         usernameEditText.setText("");
-        Toast.makeText(UserSelect.this, "Successfully shared SenZ", Toast.LENGTH_LONG).show();
 
+        Toast.makeText(UserSelect.this, "Successfully shared Request", Toast.LENGTH_LONG).show();
         UserSelect.this.startActivity(intent);
         UserSelect.this.finish();
 

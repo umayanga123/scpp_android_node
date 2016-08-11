@@ -16,6 +16,6 @@ interface ISenzService {
         void send(in Senz senz);
 
         // get registered user via this function
-        String getUser();
+        //String getUser();
 
 }

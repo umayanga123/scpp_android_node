@@ -124,4 +124,12 @@ public class User implements Parcelable {
         return (this.getUsername()).hashCode();
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "id='" + id + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
 }

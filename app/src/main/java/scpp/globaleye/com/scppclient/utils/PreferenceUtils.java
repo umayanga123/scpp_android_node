@@ -3,6 +3,20 @@ package scpp.globaleye.com.scppclient.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import android.util.Log;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
+
 import scpp.globaleye.com.scppclient.R;
 
 
@@ -21,14 +35,20 @@ public class PreferenceUtils {
      * @param context application context
      * @param user    logged-in user
      */
+    private static ArrayList<User> userDetail;
+    private static User setUser;
+
+
     public static void saveUser(Context context, User user) {
-        SharedPreferences preferences = context.getSharedPreferences(context.getString(R.string.preference_file_key), Context.MODE_APPEND);
+        SharedPreferences preferences = context.getSharedPreferences(context.getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
 
-        //keys should be constants as well, or derived from a constant prefix in a loop.
-        editor.putString("id", user.getId());
-        editor.putString("username", user.getUsername());
-        editor.putString("password" , user.getPassword());
+        if (null == userDetail) {
+            userDetail = new ArrayList<User>();
+        }
+
+        userDetail.add(user);
+        editor.putString("User", new Gson().toJson(userDetail));
         editor.commit();
     }
 
@@ -39,19 +59,38 @@ public class PreferenceUtils {
      * @param context application context
      * @return user object
      */
+    public static User getUser(Context context ,String userName , String Password) throws NoUserException {
+
+        SharedPreferences preferences = context.getSharedPreferences(context.getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        String userlist= preferences.getString("User","");
+
+        if (!userName.equals(null)){
+            Type collectionType = new TypeToken<List<User>>(){}.getType();
+            userDetail = new Gson().fromJson(userlist, collectionType);
+            for (User user : userDetail) {
+                   if(user.getUsername().equals(userName) && user.getPassword().equals(Password)){
+                       setUser =user;
+                       return user;
+                   }
+            }
+        }
+        throw new NoUserException();
+    }
+
+    /**
+     * Get user details from shared preference
+     *
+     * @param context application context
+     * @return user object
+     */
     public static User getUser(Context context) throws NoUserException {
-        SharedPreferences preferences = context.getSharedPreferences(context.getString(R.string.preference_file_key), Context.MODE_APPEND);
-        String id = preferences.getString("id", "0");
-        String username = preferences.getString("username", "");
-        String password= preferences.getString("password","");
 
-        if (username.isEmpty())
+        if(setUser!=null){
+            return  setUser;
+        }else {
             throw new NoUserException();
+        }
 
-        User user = new User(id, username);
-        user.setUsername(username);
-        user.setPassword(password);
-        return user;
     }
 
 
@@ -79,7 +118,7 @@ public class PreferenceUtils {
      * @return key string
      */
     public static String getRsaKey(Context context, String keyType) {
-        SharedPreferences preferences = context.getSharedPreferences(context.getString(R.string.preference_file_key), Context.MODE_APPEND);
+        SharedPreferences preferences = context.getSharedPreferences(context.getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         return preferences.getString(keyType, "");
     }
 }

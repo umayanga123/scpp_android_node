@@ -28,6 +28,9 @@ public class Login extends AppCompatActivity   implements View.OnClickListener{
     private Button loginButton;
     private Button registraionButton;
 
+    private String username;
+    private String password;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +65,8 @@ public class Login extends AppCompatActivity   implements View.OnClickListener{
         loginButton.setOnClickListener(Login.this);
         registraionButton.setOnClickListener(Login.this);
 
+        initSenzService();
+
     }
 
     /**
@@ -73,14 +78,13 @@ public class Login extends AppCompatActivity   implements View.OnClickListener{
         // 2. goto home
         try {
 
-            String username = loginTextUsername.getText().toString().trim();
-            String password =passwordTextPasword.getText().toString().trim();
+            username = loginTextUsername.getText().toString().trim();
+            password =passwordTextPasword.getText().toString().trim();
 
 
-            User user = PreferenceUtils.getUser(this);
+            User user = PreferenceUtils.getUser(this,username,password);
 
             if(user.getPassword().equals(password)){
-                initSenzService();
                 navigateToHome();
             }else{
                 Toast.makeText(this, "Invalid Password", Toast.LENGTH_LONG).show();
@@ -101,6 +105,8 @@ public class Login extends AppCompatActivity   implements View.OnClickListener{
     private void initSenzService() {
         // start service from here
         Intent serviceIntent = new Intent(Login.this, RemoteSenzService.class);
+        //serviceIntent.putExtra("userName" ,username);
+        //serviceIntent.putExtra("passwrod",password);
         startService(serviceIntent);
 
     }
@@ -110,8 +116,6 @@ public class Login extends AppCompatActivity   implements View.OnClickListener{
      * Navigate to Register activity
      */
     private void navigateToRegistration() {
-
-
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -132,7 +136,7 @@ public class Login extends AppCompatActivity   implements View.OnClickListener{
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(Login.this, UserSelect.class);
+                Intent intent = new Intent(Login.this, Home.class);
                 Login.this.startActivity(intent);
                 Login.this.finish();
             }

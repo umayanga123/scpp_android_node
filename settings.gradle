@@ -1,1 +1,1 @@
-include ':app', ':senzc'
+include ':app', ':senzc', ':json_org_src'
