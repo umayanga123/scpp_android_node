@@ -1,13 +1,17 @@
 package scpp.globaleye.com.scppclient.ui;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import scpp.globaleye.com.scppclient.R;
 
@@ -28,8 +32,6 @@ public class Home extends Activity implements View.OnClickListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
-
         initUi();
 
     }
@@ -46,6 +48,32 @@ public class Home extends Activity implements View.OnClickListener{
         walletimgButton.setOnClickListener(Home.this);
         serviceimgButton.setOnClickListener(Home.this);
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        // Inflate the menu; this adds items to the action bar if it is present.
+        //getMenuInflater().inflate(R.menu.main_menu, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+            case R.id.logOut:
+                //your code here
+                Intent intent = new Intent(Home.this, Login.class);
+                Home.this.startActivity(intent);
+                Home.this.finish();
+                Toast.makeText(this, "Log Out", Toast.LENGTH_LONG).show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 

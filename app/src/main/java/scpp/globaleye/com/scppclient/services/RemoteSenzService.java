@@ -44,7 +44,8 @@ public class RemoteSenzService extends Service {
     private static final String TAG = RemoteSenzService.class.getName();
 
     // senz service host and port
-    private static final String SENZ_HOST = "10.0.3.2";
+    private static final String SENZ_HOST = "10.0.3.2";//genymotion emulator
+    //private static final String SENZ_HOST = "192.168.1.2"; //localmachine port -real device
     private static final int SENZ_PORT = 9090;
 
     // we are listing for UDP socket

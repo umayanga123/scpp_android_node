@@ -117,9 +117,8 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Welcome SCPP Home"
             android:id="@+id/tvWelcom"
-            android:layout_above="@+id/imageButtonService"
             android:layout_alignRight="@+id/tvProfile"
             android:layout_alignEnd="@+id/tvProfile"
-            android:layout_marginBottom="36dp" />
+            android:layout_above="@+id/imageButtonService" />
     </RelativeLayout>
 </LinearLayout>
