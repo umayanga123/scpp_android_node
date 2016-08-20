@@ -46,6 +46,7 @@ public class RemoteSenzService extends Service {
     // senz service host and port
     private static final String SENZ_HOST = "10.0.3.2";//genymotion emulator
     //private static final String SENZ_HOST = "192.168.1.2"; //localmachine port -real device
+    //private static final String SENZ_HOST = "10.0.2.2"; //AVD manager emulator
     private static final int SENZ_PORT = 9090;
 
     // we are listing for UDP socket
