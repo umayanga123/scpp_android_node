@@ -14,6 +14,7 @@ import android.os.IBinder;
 import android.os.RemoteException;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
@@ -37,7 +38,7 @@ import scpp.globaleye.com.senzc.enums.enums.SenzTypeEnum;
 import scpp.globaleye.com.senzc.enums.pojos.Senz;
 import scpp.globaleye.com.senzc.enums.pojos.User;
 
-public class Wallet extends Activity implements View.OnClickListener {
+public class Wallet extends AppCompatActivity implements View.OnClickListener {
 
 
     private static final String TAG = UserSelect.class.getName();
@@ -81,6 +82,10 @@ public class Wallet extends Activity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wallet);
+
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(null);
 
         senzCountDownTimer = new SenzCountDownTimer(16000, 5000);
         isResponseReceived = false;
@@ -137,10 +142,10 @@ public class Wallet extends Activity implements View.OnClickListener {
         amountLabel = (TextView)findViewById(R.id.amountlb);
         amountEditText = (EditText) findViewById(R.id.amount_txt);
         sendButton = (Button) findViewById(R.id.send_bt);
-        wlogoutButton = (Button) findViewById(R.id.wlogOutBtn);
+       // wlogoutButton = (Button) findViewById(R.id.wlogOutBtn);
 
         sendButton.setOnClickListener(Wallet.this);
-        wlogoutButton.setOnClickListener(Wallet.this);
+        //wlogoutButton.setOnClickListener(Wallet.this);
 
     }
 
@@ -159,13 +164,14 @@ public class Wallet extends Activity implements View.OnClickListener {
                     Toast.makeText(Wallet.this, "No network connection available", Toast.LENGTH_LONG).show();
                 }
             }
-        }else if(v==wlogoutButton){
-            //
-            Intent intent = new Intent(Wallet.this, Login.class);
-            Wallet.this.startActivity(intent);
-            Wallet.this.finish();
-            Toast.makeText(this, "Log Out", Toast.LENGTH_LONG).show();
         }
+        //else if(v==wlogoutButton){
+            //
+          //  Intent intent = new Intent(Wallet.this, Login.class);
+          //  Wallet.this.startActivity(intent);
+          //  Wallet.this.finish();
+          //  Toast.makeText(this, "Log Out", Toast.LENGTH_LONG).show();
+       // }
 
     }
 
@@ -416,10 +422,26 @@ public class Wallet extends Activity implements View.OnClickListener {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        Wallet.this.finish();
         this.overridePendingTransition(R.anim.stay_in, R.anim.bottom_out);
     }
 
+    public void goHome(View v) {
+        Intent intent = new Intent(Wallet.this, Home.class);
+        startActivity(intent);
+        Wallet.this.finish();
+    }
+    public void goBack(View v) {
+        Intent intent = new Intent(Wallet.this, UserSelect.class);
+        Wallet.this.startActivity(intent);
+        Wallet.this.finish();
+    }
 
+    public void logout(View v) {
+        Intent intent = new Intent(Wallet.this, Login.class);
+        Wallet.this.startActivity(intent);
+        Wallet.this.finish();
+    }
 
 
 }

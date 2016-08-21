@@ -8,7 +8,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".ui.Wallet">
-
+    <include layout="@layout/activity_app_bar"/>
     <TextView
         android:layout_width="123dp"
         android:layout_height="56dp"
@@ -24,8 +24,8 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="My Wallet"
         android:id="@+id/myWallet_lb"
-        android:layout_x="97dp"
-        android:layout_y="30dp" />
+        android:layout_x="190dp"
+        android:layout_y="18dp" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -62,12 +62,12 @@
         android:layout_x="185dp"
         android:layout_y="294dp" />
 
-    <Button
+  <!--  <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Home "
         android:id="@+id/wlogOutBtn"
         android:layout_x="115dp"
         android:layout_y="379dp" />
-
+-->
 </AbsoluteLayout>

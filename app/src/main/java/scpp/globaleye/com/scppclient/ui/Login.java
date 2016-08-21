@@ -154,6 +154,8 @@ public class Login extends AppCompatActivity   implements View.OnClickListener{
         } else {
             // clean up
             super.onBackPressed();
+            Login.this.finish();
+
         }
     }
 }

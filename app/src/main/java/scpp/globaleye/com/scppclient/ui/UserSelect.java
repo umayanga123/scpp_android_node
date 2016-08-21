@@ -15,6 +15,7 @@ import android.os.IBinder;
 import android.os.RemoteException;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
@@ -38,7 +39,7 @@ import scpp.globaleye.com.senzc.enums.enums.SenzTypeEnum;
 import scpp.globaleye.com.senzc.enums.pojos.Senz;
 import scpp.globaleye.com.senzc.enums.pojos.User;
 
-public class UserSelect extends Activity implements View.OnClickListener {
+public class UserSelect extends AppCompatActivity implements View.OnClickListener {
 
 
     private static final String TAG = UserSelect.class.getName();
@@ -83,7 +84,9 @@ public class UserSelect extends Activity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_select);
-
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(null);
 
         senzCountDownTimer = new SenzCountDownTimer(16000, 5000);
         isResponseReceived = false;
@@ -134,24 +137,25 @@ public class UserSelect extends Activity implements View.OnClickListener {
         usernameLabel = (TextView)findViewById(R.id.share_lb);
         usernameEditText = (EditText) findViewById(R.id.share_txt);
         shareButton = (Button) findViewById(R.id.shareBtn);
-        logOutButton = (Button) findViewById(R.id.logOutBtn);
+        //logOutButton = (Button) findViewById(R.id.logOutBtn);
 
-        logOutButton.setOnClickListener(UserSelect.this);
+        //logOutButton.setOnClickListener(UserSelect.this);
         shareButton.setOnClickListener(UserSelect.this);
 
     }
 
     @Override
     public void onClick(View v) {
-        if (v == logOutButton) {
+        //if (v == logOutButton) {
 
-            Intent intent = new Intent(UserSelect.this, Login.class);
-            UserSelect.this.startActivity(intent);
+           // Intent intent = new Intent(UserSelect.this, Login.class);
+          //  UserSelect.this.startActivity(intent);
             //UserSelect.this.finish();
-            Toast.makeText(this, "Log Out", Toast.LENGTH_LONG).show();
+           // Toast.makeText(this, "Log Out", Toast.LENGTH_LONG).show();
 
 
-        }else if(v== shareButton){
+       // }
+    if(v== shareButton){
             if (usernameEditText.getText().toString().trim().isEmpty()) {
                 Toast.makeText(UserSelect.this, "Empty username", Toast.LENGTH_LONG).show();
             } else {
@@ -363,5 +367,22 @@ public class UserSelect extends Activity implements View.OnClickListener {
         });
 
         dialog.show();
+    }
+
+    public void goHome(View v) {
+        Intent intent = new Intent(UserSelect.this, Home.class);
+        startActivity(intent);
+        UserSelect.this.finish();
+    }
+    public void goBack(View v) {
+        Intent intent = new Intent(UserSelect.this, Home.class);
+        UserSelect.this.startActivity(intent);
+        UserSelect.this.finish();
+    }
+
+    public void logout(View v) {
+        Intent intent = new Intent(UserSelect.this, Login.class);
+        UserSelect.this.startActivity(intent);
+        UserSelect.this.finish();
     }
 }

@@ -8,7 +8,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".ui.UserSelect">
-
+    <include layout="@layout/activity_app_bar"/>
     <TextView
         android:layout_width="204dp"
         android:layout_height="58dp"
@@ -38,11 +38,11 @@
         android:layout_x="99dp"
         android:layout_y="180dp" />
 
-    <Button
+   <!-- <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Log Out "
         android:id="@+id/logOutBtn"
         android:layout_x="115dp"
-        android:layout_y="379dp" />
+        android:layout_y="379dp" />-->
 </AbsoluteLayout>

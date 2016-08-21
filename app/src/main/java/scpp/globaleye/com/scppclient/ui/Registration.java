@@ -1,5 +1,9 @@
 package scpp.globaleye.com.scppclient.ui;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 
+import scpp.globaleye.com.scppclient.R;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
@@ -21,6 +25,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,7 +45,7 @@ import scpp.globaleye.com.senzc.enums.enums.SenzTypeEnum;
 import scpp.globaleye.com.senzc.enums.pojos.Senz;
 import scpp.globaleye.com.senzc.enums.pojos.User;
 
-public class Registration extends Activity implements View.OnClickListener {
+public class Registration extends AppCompatActivity implements View.OnClickListener {
 
 
     private static final String TAG = Registration.class.getName();
@@ -54,6 +59,7 @@ public class Registration extends Activity implements View.OnClickListener {
     private EditText editTextConfrimPasword;
     private Button signUpButton;
     private Typeface typeface;
+
 
     // use to track registration timeout
     private SenzCountDownTimer senzCountDownTimer;
@@ -87,8 +93,15 @@ public class Registration extends Activity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
-        typeface = Typeface.createFromAsset(getAssets(), "fonts/vegur_2.otf");
 
+        //Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        //setSupportActionBar(toolbar);
+        //getSupportActionBar().setTitle(null);
+
+        typeface = Typeface.createFromAsset(getAssets(), "fonts/vegur_2.otf");
+       // Typeface fontAwesomeFont = Typeface.createFromAsset(getAssets(), "fontawesome-webfont.ttf");
+       // ImageButton fontAwesomeHomeIcon = (ImageButton) findViewById(R.id.font_awesome_home_icon);
+       // fontAwesomeHomeIcon.setTypeface(fontAwesomeFont);
         senzCountDownTimer = new SenzCountDownTimer(20000, 5000); //16000
         initUi();
         registerReceiver(senzMessageReceiver, new IntentFilter("scpp.globaleye.com.scppclient.DATA_SENZ"));
@@ -412,6 +425,7 @@ public class Registration extends Activity implements View.OnClickListener {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        Registration.this.finish();
         this.overridePendingTransition(R.anim.stay_in, R.anim.bottom_out);
     }
 

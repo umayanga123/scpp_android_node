@@ -149,6 +149,7 @@ public class Home extends Activity implements View.OnClickListener{
                     Toast.LENGTH_SHORT).show();
         } else {    // this guy is serious
             // clean up
+            Home.this.finish();
             super.onBackPressed();       // bye
         }
     }
