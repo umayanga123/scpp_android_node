@@ -22,7 +22,7 @@ public class Login extends AppCompatActivity   implements View.OnClickListener{
 
     private final int SPLASH_DISPLAY_LENGTH = 2000;
     private static final String TAG = Login.class.getName();
-
+    private long backPressedTime = 0;
     private EditText loginTextUsername;
     private EditText passwordTextPasword;
     private Button loginButton;
@@ -144,4 +144,16 @@ public class Login extends AppCompatActivity   implements View.OnClickListener{
 
     }
 
+    @Override
+    public void onBackPressed() {        // to prevent irritating accidental exits
+        long t = System.currentTimeMillis();
+        if (t - backPressedTime > 2000) {    // 2 secs
+            backPressedTime = t;
+            Toast.makeText(this, "Press back again to exit",
+                    Toast.LENGTH_SHORT).show();
+        } else {
+            // clean up
+            super.onBackPressed();
+        }
+    }
 }

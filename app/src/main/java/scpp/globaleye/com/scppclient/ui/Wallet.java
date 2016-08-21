@@ -364,7 +364,7 @@ public class Wallet extends Activity implements View.OnClickListener {
         //navigate
         Intent intent = new Intent(Wallet.this, UserSelect.class);
         Wallet.this.startActivity(intent);
-        Wallet.this.finish();
+        //Wallet.this.finish();
 
     }
 

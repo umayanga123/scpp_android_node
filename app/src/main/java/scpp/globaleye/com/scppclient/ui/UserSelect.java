@@ -147,7 +147,7 @@ public class UserSelect extends Activity implements View.OnClickListener {
 
             Intent intent = new Intent(UserSelect.this, Login.class);
             UserSelect.this.startActivity(intent);
-            UserSelect.this.finish();
+            //UserSelect.this.finish();
             Toast.makeText(this, "Log Out", Toast.LENGTH_LONG).show();
 
 
@@ -289,7 +289,7 @@ public class UserSelect extends Activity implements View.OnClickListener {
 
         Toast.makeText(UserSelect.this, "Successfully shared Request", Toast.LENGTH_LONG).show();
         UserSelect.this.startActivity(intent);
-        UserSelect.this.finish();
+        //UserSelect.this.finish();
 
     }
 

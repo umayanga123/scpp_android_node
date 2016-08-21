@@ -21,7 +21,7 @@ import scpp.globaleye.com.scppclient.R;
 public class Home extends Activity implements View.OnClickListener{
 
     private final int SPLASH_DISPLAY_LENGTH = 2000;
-
+    private long backPressedTime = 0;
     private ImageButton profileimgButton;
     private ImageButton transctionimgButton;
     private ImageButton walletimgButton;
@@ -100,7 +100,7 @@ public class Home extends Activity implements View.OnClickListener{
                 public void run() {
                     Intent intent = new Intent(Home.this, UserSelect.class);
                     Home.this.startActivity(intent);
-                    Home.this.finish();
+                    //Home.this.finish();
                 }
             }, SPLASH_DISPLAY_LENGTH);
     }
@@ -111,7 +111,7 @@ public class Home extends Activity implements View.OnClickListener{
             public void run() {
                 Intent intent = new Intent(Home.this, Update_Profile.class);
                 Home.this.startActivity(intent);
-                Home.this.finish();
+                //Home.this.finish();
             }
         }, SPLASH_DISPLAY_LENGTH);
 
@@ -124,7 +124,7 @@ public class Home extends Activity implements View.OnClickListener{
             public void run() {
                 Intent intent = new Intent(Home.this, Services_View.class);
                 Home.this.startActivity(intent);
-                Home.this.finish();
+                //Home.this.finish();
             }
         }, SPLASH_DISPLAY_LENGTH);
     }
@@ -138,5 +138,18 @@ public class Home extends Activity implements View.OnClickListener{
                // Home.this.finish();
             }
         }, SPLASH_DISPLAY_LENGTH);
+    }
+
+    @Override
+    public void onBackPressed() {        // to prevent irritating accidental logouts
+        long t = System.currentTimeMillis();
+        if (t - backPressedTime > 2000) {    // 2 secs
+            backPressedTime = t;
+            Toast.makeText(this, "Press back again to logout",
+                    Toast.LENGTH_SHORT).show();
+        } else {    // this guy is serious
+            // clean up
+            super.onBackPressed();       // bye
+        }
     }
 }
