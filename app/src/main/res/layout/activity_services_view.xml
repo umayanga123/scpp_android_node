@@ -14,7 +14,7 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Services List"
             android:id="@+id/tvServices"
-            android:layout_marginTop="74dp"
+            android:layout_marginTop="89dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true" />
 

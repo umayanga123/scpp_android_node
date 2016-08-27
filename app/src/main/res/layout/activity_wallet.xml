@@ -28,39 +28,39 @@
         android:layout_y="18dp" />
 
     <EditText
-        android:layout_width="wrap_content"
+        android:layout_width="165dp"
         android:layout_height="wrap_content"
         android:inputType="number"
         android:ems="10"
         android:id="@+id/amount_txt"
-        android:layout_x="134dp"
-        android:layout_y="93dp" />
+        android:layout_x="136dp"
+        android:layout_y="100dp" />
 
     <Button
         android:layout_width="126dp"
         android:layout_height="wrap_content"
         android:text="Send"
         android:id="@+id/send_bt"
-        android:layout_x="97dp"
-        android:layout_y="191dp" />
+        android:layout_x="154dp"
+        android:layout_y="193dp" />
 
     <TextView
-        android:layout_width="167dp"
+        android:layout_width="216dp"
         android:layout_height="69dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Money Reseive :"
+        android:text="Received Amount :"
         android:id="@+id/recivelb"
-        android:layout_x="-2dp"
-        android:layout_y="294dp" />
+        android:layout_x="13dp"
+        android:layout_y="282dp" />
 
     <TextView
-        android:layout_width="190dp"
+        android:layout_width="132dp"
         android:layout_height="58dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Amount"
         android:id="@+id/amountlb"
-        android:layout_x="185dp"
-        android:layout_y="294dp" />
+        android:layout_x="218dp"
+        android:layout_y="278dp" />
 
   <!--  <Button
         android:layout_width="wrap_content"
