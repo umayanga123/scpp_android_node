@@ -368,6 +368,12 @@ public class UserSelect extends AppCompatActivity implements View.OnClickListene
 
         dialog.show();
     }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        UserSelect.this.finish();
+        this.overridePendingTransition(R.anim.stay_in, R.anim.bottom_out);
+    }
 
     public void goHome(View v) {
         Intent intent = new Intent(UserSelect.this, Home.class);

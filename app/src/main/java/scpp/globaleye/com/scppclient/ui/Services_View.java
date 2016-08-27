@@ -41,6 +41,12 @@ public class Services_View extends AppCompatActivity implements View.OnClickList
         carPoolong.setOnClickListener(Services_View.this);
         buyItem.setOnClickListener(Services_View.this);
     }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Services_View.this.finish();
+        this.overridePendingTransition(R.anim.stay_in, R.anim.bottom_out);
+    }
 
     @Override
     public void onClick(View v) {
