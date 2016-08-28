@@ -40,7 +40,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener {
         setContentView(R.layout.activity_maps);
         //System.out.println("on createteeeeeeeeeeeeeee");
 
-        SupportMapFragment fm = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        /*SupportMapFragment fm = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
 
         googleMap = fm.getMap();
         getLocation();
@@ -73,7 +73,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener {
                 stop_btn.setEnabled(false);
                 getStoptLoc(location);
             }
-        });
+        });*/
 
     }
     @Override
@@ -162,9 +162,9 @@ public class MapsActivity extends FragmentActivity implements LocationListener {
     }
 
     @Override
-        public void onBackPressed() {
+    public void onBackPressed() {
           super.onBackPressed();
           MapsActivity.this.finish();
           this.overridePendingTransition(R.anim.stay_in, R.anim.bottom_out);
-        }
+    }
 }

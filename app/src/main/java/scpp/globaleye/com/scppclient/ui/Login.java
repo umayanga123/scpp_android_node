@@ -45,10 +45,8 @@ public class Login extends AppCompatActivity   implements View.OnClickListener{
      */
     public void onClick(View v) {
         if (v == loginButton) {
-         //   initNavigation();
-            Intent intent = new Intent(Login.this, Home.class);
-            Login.this.startActivity(intent);
-            Login.this.finish();
+            initNavigation();
+         
         }else if(v ==registraionButton){
             navigateToRegistration();
         }
