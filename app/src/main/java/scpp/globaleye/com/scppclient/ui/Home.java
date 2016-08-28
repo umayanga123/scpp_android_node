@@ -7,6 +7,8 @@ import android.content.IntentFilter;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,7 +20,7 @@ import scpp.globaleye.com.scppclient.R;
 /**
  * Created by umayanga on 8/11/16.
  */
-public class Home extends Activity implements View.OnClickListener{
+public class Home extends AppCompatActivity implements View.OnClickListener {
 
     private final int SPLASH_DISPLAY_LENGTH = 2000;
     private long backPressedTime = 0;
@@ -32,6 +34,10 @@ public class Home extends Activity implements View.OnClickListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("");
         initUi();
 
     }
@@ -39,9 +45,9 @@ public class Home extends Activity implements View.OnClickListener{
 
     private void initUi() {
         profileimgButton = (ImageButton) findViewById(R.id.imageButtonProfile);
-        transctionimgButton=(ImageButton) findViewById(R.id.imageButtontransaction);
-        walletimgButton=(ImageButton) findViewById(R.id.imageButtonwallet);
-        serviceimgButton=(ImageButton) findViewById(R.id.imageButtonService);
+        transctionimgButton = (ImageButton) findViewById(R.id.imageButtontransaction);
+        walletimgButton = (ImageButton) findViewById(R.id.imageButtonwallet);
+        serviceimgButton = (ImageButton) findViewById(R.id.imageButtonService);
 
         profileimgButton.setOnClickListener(Home.this);
         transctionimgButton.setOnClickListener(Home.this);
@@ -60,10 +66,8 @@ public class Home extends Activity implements View.OnClickListener{
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        switch (item.getItemId())
-        {
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
             case R.id.logOut:
                 //your code here
                 Intent intent = new Intent(Home.this, Login.class);
@@ -81,28 +85,26 @@ public class Home extends Activity implements View.OnClickListener{
     public void onClick(View v) {
         if (v == profileimgButton) {
             navigateToPrfileUpdateView();
-        }else if(v ==transctionimgButton){
+        } else if (v == transctionimgButton) {
             navigateToTransaction();
-        }else if(v==walletimgButton){
+        } else if (v == walletimgButton) {
             navigateToWallte();
-        }else if(v==serviceimgButton){
+        } else if (v == serviceimgButton) {
             navgateToServicesListView();
         }
 
     }
 
 
-
-
     private void navigateToTransaction() {
-           new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    Intent intent = new Intent(Home.this, UserSelect.class);
-                    Home.this.startActivity(intent);
-                    //Home.this.finish();
-                }
-            }, SPLASH_DISPLAY_LENGTH);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent intent = new Intent(Home.this, UserSelect.class);
+                Home.this.startActivity(intent);
+                Home.this.finish();
+            }
+        }, SPLASH_DISPLAY_LENGTH);
     }
 
     private void navigateToPrfileUpdateView() {
@@ -111,7 +113,7 @@ public class Home extends Activity implements View.OnClickListener{
             public void run() {
                 Intent intent = new Intent(Home.this, Update_Profile.class);
                 Home.this.startActivity(intent);
-                //Home.this.finish();
+                Home.this.finish();
             }
         }, SPLASH_DISPLAY_LENGTH);
 
@@ -124,7 +126,7 @@ public class Home extends Activity implements View.OnClickListener{
             public void run() {
                 Intent intent = new Intent(Home.this, Services_View.class);
                 Home.this.startActivity(intent);
-                //Home.this.finish();
+                Home.this.finish();
             }
         }, SPLASH_DISPLAY_LENGTH);
     }
@@ -133,8 +135,8 @@ public class Home extends Activity implements View.OnClickListener{
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-               // Intent intent = new Intent(Home.this, Wallet.class);
-               // Home.this.startActivity(intent);
+               //  Intent intent = new Intent(Home.this, Wallet.class);
+               //  Home.this.startActivity(intent);
                // Home.this.finish();
             }
         }, SPLASH_DISPLAY_LENGTH);
@@ -153,4 +155,21 @@ public class Home extends Activity implements View.OnClickListener{
             super.onBackPressed();       // bye
         }
     }
+
+
+    public void logout(View v) {
+        Intent intent = new Intent(Home.this, Login.class);
+        Home.this.startActivity(intent);
+        Home.this.finish();
+    }
+
+
+    public void goHome(View v) {
+
+    }
+
+    public void goBack(View v) {
+
+    }
+
 }

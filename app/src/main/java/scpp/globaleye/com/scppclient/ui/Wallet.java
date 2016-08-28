@@ -142,10 +142,8 @@ public class Wallet extends AppCompatActivity implements View.OnClickListener {
         amountLabel = (TextView)findViewById(R.id.amountlb);
         amountEditText = (EditText) findViewById(R.id.amount_txt);
         sendButton = (Button) findViewById(R.id.send_bt);
-       // wlogoutButton = (Button) findViewById(R.id.wlogOutBtn);
-
         sendButton.setOnClickListener(Wallet.this);
-        //wlogoutButton.setOnClickListener(Wallet.this);
+
 
     }
 
@@ -165,14 +163,6 @@ public class Wallet extends AppCompatActivity implements View.OnClickListener {
                 }
             }
         }
-        //else if(v==wlogoutButton){
-            //
-          //  Intent intent = new Intent(Wallet.this, Login.class);
-          //  Wallet.this.startActivity(intent);
-          //  Wallet.this.finish();
-          //  Toast.makeText(this, "Log Out", Toast.LENGTH_LONG).show();
-       // }
-
     }
 
 
@@ -370,7 +360,7 @@ public class Wallet extends AppCompatActivity implements View.OnClickListener {
         //navigate
         Intent intent = new Intent(Wallet.this, UserSelect.class);
         Wallet.this.startActivity(intent);
-        //Wallet.this.finish();
+        Wallet.this.finish();
 
     }
 
@@ -422,8 +412,9 @@ public class Wallet extends AppCompatActivity implements View.OnClickListener {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        Intent intent = new Intent(Wallet.this, UserSelect.class);
+        Wallet.this.startActivity(intent);
         Wallet.this.finish();
-        this.overridePendingTransition(R.anim.stay_in, R.anim.bottom_out);
     }
 
     public void goHome(View v) {

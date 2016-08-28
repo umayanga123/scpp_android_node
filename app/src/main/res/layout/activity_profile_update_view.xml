@@ -1,123 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ScrollView"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_gravity="center_horizontal"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        tools:context="scpp.globaleye.com.scppclient.ui.Update_Profile">
 
-<include layout="@layout/activity_app_bar"/>
+            <include layout="@layout/activity_app_bar"
+                android:id="@+id/include"
+                />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Reg. User Name"
-            android:id="@+id/ruserName_lb"
-            android:layout_marginTop="42dp"
-            android:textSize="20dp"
-            android:textStyle="normal"
-            android:layout_alignParentTop="true"
-            android:layout_alignLeft="@+id/tfUpdateUserName"
-            android:layout_alignStart="@+id/tfUpdateUserName"
-            android:layout_alignRight="@+id/tfUpdateUserName"
-            android:layout_alignEnd="@+id/tfUpdateUserName"
-            android:textAlignment="center" />
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:ems="10"
-            android:id="@+id/tfUpdateUserName"
-            android:layout_below="@+id/ruserName_lb"
-            android:layout_centerHorizontal="true" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Reg. User Name"
+                android:id="@+id/ruserName_lb"
+                android:textSize="20dp"
+                android:textStyle="normal"
+                android:textAlignment="center"
+                android:layout_marginTop="110dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true" />
 
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Update"
-            android:id="@+id/buttonUpdateProfile"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="117dp"
-            android:layout_alignRight="@+id/ruserName_lb"
-            android:layout_alignEnd="@+id/ruserName_lb"
-            android:layout_alignLeft="@+id/cmtextView"
-            android:layout_alignStart="@+id/cmtextView" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="password"
-            android:id="@+id/passwordlable"
-            android:layout_alignRight="@+id/ruserName_lb"
-            android:layout_alignEnd="@+id/ruserName_lb"
-            android:layout_below="@+id/tfUpdateUserName"
-            android:layout_marginTop="30dp"
-            android:textColor="@android:color/background_dark"
-            android:textSize="20dp"
-            android:textAlignment="center"
-            android:layout_alignLeft="@+id/tfupdatpasswordtxt"
-            android:layout_alignStart="@+id/tfupdatpasswordtxt" />
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:ems="10"
-            android:id="@+id/tfupdatpasswordtxt"
-            android:layout_alignLeft="@+id/tfUpdateUserName"
-            android:layout_alignStart="@+id/tfUpdateUserName"
-            android:layout_below="@+id/passwordlable" />
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:ems="10"
-            android:id="@+id/tfconfirmPasswordeditText"
-            android:layout_marginBottom="47dp"
-            android:layout_above="@+id/buttonUpdateProfile"
-            android:layout_alignLeft="@+id/tfupdatpasswordtxt"
-            android:layout_alignStart="@+id/tfupdatpasswordtxt" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Comfirm password"
-            android:id="@+id/cmtextView"
-            android:textColor="@android:color/background_dark"
-            android:textSize="20dp"
-            android:textAlignment="center"
-            android:layout_above="@+id/tfconfirmPasswordeditText"
-            android:layout_alignRight="@+id/ruserName_lb"
-            android:layout_alignEnd="@+id/ruserName_lb"
-            android:layout_alignLeft="@+id/tfconfirmPasswordeditText"
-            android:layout_alignStart="@+id/tfconfirmPasswordeditText" />
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:ems="10"
+                android:layout_below="@+id/ruserName_lb"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/editText" />
 
 
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="password"
+                android:id="@+id/passwordlable"
+                android:textColor="@android:color/background_dark"
+                android:textSize="20dp"
+                android:textAlignment="center"
+                android:layout_below="@+id/editText"
+                android:layout_centerHorizontal="true" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:ems="10"
+                android:id="@+id/tfupdatpasswordtxt"
+                android:layout_below="@+id/passwordlable"
+                android:layout_centerHorizontal="true" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Comfirm Password"
+                android:id="@+id/cptextView"
+                android:textColor="@android:color/background_dark"
+                android:textSize="20dp"
+                android:textAlignment="center"
+                android:layout_below="@+id/tfupdatpasswordtxt"
+                android:layout_centerHorizontal="true" />
 
 
 
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:ems="10"
+                android:id="@+id/tfconfirmPasswordeditText"
+                android:layout_marginTop="20dp"
+                android:layout_below="@+id/cptextView"
+                android:layout_alignLeft="@+id/tfupdatpasswordtxt"
+                android:layout_alignStart="@+id/tfupdatpasswordtxt"
+                android:layout_centerHorizontal="true"/>
 
 
-
-
-
-
-
-
-
-
-
-
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Update"
+                android:id="@+id/buttonUpdateProfile"
+                android:layout_below="@+id/tfconfirmPasswordeditText"
+                android:layout_alignLeft="@+id/ruserName_lb"
+                android:layout_alignStart="@+id/ruserName_lb"
+                android:layout_centerHorizontal="true"/>
 
 
     </RelativeLayout>
-</LinearLayout>
+</ScrollView>

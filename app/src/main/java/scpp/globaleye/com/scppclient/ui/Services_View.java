@@ -44,8 +44,9 @@ public class Services_View extends AppCompatActivity implements View.OnClickList
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        Intent intent = new Intent(Services_View.this, Home.class);
+        Services_View.this.startActivity(intent);
         Services_View.this.finish();
-        this.overridePendingTransition(R.anim.stay_in, R.anim.bottom_out);
     }
 
     @Override

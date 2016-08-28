@@ -132,41 +132,27 @@ public class UserSelect extends AppCompatActivity implements View.OnClickListene
      */
 
     private void initUi() {
-
-
         usernameLabel = (TextView)findViewById(R.id.share_lb);
         usernameEditText = (EditText) findViewById(R.id.share_txt);
         shareButton = (Button) findViewById(R.id.shareBtn);
-        //logOutButton = (Button) findViewById(R.id.logOutBtn);
-
-        //logOutButton.setOnClickListener(UserSelect.this);
         shareButton.setOnClickListener(UserSelect.this);
 
     }
 
     @Override
     public void onClick(View v) {
-        //if (v == logOutButton) {
-
-           // Intent intent = new Intent(UserSelect.this, Login.class);
-          //  UserSelect.this.startActivity(intent);
-            //UserSelect.this.finish();
-           // Toast.makeText(this, "Log Out", Toast.LENGTH_LONG).show();
-
-
-       // }
-    if(v== shareButton){
-            if (usernameEditText.getText().toString().trim().isEmpty()) {
-                Toast.makeText(UserSelect.this, "Empty username", Toast.LENGTH_LONG).show();
-            } else {
-                if (NetworkUtil.isAvailableNetwork(UserSelect.this)) {
-                    ActivityUtils.showProgressDialog(UserSelect.this, "Please wait...");
-                    senzCountDownTimer.start();
+        if(v== shareButton){
+                if (usernameEditText.getText().toString().trim().isEmpty()) {
+                    Toast.makeText(UserSelect.this, "Empty username", Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(UserSelect.this, "No network connection available", Toast.LENGTH_LONG).show();
+                    if (NetworkUtil.isAvailableNetwork(UserSelect.this)) {
+                        ActivityUtils.showProgressDialog(UserSelect.this, "Please wait...");
+                        senzCountDownTimer.start();
+                    } else {
+                        Toast.makeText(UserSelect.this, "No network connection available", Toast.LENGTH_LONG).show();
+                    }
                 }
             }
-        }
     }
 
 
@@ -293,7 +279,7 @@ public class UserSelect extends AppCompatActivity implements View.OnClickListene
 
         Toast.makeText(UserSelect.this, "Successfully shared Request", Toast.LENGTH_LONG).show();
         UserSelect.this.startActivity(intent);
-        //UserSelect.this.finish();
+        UserSelect.this.finish();
 
     }
 
@@ -371,9 +357,10 @@ public class UserSelect extends AppCompatActivity implements View.OnClickListene
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        Intent intent = new Intent(UserSelect.this, Home.class);
+        UserSelect.this.startActivity(intent);
         UserSelect.this.finish();
-        this.overridePendingTransition(R.anim.stay_in, R.anim.bottom_out);
-    }
+     }
 
     public void goHome(View v) {
         Intent intent = new Intent(UserSelect.this, Home.class);

@@ -39,9 +39,6 @@
             android:onClick="logout"/>
 
 
-
-
-
     </android.support.v7.widget.Toolbar>
 
 
