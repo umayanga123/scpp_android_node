@@ -16,7 +16,7 @@
           "client_id": "178828080387-oi3f36u2cgvr11doc1nafo62c7l35id3.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.google.samples.quickstart.signin",
+            "package_name": "scpp.globaleye.com.scppclient",
             "certificate_hash": "20E06401DEF4E23788DFC2B145FDA99E721ABE6B"
           }
         },
@@ -27,7 +27,7 @@
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBJUuUMs8ZlMvIjtzlyxeM_DlfcWOq03fs"
+          "current_key": "AIzaSyBrXqGSyV7vDARYxIDa8GYFnIKW9bjRYyk"
         }
       ],
       "services": {
@@ -46,3 +46,7 @@
   ],
   "configuration_version": "1"
 }
+
+
+
+

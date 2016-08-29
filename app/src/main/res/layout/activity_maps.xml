@@ -5,14 +5,13 @@
     android:layout_height="match_parent"
     tools:context=".ui.MapsActivity">
 
-    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:map="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/map"
+    <fragment
         android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:id="@+id/map"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/layout1" />
+        android:layout_above="@+id/layout1"
+        tools:layout="@layout/activity_maps" />
 
     <RelativeLayout
         android:orientation="vertical"
