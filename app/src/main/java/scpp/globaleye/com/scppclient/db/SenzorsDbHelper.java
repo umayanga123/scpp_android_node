@@ -18,25 +18,18 @@ public class SenzorsDbHelper  extends SQLiteOpenHelper {
 
     // If you change the database schema, you must increment the database version
     private static final int DATABASE_VERSION = 20;
-    private static final String DATABASE_NAME = "scppClient.db";
+    private static final String DATABASE_NAME = "scppAndroidClient.db";
 
     // data types, keywords and queries
     private static final String TEXT_TYPE = " TEXT";
-    private static final String SQL_CREATE_SENZ =
-            "CREATE TABLE " + SenzorsDbContract.Senz.TABLE_NAME + " (" +
-                    SenzorsDbContract.Senz._ID + " INTEGER PRIMARY KEY AUTOINCREMENT" + ", " +
-                    SenzorsDbContract.Senz.COLUMN_NAME_NAME + TEXT_TYPE + " NOT NULL" + ", " +
-                    SenzorsDbContract.Senz.COLUMN_NAME_VALUE + TEXT_TYPE + ", " +
-                    SenzorsDbContract.Senz.COLUMN_NAME_USER + TEXT_TYPE + " NOT NULL" + ", " +
-                    "UNIQUE" + "(" + SenzorsDbContract.Senz.COLUMN_NAME_NAME + "," + SenzorsDbContract.Senz.COLUMN_NAME_USER + ")" +
-                    ")";
 
-    private static final String SQL_CREATE_USER =
-            "CREATE TABLE " + SenzorsDbContract.User.TABLE_NAME + " (" +
-                    SenzorsDbContract.User._ID + " INTEGER PRIMARY KEY AUTOINCREMENT" + "," +
-                    SenzorsDbContract.User.COLUMN_NAME_USERNAME + TEXT_TYPE + "UNIQUE NOT NULL" + "," +
-                    SenzorsDbContract.User.COLUMN_NAME_NAME + TEXT_TYPE +","+
-                    SenzorsDbContract.User.COLOMN_NAME_IMAGE + TEXT_TYPE +
+
+    private static final String SQL_CREATE_MINING_DETAIL =
+            "CREATE TABLE " + SenzorsDbContract.WalletCoins.TABLE_NAME + " (" +
+                    SenzorsDbContract.WalletCoins._ID + " INTEGER PRIMARY KEY AUTOINCREMENT" + "," +
+                    SenzorsDbContract.WalletCoins.COLUMN_NAME_COIN + TEXT_TYPE + " UNIQUE NOT NULL" + "," +
+                    SenzorsDbContract.WalletCoins.COLUMN_NAME_TIME + TEXT_TYPE +","+
+                    SenzorsDbContract.WalletCoins.COLUMN_NAME_S_ID + TEXT_TYPE +
                     " )";
 
     /**
@@ -64,11 +57,8 @@ public class SenzorsDbHelper  extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
 
         Log.d(TAG, "OnCreate: creating db helper, db version - " + DATABASE_VERSION);
-        Log.d(TAG, SQL_CREATE_SENZ);
-        Log.d(TAG, SQL_CREATE_USER);
-
-        db.execSQL(SQL_CREATE_SENZ);
-        db.execSQL(SQL_CREATE_USER);
+        Log.d(TAG, SQL_CREATE_MINING_DETAIL);
+        db.execSQL(SQL_CREATE_MINING_DETAIL);
     }
 
     @Override

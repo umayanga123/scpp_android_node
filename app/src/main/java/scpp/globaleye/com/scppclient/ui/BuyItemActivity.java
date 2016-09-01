@@ -30,6 +30,7 @@ import java.util.HashMap;
 
 import scpp.globaleye.com.scppclient.ISenzService;
 import scpp.globaleye.com.scppclient.R;
+import scpp.globaleye.com.scppclient.db.SenzorsDbSource;
 import scpp.globaleye.com.scppclient.utils.ActivityUtils;
 import scpp.globaleye.com.scppclient.utils.NetworkUtil;
 import scpp.globaleye.com.senzc.enums.enums.SenzTypeEnum;
@@ -148,8 +149,10 @@ public class BuyItemActivity extends AppCompatActivity implements View.OnClickLi
     public void onClick(View v) {
         if (v == btbuyItem) {
             if (NetworkUtil.isAvailableNetwork(BuyItemActivity.this)) {
+                btbuyItem.setEnabled(false);
                 ActivityUtils.showProgressDialog(BuyItemActivity.this, "Please wait...");
                 senzCountDownTimer.start();
+
             } else {
                 Toast.makeText(BuyItemActivity.this, "No network connection available", Toast.LENGTH_LONG).show();
             }
@@ -204,7 +207,7 @@ public class BuyItemActivity extends AppCompatActivity implements View.OnClickLi
 
     /**
      *
-     * SHARE #S_ID 3 #f cc #S_PARA 3km #COIN
+     * SHARE #S_ID 2 #f cc #S_PARA 3km #COIN
      *
      *
      */
@@ -321,18 +324,24 @@ public class BuyItemActivity extends AppCompatActivity implements View.OnClickLi
     private void sendResponse(ISenzService senzService) {
         Log.d(TAG, "send response");
         // create senz attributes
-        HashMap<String, String> senzAttributes = new HashMap<>();
-        senzAttributes.put("S_ID","S_ID");
-        senzAttributes.put("f","f");
-        senzAttributes.put("S_PARA","S_PARA");
-        senzAttributes.put("COIN","COIN");
-        String id = "_ID";
-        String signature = "";
-        SenzTypeEnum senzType = SenzTypeEnum.UNSHARE;
-        User sender = new User("", userName);
-        User receiver = new User("", "node1");
-        //send quarry
-        Senz senz = new Senz(id, signature, senzType,sender , receiver, senzAttributes);
+        try {
+            HashMap<String, String> senzAttributes = new HashMap<>();
+            senzAttributes.put("S_ID","S_ID");
+            senzAttributes.put("f","f");
+            senzAttributes.put("S_PARA","S_PARA");
+            senzAttributes.put("COIN","COIN");
+            String id = "_ID";
+            String signature = "";
+            SenzTypeEnum senzType = SenzTypeEnum.UNSHARE;
+            User sender = new User("", userName);
+            User receiver = new User("", "node1");
+            //send quarry
+            Senz senz = new Senz(id, signature, senzType,sender , receiver, senzAttributes);
+
+            senzService.send(senz);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -341,9 +350,17 @@ public class BuyItemActivity extends AppCompatActivity implements View.OnClickLi
      */
     private void onPostShare(Senz senz) {
 
+
+
         isResponseReceived = false;
         String cv = senz.getAttributes().get("COIN");
         Toast.makeText(BuyItemActivity.this, "Recived New Coin " + cv, Toast.LENGTH_LONG).show();
+
+        SenzorsDbSource dbSource = new SenzorsDbSource(BuyItemActivity.this);
+        String dbState= dbSource.addCoin(cv,"2");
+        Toast.makeText(BuyItemActivity.this, dbState, Toast.LENGTH_LONG).show();
+        btbuyItem.setEnabled(true);
+        //Log.d("DB_State", dbState);
 
 
 
