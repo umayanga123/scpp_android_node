@@ -8,24 +8,25 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
+
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.View;
+
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
+
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 
 
 import scpp.globaleye.com.scppclient.R;
 
-public class MapsActivity extends FragmentActivity implements LocationListener {
+public class MapsActivity extends FragmentActivity implements LocationListener, OnMapReadyCallback {
 
     GoogleMap googleMap;
     double start_lat,stop_lat,start_lng,stop_lng,lat,lng;
@@ -37,6 +38,8 @@ public class MapsActivity extends FragmentActivity implements LocationListener {
     TextView tv;
     float[] distance = new float[1];
 
+    private String userName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,9 +48,13 @@ public class MapsActivity extends FragmentActivity implements LocationListener {
        //System.out.println("on createteeeeeeeeeeeeeee");
 
         SupportMapFragment fm = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        fm.getMapAsync(this);
 
-        googleMap = fm.getMap();
-        getLocation();
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            userName= extras.getString("USER_NAME");
+        }
+
 
         //////button
         /*start_btn = (Button) findViewById(R.id.button1);
@@ -168,8 +175,21 @@ public class MapsActivity extends FragmentActivity implements LocationListener {
     @Override
     public void onBackPressed() {
           super.onBackPressed();
-            Intent intent = new Intent(MapsActivity.this, Services_View.class);
+            Intent intent = new Intent(MapsActivity.this, ServicesView.class);
+            intent.putExtra("USER_NAME", userName);
             MapsActivity.this.startActivity(intent);
             MapsActivity.this.finish();
         }
+
+    @Override
+    public void onMapReady(GoogleMap map) {
+        map.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+        map.setTrafficEnabled(true);
+        map.setIndoorEnabled(true);
+        map.setBuildingsEnabled(true);
+        map.getUiSettings().setZoomControlsEnabled(true);
+        googleMap = map;
+        getLocation();
+    }
+
 }

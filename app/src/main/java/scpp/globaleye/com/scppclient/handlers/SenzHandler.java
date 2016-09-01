@@ -40,11 +40,11 @@ public class SenzHandler {
                 break;
             case SHARE:
                 Log.d(TAG, "SHARE received");
-                broadcastSenz(senz, new Intent("scpp.globaleye.com.scppclient.NEW_SENZ"));
+                broadcastSenz(senz, new Intent("scpp.globaleye.com.scppclient.SHARE_SENZ"));
                 break;
             case GET:
                 Log.d(TAG, "GET received");
-                broadcastSenz(senz, new Intent("scpp.globaleye.com.scppclient.NEW_SENZ"));
+                broadcastSenz(senz, new Intent("scpp.globaleye.com.scppclient.GET_SENZ"));
                 break;
             case DATA:
                 Log.d(TAG, "DATA received");
@@ -52,14 +52,14 @@ public class SenzHandler {
                 break;
             case PUT:
                 Log.d(TAG, "PUT received");
-                broadcastSenz(senz, new Intent("scpp.globaleye.com.scppclient.NEW_SENZ"));
+                broadcastSenz(senz, new Intent("scpp.globaleye.com.scppclient.PUT_SENZ"));
                 break;
         }
     }
 
     private void broadcastSenz(Senz senz, Intent intent) {
         intent.putExtra("SENZ", senz);
-        Log.d(TAG,"brodcast");
+        Log.d(TAG,"brodcast" + senz.getAttributes());
         context.sendBroadcast(intent);
     }
 

@@ -9,4 +9,19 @@
     <string name="font_awesome_area_chart_icon">&#xf1fe;</string>
     <string name="font_awesome_home_icon">&#xf015;</string>
     <string name="font_awesome_mobile_phone_icon">&#xf10b;</string>
+    <string name="wallet_info_title">Wallte Details</string>
+    <string name="coin_Value">0.0 $</string>
+    <string name="coin_rate_lable">Coin Rate :</string>
+    <string name="title_activity_buy_item">BuyItemActivity</string>
+
+    <string name="shop_prompt">Choose a Shop</string>
+    <string-array name="shop_name_spinner">
+        <item>Cargills</item>
+        <item>Kills</item>
+        <item>Fassion Bug</item>
+        <item>NoLimit</item>
+        <item>UKG</item>
+        <item>MacDonalles</item>
+    </string-array>
+
 </resources>

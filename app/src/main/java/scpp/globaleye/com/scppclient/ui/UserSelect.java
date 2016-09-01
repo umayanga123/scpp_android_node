@@ -108,7 +108,7 @@ public class UserSelect extends AppCompatActivity implements View.OnClickListene
         bindService(intent, senzServiceConnection, Context.BIND_AUTO_CREATE);
         isServiceBound=true;
         registerReceiver(senzMessageReceiver, new IntentFilter("scpp.globaleye.com.scppclient.DATA_SENZ"));
-        registerReceiver(senzMessageReceiver, new IntentFilter("scpp.globaleye.com.scppclient.NEW_SENZ"));
+        registerReceiver(senzMessageReceiver, new IntentFilter("scpp.globaleye.com.scppclient.SHARE_SENZ"));
 
     }
 
@@ -354,6 +354,8 @@ public class UserSelect extends AppCompatActivity implements View.OnClickListene
 
         dialog.show();
     }
+
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();

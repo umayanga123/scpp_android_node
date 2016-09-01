@@ -18,7 +18,7 @@ import scpp.globaleye.com.scppclient.utils.NetworkUtil;
 import scpp.globaleye.com.scppclient.utils.PreferenceUtils;
 import scpp.globaleye.com.senzc.enums.pojos.User;
 
-public class Login extends AppCompatActivity   implements View.OnClickListener{
+public class Login extends AppCompatActivity implements View.OnClickListener{
 
     private final int SPLASH_DISPLAY_LENGTH = 2000;
     private static final String TAG = Login.class.getName();
@@ -45,10 +45,10 @@ public class Login extends AppCompatActivity   implements View.OnClickListener{
      */
     public void onClick(View v) {
         if (v == loginButton) {
-            //initNavigation();
-            Intent intent = new Intent(Login.this, Home.class);
-            Login.this.startActivity(intent);
-            Login.this.finish();
+            initNavigation();
+            //Intent intent = new Intent(Login.this, Home.class);
+            ///Login.this.startActivity(intent);
+            //Login.this.finish();
         }else if(v ==registraionButton){
             navigateToRegistration();
         }
@@ -140,6 +140,7 @@ public class Login extends AppCompatActivity   implements View.OnClickListener{
             @Override
             public void run() {
                 Intent intent = new Intent(Login.this, Home.class);
+                intent.putExtra("USER_NAME", username);
                 Login.this.startActivity(intent);
                 Login.this.finish();
             }

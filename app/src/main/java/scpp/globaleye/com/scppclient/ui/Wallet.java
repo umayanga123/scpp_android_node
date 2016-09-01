@@ -112,7 +112,7 @@ public class Wallet extends AppCompatActivity implements View.OnClickListener {
         bindService(intent, senzServiceConnection, Context.BIND_AUTO_CREATE);
         isServiceBound=true;
         registerReceiver(senzMessageReceiver, new IntentFilter("scpp.globaleye.com.scppclient.DATA_SENZ"));
-        registerReceiver(senzMessageReceiver, new IntentFilter("scpp.globaleye.com.scppclient.NEW_SENZ"));
+        registerReceiver(senzMessageReceiver, new IntentFilter("scpp.globaleye.com.scppclient.SHARE_SENZ"));
 
     }
 

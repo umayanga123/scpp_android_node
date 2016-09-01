@@ -1,5 +1,7 @@
 package scpp.globaleye.com.scppclient.utils;
 
+import android.util.Log;
+
 import java.util.HashMap;
 
 import scpp.globaleye.com.senzc.enums.enums.SenzTypeEnum;
@@ -12,6 +14,8 @@ import scpp.globaleye.com.senzc.enums.pojos.User;
 public class SenzParser {
 
     public static Senz parse(String senzMessage) {
+
+        Log.d("Parser Masages" , senzMessage);
         // init sez with
         Senz senz = new Senz();
         senz.setAttributes(new HashMap<String, String>());
@@ -48,7 +52,10 @@ public class SenzParser {
                         // #lat 3.2343 #lon 4.3434
                         senz.getAttributes().put(key, tokens[i + 1]);
                         i++;
-                    } else {
+                    }else if(senz.getSenzType() == SenzTypeEnum.PUT){
+                        senz.getAttributes().put(key, tokens[i + 1]);
+                        i++;
+                    }else {
                         // #lat #lon
                         senz.getAttributes().put(key, "");
                     }
@@ -69,15 +76,18 @@ public class SenzParser {
     public static String getSenzPayload(Senz senz) {
         // add senz type to payload
         String payload = senz.getSenzType().toString();
-
+        //Log.e("PAYLOAD", "payload" + senz.getAttributes().keySet()+"");
         // add attributes to payload
         for (String key : senz.getAttributes().keySet()) {
+            //Log.e("PAYLOAD", "key" + key.equalsIgnoreCase(senz.getAttributes().get(key)));
             if (key.equalsIgnoreCase(senz.getAttributes().get(key))) {
                 // GET or SHARE query
                 // param and value equal since no value to store (SHARE #lat #lon)
                 payload = payload.concat(" ").concat("#").concat(senz.getAttributes().get(key));
+                //Log.e("PAYLOAD", "GETor SHARE" + senz.getAttributes().keySet()+"");
             } else {
                 // DATA query
+                //Log.e("PAYLOAD", "DAAT" + senz.getAttributes().keySet()+"");
                 payload = payload.concat(" ").concat("#").concat(key).concat(" ").concat(senz.getAttributes().get(key));
             }
         }
@@ -97,7 +107,7 @@ public class SenzParser {
         return senzMessage.replaceAll("\n", "").replaceAll("\r", "");
     }
 
-  /*  public static void main(String args[]) {
+   /* public static void main(String args[]) {
         String senzMessage1 = "DATA" + " " +
                 "#pubkey" + " " + "keyyyyy" + " " +
                 "#time" + " " + "timestamp" + " " +
@@ -113,8 +123,15 @@ public class SenzParser {
                 "^0775432015" + " " +
                 "signatureeee";
 
-        //parse(senzMessage1);
-        //parse(senzMessage2);
+        String senzMessage3 = "PUT" + " " +
+                "#COIN_VALUE" + " " +
+                "#time" + " " + "timestamp" + " " +
+                "@senz" + " " +
+                "^0775432015" + " " +
+                "signatureeee";
+
+        parse(senzMessage1);
+        parse(senzMessage2);
 
 //        Senz senz = new Senz();
 //        senz.setSender("03452");
@@ -126,14 +143,15 @@ public class SenzParser {
 //        senzAttributes.put("time", ((Long) (System.currentTimeMillis() / 1000)).toString());
 //        senz.setAttributes(senzAttributes);
 
-        String senzMessage3 = "DATA " +
+        String senzMessage4 = "DATA " +
                 "#msg UserCreated " +
                 "#pubkey sd23453451234sfsdfd==  " +
                 "#time 1441806897.71 " +
                 "^mysensors " +
                 "v50I88VzgvBvubCjGitTMO9";
 
-        parse(senzMessage3);
+        Senz parse = parse(senzMessage1);
+//        System.out.print(parse.toString());
 
         Senz senz = new Senz();
         senz.setSender(new User("", "222"));
@@ -151,5 +169,5 @@ public class SenzParser {
         String senzMessage = getSenzMessage(senzPaylod, signature);
         System.out.println(senzPaylod);
         System.out.println(senzMessage);
-    }*/
+    } */
 }

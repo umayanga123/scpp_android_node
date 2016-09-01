@@ -1,10 +1,6 @@
 package scpp.globaleye.com.scppclient.ui;
 
-import android.app.ActionBar;
-import android.app.Activity;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -29,15 +25,20 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
     private ImageButton walletimgButton;
     private ImageButton serviceimgButton;
 
+    private String userName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            userName= extras.getString("USER_NAME");
+        }
         initUi();
 
     }
@@ -111,7 +112,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(Home.this, Update_Profile.class);
+                Intent intent = new Intent(Home.this, UpdateProfile.class);
                 Home.this.startActivity(intent);
                 Home.this.finish();
             }
@@ -124,7 +125,8 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(Home.this, Services_View.class);
+                Intent intent = new Intent(Home.this, ServicesView.class);
+                intent.putExtra("USER_NAME", userName);
                 Home.this.startActivity(intent);
                 Home.this.finish();
             }
@@ -135,26 +137,14 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-               //  Intent intent = new Intent(Home.this, Wallet.class);
-               //  Home.this.startActivity(intent);
-               // Home.this.finish();
+                Intent intent = new Intent(Home.this,WalletInfo.class);
+                intent.putExtra("USER_NAME", userName);
+                Home.this.startActivity(intent);
+                Home.this.finish();
             }
         }, SPLASH_DISPLAY_LENGTH);
     }
 
-    @Override
-    public void onBackPressed() {        // to prevent irritating accidental logouts
-        long t = System.currentTimeMillis();
-        if (t - backPressedTime > 2000) {    // 2 secs
-            backPressedTime = t;
-            Toast.makeText(this, "Press back again to logout",
-                    Toast.LENGTH_SHORT).show();
-        } else {    // this guy is serious
-            // clean up
-            Home.this.finish();
-            super.onBackPressed();       // bye
-        }
-    }
 
 
     public void logout(View v) {
@@ -171,5 +161,21 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
     public void goBack(View v) {
 
     }
+
+
+    @Override
+    public void onBackPressed() {        // to prevent irritating accidental logouts
+        long t = System.currentTimeMillis();
+        if (t - backPressedTime > 2000) {    // 2 secs
+            backPressedTime = t;
+            Toast.makeText(this, "Press back again to logout",
+                    Toast.LENGTH_SHORT).show();
+        } else {    // this guy is serious
+            // clean up
+            Home.this.finish();
+            super.onBackPressed();       // bye
+        }
+    }
+
 
 }

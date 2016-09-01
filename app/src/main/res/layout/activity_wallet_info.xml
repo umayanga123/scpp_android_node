@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="scpp.globaleye.com.scppclient.ui.WalletInfo">
+
+    <include layout="@layout/activity_app_bar"
+        android:id="@+id/include2"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/wallet_info_title"
+        android:id="@+id/tvTitle"
+        android:layout_marginTop="94dp"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:typeface="sans"
+        android:textColor="#f45e5e"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/coin_rate_lable"
+        android:id="@+id/textView2"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/tvTitle"
+        android:layout_alignLeft="@+id/tvTitle"
+        android:layout_alignStart="@+id/tvTitle"
+        android:textColor="#090909" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/coin_Value"
+        android:id="@+id/tvCoinRate"
+        android:layout_alignTop="@+id/textView2"
+        android:layout_alignRight="@+id/tvTitle"
+        android:layout_alignEnd="@+id/tvTitle"
+        android:textColor="#090909" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Refresh"
+        android:id="@+id/btRefresh"
+        android:layout_marginTop="37dp"
+        android:layout_below="@+id/textView2"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>
+
