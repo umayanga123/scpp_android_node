@@ -10,4 +10,5 @@ public enum SenzTypeEnum{
     SHARE,
     DATA,
     PUT,
+    UNSHARE,
 }

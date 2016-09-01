@@ -54,6 +54,10 @@ public class SenzHandler {
                 Log.d(TAG, "PUT received");
                 broadcastSenz(senz, new Intent("scpp.globaleye.com.scppclient.PUT_SENZ"));
                 break;
+            case UNSHARE:
+                Log.d(TAG, "UNSHARE received");
+                broadcastSenz(senz, new Intent("scpp.globaleye.com.scppclient.UNSHARE_SENZ"));
+                break;
         }
     }
 

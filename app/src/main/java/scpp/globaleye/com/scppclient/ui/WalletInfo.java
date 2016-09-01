@@ -296,41 +296,10 @@ public class WalletInfo extends AppCompatActivity implements View.OnClickListene
                     displayInformationMessageDialog("Checking Coin Value  is Fail", message);
                 }
             }
-        } else {
-
-            /*Log.d("Tag", senz.getSender() + " : " + senz.getSenzType().toString());
-            if (senz != null && senz.getSenzType() == SenzTypeEnum.SHARE) {
-                NotificationUtils.showNotification(this, this.getString(R.string.new_senz), "SHARE Message Recived" + senz.getSender().getUsername());
-                String sender = senz.getSender().getUsername();
-                User sen = new User("", sender);
-                sendResponse(senzService, sen, true);
-            }*/
-
         }
     }
 
-    /*private void sendResponse(ISenzService senzService, User receiver, boolean isDone) {
-        Log.d(TAG, "send response");
-        try {
-            // create senz attributes
-            HashMap<String, String> senzAttributes = new HashMap<>();
-            senzAttributes.put("time", ((Long) (System.currentTimeMillis() / 1000)).toString());
-            if (isDone){
-                senzAttributes.put("msg", "ShareDone");
-            }else{
-                senzAttributes.put("msg", "ShareFail");
-            }
 
-            String id = "_ID";
-            String signature = "";
-            SenzTypeEnum senzType = SenzTypeEnum.DATA;
-            Senz senz = new Senz(id, signature, senzType, null, receiver, senzAttributes);
-            senzService.send(senz);
-
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-    }*/
     /**
      * Clear input fields and reset activity components
      */
