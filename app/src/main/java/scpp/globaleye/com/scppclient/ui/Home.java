@@ -27,6 +27,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
 
     private String userName;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,6 +114,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
             @Override
             public void run() {
                 Intent intent = new Intent(Home.this, UpdateProfile.class);
+                intent.putExtra("USER_NAME", userName);
                 Home.this.startActivity(intent);
                 Home.this.finish();
             }

@@ -1,10 +1,9 @@
 package scpp.globaleye.com.scppclient.ui;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 
 import scpp.globaleye.com.scppclient.R;
-import android.app.Activity;
+
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -16,16 +15,13 @@ import android.graphics.Typeface;
 import android.os.CountDownTimer;
 import android.os.IBinder;
 import android.os.RemoteException;
-import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,9 +30,7 @@ import java.security.NoSuchProviderException;
 import java.util.HashMap;
 
 import scpp.globaleye.com.scppclient.ISenzService;
-import scpp.globaleye.com.scppclient.R;
 import scpp.globaleye.com.scppclient.exceptions.InvalidInputFieldsException;
-import scpp.globaleye.com.scppclient.services.RemoteSenzService;
 import scpp.globaleye.com.scppclient.utils.ActivityUtils;
 import scpp.globaleye.com.scppclient.utils.NetworkUtil;
 import scpp.globaleye.com.scppclient.utils.PreferenceUtils;
@@ -94,14 +88,8 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
 
-        //Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
-        //getSupportActionBar().setTitle(null);
-
         typeface = Typeface.createFromAsset(getAssets(), "fonts/vegur_2.otf");
-       // Typeface fontAwesomeFont = Typeface.createFromAsset(getAssets(), "fontawesome-webfont.ttf");
-       // ImageButton fontAwesomeHomeIcon = (ImageButton) findViewById(R.id.font_awesome_home_icon);
-       // fontAwesomeHomeIcon.setTypeface(fontAwesomeFont);
+
         senzCountDownTimer = new SenzCountDownTimer(20000, 5000); //16000
         initUi();
         registerReceiver(senzMessageReceiver, new IntentFilter("scpp.globaleye.com.scppclient.DATA_SENZ"));
@@ -129,8 +117,8 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
 
     private void initUi() {
         editTextUsername = (EditText) findViewById(R.id.tfUpdateUserName);
-        editTextPasword = (EditText)findViewById(R.id.tfupdatpasswordtxt);
-        editTextConfrimPasword =(EditText)findViewById(R.id.tfconfirmPasswordeditText);
+        editTextPasword = (EditText)findViewById(R.id.etUpdatpasswordtxt);
+        editTextConfrimPasword =(EditText)findViewById(R.id.etUPConfirmPasswordeditText);
         signUpButton = (Button) findViewById(R.id.rbutton);
         signUpButton.setOnClickListener(Registration.this);
 

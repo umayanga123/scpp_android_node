@@ -30,6 +30,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
 
     private String username;
     private String password;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +86,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
             password =passwordTextPasword.getText().toString().trim();
 
 
-            User user = PreferenceUtils.getUser(this,username,password);
+            user = PreferenceUtils.getUser(this, username, password);
 
             if(user.getPassword().equals(password)){
                 navigateToHome();

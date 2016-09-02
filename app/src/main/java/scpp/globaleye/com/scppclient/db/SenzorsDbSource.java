@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 
@@ -67,7 +69,10 @@ public class SenzorsDbSource {
         } else {
             // no matching user
             // so create user
-            String dateFormat = DateFormat.getDateTimeInstance().format(new Date((Long) (System.currentTimeMillis() / 1000)));
+            Calendar c = Calendar.getInstance();
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String dateFormat = df.format(c.getTime());
+            //String dateFormat = DateFormat.getDateTimeInstance().format(new Date((Long) (System.currentTimeMillis() / 1000)));
 
             ContentValues values = new ContentValues();
             values.put(SenzorsDbContract.WalletCoins.COLUMN_NAME_COIN, coin);

@@ -11,11 +11,9 @@
         android:id="@+id/tvCoinHash"
         android:textColor="#1da105"
         android:textSize="20dp"
-        android:layout_marginRight="62dp"
-        android:layout_marginEnd="62dp"
         android:layout_below="@+id/imageView3"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignRight="@+id/imageView3"
+        android:layout_alignEnd="@+id/imageView3" />
 
     <ImageView
         android:layout_width="60dp"
@@ -23,8 +21,10 @@
         android:id="@+id/imageView3"
         android:src="@drawable/scpp_global"
         android:layout_alignParentTop="true"
-        android:layout_alignRight="@+id/tvCoinHash"
-        android:layout_alignEnd="@+id/tvCoinHash" />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="24dp"
+        android:layout_marginEnd="24dp" />
 
     <TextView
         android:layout_width="wrap_content"

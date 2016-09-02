@@ -36,7 +36,7 @@
                 android:ems="10"
                 android:layout_below="@+id/ruserName_lb"
                 android:layout_centerHorizontal="true"
-                android:id="@+id/editText" />
+                android:id="@+id/etUpdateUserName" />
 
 
 
@@ -49,7 +49,7 @@
                 android:textColor="@android:color/background_dark"
                 android:textSize="20dp"
                 android:textAlignment="center"
-                android:layout_below="@+id/editText"
+                android:layout_below="@+id/etUpdateUserName"
                 android:layout_centerHorizontal="true" />
 
             <EditText
@@ -57,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
                 android:ems="10"
-                android:id="@+id/tfupdatpasswordtxt"
+                android:id="@+id/etUpdatpasswordtxt"
                 android:layout_below="@+id/passwordlable"
                 android:layout_centerHorizontal="true" />
 
@@ -71,7 +71,7 @@
                 android:textColor="@android:color/background_dark"
                 android:textSize="20dp"
                 android:textAlignment="center"
-                android:layout_below="@+id/tfupdatpasswordtxt"
+                android:layout_below="@+id/etUpdatpasswordtxt"
                 android:layout_centerHorizontal="true" />
 
 
@@ -81,11 +81,11 @@
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
                 android:ems="10"
-                android:id="@+id/tfconfirmPasswordeditText"
+                android:id="@+id/etUPConfirmPasswordeditText"
                 android:layout_marginTop="20dp"
                 android:layout_below="@+id/cptextView"
-                android:layout_alignLeft="@+id/tfupdatpasswordtxt"
-                android:layout_alignStart="@+id/tfupdatpasswordtxt"
+                android:layout_alignLeft="@+id/etUpdatpasswordtxt"
+                android:layout_alignStart="@+id/etUpdatpasswordtxt"
                 android:layout_centerHorizontal="true"/>
 
 
@@ -93,8 +93,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Update"
-                android:id="@+id/buttonUpdateProfile"
-                android:layout_below="@+id/tfconfirmPasswordeditText"
+                android:id="@+id/btUpdateProfile"
+                android:layout_below="@+id/etUPConfirmPasswordeditText"
                 android:layout_alignLeft="@+id/ruserName_lb"
                 android:layout_alignStart="@+id/ruserName_lb"
                 android:layout_centerHorizontal="true"/>

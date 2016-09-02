@@ -53,29 +53,6 @@ public class PreferenceUtils {
     }
 
 
-    /**
-     * Get user details from shared preference
-     *
-     * @param context application context
-     * @return user object
-     */
-    public static User getUser(Context context ,String userName , String Password) throws NoUserException {
-
-        SharedPreferences preferences = context.getSharedPreferences(context.getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-        String userlist= preferences.getString("User","");
-
-        if (!userName.equals(null)){
-            Type collectionType = new TypeToken<List<User>>(){}.getType();
-            userDetail = new Gson().fromJson(userlist, collectionType);
-            for (User user : userDetail) {
-                   if(user.getUsername().equals(userName) && user.getPassword().equals(Password)){
-                       setUser =user;
-                       return user;
-                   }
-            }
-        }
-        throw new NoUserException();
-    }
 
     /**
      * Get user details from shared preference
@@ -91,6 +68,65 @@ public class PreferenceUtils {
             throw new NoUserException();
         }
 
+    }
+
+
+
+    /**
+     * update user details from shared preference
+     *
+     * @param context application context
+     * @return user object
+     */
+    public static User getUser(Context context ,String userName , String Password) throws NoUserException {
+
+        SharedPreferences preferences = context.getSharedPreferences(context.getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        String userlist= preferences.getString("User","");
+
+        if (!userName.equals(null)){
+            Type collectionType = new TypeToken<List<User>>(){}.getType();
+            userDetail = new Gson().fromJson(userlist, collectionType);
+            for (User user : userDetail) {
+                if(user.getUsername().equals(userName) && user.getPassword().equals(Password)){
+                    setUser =user;
+                    return user;
+                }
+            }
+        }
+        throw new NoUserException();
+    }
+
+
+    /**
+     * update user details from shared preference
+     *
+     * @param context application context
+     * @return user object
+     */
+    public static String updateUser(Context context ,String userName , String Password) {
+
+        SharedPreferences preferences = context.getSharedPreferences(context.getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        String userlist= preferences.getString("User", "");
+
+        if (!userName.equals(null)){
+            Type collectionType = new TypeToken<List<User>>(){}.getType();
+            userDetail = new Gson().fromJson(userlist, collectionType);
+            for (User user : userDetail) {
+                if(user.getUsername().equals(userName)){
+                    SharedPreferences.Editor editor = preferences.edit();
+                    userDetail.remove(user);
+                    user =new User("0",userName,Password);
+
+                    userDetail.add(user);
+                    editor.putString("User", new Gson().toJson(userDetail));
+                    editor.commit();
+
+                    setUser =user;
+                    return "update";
+                }
+            }
+        }
+        return "fail Update";
     }
 
 
