@@ -7,10 +7,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.CountDownTimer;
 import android.os.IBinder;
 import android.os.RemoteException;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -19,14 +21,20 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.HashMap;
 
 import scpp.globaleye.com.scppclient.ISenzService;
 import scpp.globaleye.com.scppclient.R;
+import scpp.globaleye.com.scppclient.db.SenzorsDbContract;
+import scpp.globaleye.com.scppclient.db.SenzorsDbSource;
 import scpp.globaleye.com.scppclient.utils.ActivityUtils;
 import scpp.globaleye.com.scppclient.utils.NetworkUtil;
 import scpp.globaleye.com.scppclient.utils.NotificationUtils;
@@ -40,6 +48,8 @@ public class WalletInfo extends AppCompatActivity implements View.OnClickListene
 
     private Button btRefreshCoinValue;
     private TextView coinValueTextView;
+    private ListView coinList;
+    private SenzorsDbSource dbSource;
 
 
     // use to track share timeout
@@ -91,6 +101,8 @@ public class WalletInfo extends AppCompatActivity implements View.OnClickListene
 
         initUi();
         bindConService();
+        populateListViewInDB();
+        registerListClickCallback();
     }
 
 
@@ -128,14 +140,83 @@ public class WalletInfo extends AppCompatActivity implements View.OnClickListene
 
         btRefreshCoinValue= (Button) findViewById(R.id.btRefresh);
         coinValueTextView = (TextView) findViewById(R.id.tvCoinRate);
+        coinList = (ListView)findViewById(R.id.CoinlistView);
 
         btRefreshCoinValue.setOnClickListener(WalletInfo.this);
 
-        coinValueTextView.setText("");
+        TextView textView = new TextView(this);
+        textView.setText("Your Coins");
+        coinList.addHeaderView(textView);
+
+
+        coinValueTextView.setText("$");
 
 
 
     }
+
+    /*
+        this some function is Deprecate but not do refatoring this
+        stage
+     */
+    private void populateListViewInDB(){
+        dbSource = new SenzorsDbSource(WalletInfo.this);
+        Cursor cur= dbSource.getAllMiningDteail();
+
+        startManagingCursor(cur);
+
+        Log.d("load cur", cur.toString());
+
+        String[] filedName = new String[]
+                {SenzorsDbContract.WalletCoins.COLUMN_NAME_COIN ,
+                       SenzorsDbContract.WalletCoins.COLUMN_NAME_TIME};
+        int [] toViewIDs = new int[]
+                {R.id.tvCoinHash , R.id.tvDate};
+
+
+        SimpleCursorAdapter myCursorAdaptor=new SimpleCursorAdapter(
+                this,
+                R.layout.coin_view_layout,
+                cur,
+                filedName,
+                toViewIDs
+        );
+        coinList.setAdapter(myCursorAdaptor);
+
+    }
+
+
+    private void registerListClickCallback() {
+         coinList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View viewClicked,
+                                    int position, long idInDB) {
+
+                displayToastForId(idInDB);
+            }
+        });
+    }
+
+    private void displayToastForId(long idInDB) {
+        Cursor cursor = dbSource.getMiningRow(idInDB);
+        if (cursor.moveToFirst()) {
+            String _id = cursor.getString(cursor.getColumnIndex(SenzorsDbContract.WalletCoins._ID));
+            String coin = cursor.getString(cursor.getColumnIndex(SenzorsDbContract.WalletCoins.COLUMN_NAME_COIN));
+            String s_id = cursor.getString(cursor.getColumnIndex(SenzorsDbContract.WalletCoins.COLUMN_NAME_S_ID));
+            String time = cursor.getString(cursor.getColumnIndex(SenzorsDbContract.WalletCoins.COLUMN_NAME_TIME));
+
+
+            String message = "ID: " + _id + "\n"
+                    + "coin: " + coin + "\n"
+                    + "Service ID: " + s_id + "\n"
+                    + "Time: " + time;
+            Toast.makeText(WalletInfo.this, message, Toast.LENGTH_LONG).show();
+        }
+        cursor.close();
+    }
+
+
+
 
     @Override
     public void onClick(View v) {

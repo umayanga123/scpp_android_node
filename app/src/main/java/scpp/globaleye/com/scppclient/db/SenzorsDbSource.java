@@ -4,10 +4,10 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
-import scpp.globaleye.com.senzc.enums.pojos.Senz;
-import scpp.globaleye.com.senzc.enums.pojos.User;
+import java.text.DateFormat;
+import java.util.Date;
+
 
 /**
  * Created by umayanga on 6/23/16.
@@ -16,6 +16,11 @@ public class SenzorsDbSource {
 
     private static final String TAG = SenzorsDbSource.class.getName();
     private static Context context;
+    private SQLiteDatabase db;
+    public static final String[] ALL_KEYS = new String[] {SenzorsDbContract.WalletCoins._ID,
+            SenzorsDbContract.WalletCoins.COLUMN_NAME_COIN,SenzorsDbContract.WalletCoins.COLUMN_NAME_S_ID,
+            SenzorsDbContract.WalletCoins.COLUMN_NAME_TIME};
+
 
     /**
      * Init db helper
@@ -38,7 +43,7 @@ public class SenzorsDbSource {
     public String addCoin(String coin,String s_id) {
 
         // get matching user if exists
-        SQLiteDatabase db = SenzorsDbHelper.getInstance(context).getWritableDatabase();
+        db = SenzorsDbHelper.getInstance(context).getWritableDatabase();
         Cursor cursor = db.query(SenzorsDbContract.WalletCoins.TABLE_NAME, // table
                 null, SenzorsDbContract.WalletCoins.COLUMN_NAME_COIN + "=?", // constraint
                 new String[]{coin}, // prams
@@ -62,18 +67,54 @@ public class SenzorsDbSource {
         } else {
             // no matching user
             // so create user
+            String dateFormat = DateFormat.getDateTimeInstance().format(new Date((Long) (System.currentTimeMillis() / 1000)));
+
             ContentValues values = new ContentValues();
             values.put(SenzorsDbContract.WalletCoins.COLUMN_NAME_COIN, coin);
             values.put(SenzorsDbContract.WalletCoins.COLUMN_NAME_S_ID, s_id);
-            values.put(SenzorsDbContract.WalletCoins.COLUMN_NAME_TIME, (Long) (System.currentTimeMillis() / 1000));
+            values.put(SenzorsDbContract.WalletCoins.COLUMN_NAME_TIME, dateFormat);
 
             // inset data
             long id = db.insert(SenzorsDbContract.WalletCoins.TABLE_NAME, SenzorsDbContract.WalletCoins.COLUMN_NAME_COIN, values);
+            cursor.close();
             db.close();
-
-
             return "Save Coin To wallet Successfully";
         }
+    }
+
+
+    public Cursor getAllMiningDteail(){
+        // get matching user if exists
+        db = SenzorsDbHelper.getInstance(context).getWritableDatabase();
+        Cursor cursor = db.query(SenzorsDbContract.WalletCoins.TABLE_NAME, // table
+                null,null, // constraint
+                null, // prams
+                null, // order by
+                null, // group by
+                null); // join
+
+        return cursor;
+    }
+
+    public Cursor getMiningRow(String coin){
+        String where = null;
+        Cursor c = 	db.query(true, SenzorsDbContract.WalletCoins.TABLE_NAME, ALL_KEYS,
+                where, null, null, null, null, null);
+        if (c != null) {
+            c.moveToFirst();
+        }
+        return c;
+    }
+
+    // Get a specific row (by rowId)
+    public Cursor getMiningRow(long rowId) {
+        String where = SenzorsDbContract.WalletCoins._ID + "=" + rowId;
+        Cursor c = 	db.query(true, SenzorsDbContract.WalletCoins.TABLE_NAME, ALL_KEYS,
+                where, null, null, null, null, null);
+        if (c != null) {
+            c.moveToFirst();
+        }
+        return c;
     }
 
 
