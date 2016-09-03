@@ -334,7 +334,7 @@ public class BuyItemActivity extends AppCompatActivity implements View.OnClickLi
             String signature = "";
             SenzTypeEnum senzType = SenzTypeEnum.UNSHARE;
             User sender = new User("", userName);
-            User receiver = new User("", "node1");
+            User receiver = new User("", "mysensors");
             //send quarry
             Senz senz = new Senz(id, signature, senzType,sender , receiver, senzAttributes);
 
