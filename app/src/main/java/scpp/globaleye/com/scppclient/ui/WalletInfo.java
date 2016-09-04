@@ -115,6 +115,7 @@ public class WalletInfo extends AppCompatActivity implements View.OnClickListene
         bindService(intent, senzServiceConnection, Context.BIND_AUTO_CREATE);
         isServiceBound=true;
         registerReceiver(senzMessageReceiver, new IntentFilter("scpp.globaleye.com.scppclient.PUT_SENZ"));
+        registerReceiver(senzMessageReceiver, new IntentFilter("scpp.globaleye.com.scppclient.DATA_SENZ"));
 
     }
 
@@ -374,8 +375,44 @@ public class WalletInfo extends AppCompatActivity implements View.OnClickListene
                     displayInformationMessageDialog("Checking Coin Value  is Fail", message);
                 }
             }
+        }else if (senz != null && senz.getSenzType() == SenzTypeEnum.DATA) {
+            if (senz.getAttributes().containsKey("COIN")) {
+
+                String sender = senz.getSender().getUsername();
+                Log.d("sedneder" , sender);
+                String new_coin = senz.getAttributes().get("COIN");
+                Toast.makeText(WalletInfo.this, "Coin Recived :" +new_coin, Toast.LENGTH_LONG).show();
+                User rec =new User("",sender);
+                sendResponse(senzService, rec, true);
+
+            }
         }
     }
+
+    private void sendResponse(ISenzService senzService, User rec, boolean isDone) {
+        Log.d(TAG, "send response"+rec.getUsername() + ""+userName);
+        try {
+            // create senz attributes
+            HashMap<String, String> senzAttributes = new HashMap<>();
+            senzAttributes.put("time", ((Long) (System.currentTimeMillis() / 1000)).toString());
+            if (isDone){
+                senzAttributes.put("MSG", "Recived_Coin");
+            }else{
+                senzAttributes.put("MSG", "Not_Recived_Coin");
+            }
+
+            String id = "_ID";
+            String signature = "_SIGNATURE";
+            SenzTypeEnum senzType = SenzTypeEnum.DATA;
+            User sender = new User("", userName);
+            Senz senz = new Senz(id, signature, senzType, sender, rec, senzAttributes);
+            senzService.send(senz);
+
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 
     /**
