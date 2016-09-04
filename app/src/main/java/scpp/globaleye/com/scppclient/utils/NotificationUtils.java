@@ -10,6 +10,7 @@ import android.support.v4.app.NotificationCompat;
 import scpp.globaleye.com.scppclient.R;
 import scpp.globaleye.com.scppclient.ui.UserSelect;
 import scpp.globaleye.com.scppclient.ui.Wallet;
+import scpp.globaleye.com.scppclient.ui.WalletInfo;
 
 /**
  * Created by umayanga on 6/19/16.
@@ -27,9 +28,10 @@ public class NotificationUtils {
      * @param context context
      * @return notification
      */
-    public static Notification getNotification(Context context, int icon, String title, String message) {
+    public static Notification getNotification(Context context, int icon, String title, String message,String userName) {
         // set up pending intent
-        Intent intent = new Intent(context, Wallet.class);//
+        Intent intent = new Intent(context, WalletInfo.class);
+        intent.putExtra("USER_NAME", userName);
         intent.setAction(Intent.ACTION_MAIN);
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
@@ -52,9 +54,9 @@ public class NotificationUtils {
      * @param title   notification title
      * @param message message to be display
      */
-    public static void showNotification(Context context, String title, String message) {
+    public static void showNotification(Context context, String title, String message,String userName) {
         // display notification
-        Notification notification = NotificationUtils.getNotification(context, R.drawable.notif, title, message);
+        Notification notification = NotificationUtils.getNotification(context, R.drawable.notif, title, message+"from " +userName ,userName);
         notification.flags |= Notification.FLAG_AUTO_CANCEL;
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(NotificationUtils.MESSAGE_NOTIFICATION_ID, notification);
@@ -66,8 +68,8 @@ public class NotificationUtils {
      *
      * @param message incoming query
      */
-    public static void updateNotification(Context context, String message) {
-        Notification notification = getNotification(context, R.drawable.logo_green, context.getString(R.string.new_senz), message);
+    public static void updateNotification(Context context, String message,String userName) {
+        Notification notification = getNotification(context, R.drawable.logo_green,  context.getString(R.string.new_senz), message,userName);
         notification.flags |= Notification.FLAG_AUTO_CANCEL;
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(MESSAGE_NOTIFICATION_ID, notification);

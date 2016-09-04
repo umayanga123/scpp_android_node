@@ -69,7 +69,8 @@
         <activity
             android:name=".ui.BuyItemActivity"
             android:label="@string/title_activity_buy_item"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
+        <activity android:name=".ui.SendCoinPeer"></activity>
     </application>
 
 </manifest>

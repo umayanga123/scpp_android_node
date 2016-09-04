@@ -37,6 +37,7 @@ public class SenzHandler {
         switch (senz.getSenzType()) {
             case PING:
                 //Log.d(TAG, "PING received");
+                broadcastSenz(senz, new Intent("scpp.globaleye.com.scppclient.PING_SENZ"));
                 break;
             case SHARE:
                 Log.d(TAG, "SHARE received");

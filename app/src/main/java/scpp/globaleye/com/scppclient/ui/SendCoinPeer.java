@@ -39,12 +39,12 @@ import scpp.globaleye.com.senzc.enums.enums.SenzTypeEnum;
 import scpp.globaleye.com.senzc.enums.pojos.Senz;
 import scpp.globaleye.com.senzc.enums.pojos.User;
 
-public class WalletInfo extends AppCompatActivity implements View.OnClickListener  {
+public class SendCoinPeer extends AppCompatActivity implements View.OnClickListener{
 
     private static final String TAG = WalletInfo.class.getName();
 
-    private Button btRefreshCoinValue;
-    private TextView coinValueTextView;
+    private Button btSendCoin;
+    private TextView coinhashTextView;
     private ListView coinList;
     private SenzorsDbSource dbSource;
 
@@ -54,9 +54,13 @@ public class WalletInfo extends AppCompatActivity implements View.OnClickListene
     private boolean isResponseReceived;
 
 
+
     // custom font
     private Typeface typeface;
     private  String userName;
+    private String receiver;
+    private Long recordId;
+
 
 
 
@@ -83,7 +87,8 @@ public class WalletInfo extends AppCompatActivity implements View.OnClickListene
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_wallet_info);
+        setContentView(R.layout.activity_send_coin_peer);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
@@ -94,6 +99,8 @@ public class WalletInfo extends AppCompatActivity implements View.OnClickListene
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             userName= extras.getString("USER_NAME");
+            receiver = extras.getString("RECIVER");
+
         }
 
         initUi();
@@ -114,7 +121,7 @@ public class WalletInfo extends AppCompatActivity implements View.OnClickListene
         intent.setClassName("scpp.globaleye.com.scppclient", "scpp.globaleye.com.scppclient.services.RemoteSenzService");
         bindService(intent, senzServiceConnection, Context.BIND_AUTO_CREATE);
         isServiceBound=true;
-        registerReceiver(senzMessageReceiver, new IntentFilter("scpp.globaleye.com.scppclient.PUT_SENZ"));
+        registerReceiver(senzMessageReceiver, new IntentFilter("scpp.globaleye.com.scppclient.SHARE_SENZ"));
 
     }
 
@@ -135,18 +142,18 @@ public class WalletInfo extends AppCompatActivity implements View.OnClickListene
 
     private void initUi() {
 
-        btRefreshCoinValue= (Button) findViewById(R.id.btCoinTransaction);
-        coinValueTextView = (TextView) findViewById(R.id.tvCoinHash);
+        btSendCoin= (Button) findViewById(R.id.btCoinTransaction);
+        coinhashTextView= (TextView) findViewById(R.id.tvCoinHash);
         coinList = (ListView)findViewById(R.id.CoinlistView);
 
-        btRefreshCoinValue.setOnClickListener(WalletInfo.this);
+        btSendCoin.setOnClickListener(SendCoinPeer.this);
 
         TextView textView = new TextView(this);
         textView.setText("Your Coins");
         coinList.addHeaderView(textView);
 
 
-        coinValueTextView.setText("$");
+        coinhashTextView.setText("---------");
 
 
 
@@ -157,7 +164,7 @@ public class WalletInfo extends AppCompatActivity implements View.OnClickListene
         stage
      */
     private void populateListViewInDB(){
-        dbSource = new SenzorsDbSource(WalletInfo.this);
+        dbSource = new SenzorsDbSource(SendCoinPeer.this);
         Cursor cur= dbSource.getAllMiningDteail();
 
         startManagingCursor(cur);
@@ -166,7 +173,7 @@ public class WalletInfo extends AppCompatActivity implements View.OnClickListene
 
         String[] filedName = new String[]
                 {SenzorsDbContract.WalletCoins.COLUMN_NAME_COIN ,
-                       SenzorsDbContract.WalletCoins.COLUMN_NAME_TIME};
+                        SenzorsDbContract.WalletCoins.COLUMN_NAME_TIME};
         int [] toViewIDs = new int[]
                 {R.id.tvCoinHash , R.id.tvDate};
 
@@ -184,11 +191,10 @@ public class WalletInfo extends AppCompatActivity implements View.OnClickListene
 
 
     private void registerListClickCallback() {
-         coinList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        coinList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View viewClicked,
                                     int position, long idInDB) {
-
                 displayToastForId(idInDB);
             }
         });
@@ -207,7 +213,10 @@ public class WalletInfo extends AppCompatActivity implements View.OnClickListene
                     + "coin: " + coin + "\n"
                     + "Service ID: " + s_id + "\n"
                     + "Time: " + time;
-            Toast.makeText(WalletInfo.this, message, Toast.LENGTH_LONG).show();
+
+            coinhashTextView.setText(coin);
+            recordId  = idInDB;
+            Toast.makeText(SendCoinPeer.this, message, Toast.LENGTH_LONG).show();
         }
         cursor.close();
     }
@@ -215,20 +224,20 @@ public class WalletInfo extends AppCompatActivity implements View.OnClickListene
 
 
 
+
+
+
     @Override
     public void onClick(View v) {
-        if(v==btRefreshCoinValue){
-            if (NetworkUtil.isAvailableNetwork(WalletInfo.this)) {
-                ActivityUtils.showProgressDialog(WalletInfo.this, "Please wait...");
-                senzCountDownTimer.start();
+        if(v==btSendCoin){
+            if (NetworkUtil.isAvailableNetwork(SendCoinPeer.this)) {
+               // ActivityUtils.showProgressDialog(SendCoinPeer.this, "Please wait...");
+               // senzCountDownTimer.start();
             } else {
-                Toast.makeText(WalletInfo.this, "No network connection available", Toast.LENGTH_LONG).show();
+                Toast.makeText(SendCoinPeer.this, "No network connection available", Toast.LENGTH_LONG).show();
             }
         }
     }
-
-
-
 
     /**
      * Keep track with share response timeout  ,start share activity , sending quarry to switch
@@ -243,55 +252,72 @@ public class WalletInfo extends AppCompatActivity implements View.OnClickListene
         public void onTick(long millisUntilFinished) {
             // if response not received yet, resend share
             if (!isResponseReceived) {
-                refreshCoinValue();
+                sendCoin();
                 Log.d(TAG, "Response not received yet");
             }
         }
 
         @Override
         public void onFinish() {
-            ActivityUtils.hideSoftKeyboard(WalletInfo.this);
+            ActivityUtils.hideSoftKeyboard(SendCoinPeer.this);
             ActivityUtils.cancelProgressDialog();
-
             // display message dialog that we couldn't reach the user
             if (!isResponseReceived) {
-                String message = "<font color=#000000>Seems we couldn't reach the  </font> <font color=#eada00>" + "<b>" + "coinBase" + "</b>" + "</font> <font color=#000000> at this moment</font>";
-                displayInformationMessageDialog("#Share Fail", message);
+                String message = "<font color=#000000>Seems we couldn't reach the  </font> <font color=#eada00>" + "<b>" + receiver+ "</b>" + "</font> <font color=#000000> at this moment</font>";
+                displayInformationMessageDialog("#Send Money Fail", message);
+            }else{
+                removeCoinFromDB();
+                String message = "<font color=#000000>Successfully Send Coin to </font> <font color=#eada00>" + "<b>" +receiver  + "</b>" + "</font> <font color=#000000> at this moment</font>";
+                displayInformationMessageDialog("#Send Money ", message);
+
             }
         }
     }
+
+
 
     /**
      *
      * SHARE #COIN_VALUE @baseNode
      */
-    private void refreshCoinValue() {
+    private void sendCoin() {
         try {
             // create senz attributes
             HashMap<String, String> senzAttributes = new HashMap<>();
-            senzAttributes.put("COIN_VALUE","COIN_VALUE");
-            senzAttributes.put("f","cv");
-            //senzAttributes.put("time", ((Long) (System.currentTimeMillis() / 1000)).toString());
+            senzAttributes.put("COIN",coinhashTextView.getText().toString().trim());
+            senzAttributes.put("MSG","MSG");
+            senzAttributes.put("time", ((Long) (System.currentTimeMillis() / 1000)).toString());
 
             // new senz
             String id = "_ID";
             String signature = "_SIGNATURE";
-            SenzTypeEnum senzType = SenzTypeEnum.SHARE;
+            SenzTypeEnum senzType = SenzTypeEnum.DATA;
             User sender = new User("", userName);
-            User receiver = new User("", "baseNode");
+            User coin_receiver = new User("",receiver);
             //send quarry
-            Senz senz = new Senz(id, signature, senzType,sender , receiver, senzAttributes);
+            Senz senz = new Senz(id, signature, senzType,sender , coin_receiver, senzAttributes);
 
-            Log.d(TAG, "send Massage" + senz);
             senzService.send(senz);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
 
-
-
     }
 
+    /**
+     *
+     * update sl lite DB
+     *
+     */
+    private void removeCoinFromDB() {
+        SenzorsDbSource dbSource = new SenzorsDbSource(SendCoinPeer.this);
+        boolean dbState= dbSource.deleteRow(recordId);
+        if(dbState==true){
+            Toast.makeText(SendCoinPeer.this, "Coin :" + coinhashTextView.getText().toString()+" is Removed", Toast.LENGTH_SHORT).show();
+        }
+        coinhashTextView.setText("---------");
+        registerListClickCallback();
+    }
 
 
     /**
@@ -300,7 +326,7 @@ public class WalletInfo extends AppCompatActivity implements View.OnClickListene
      * @param message message to be display
      */
     public void displayInformationMessageDialog(String title, String message) {
-        final Dialog dialog = new Dialog(WalletInfo.this);
+        final Dialog dialog = new Dialog(SendCoinPeer.this);
 
         //set layout for dialog
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -332,12 +358,16 @@ public class WalletInfo extends AppCompatActivity implements View.OnClickListene
         dialog.show();
     }
 
+
+
+
+
     //recived messege
     private BroadcastReceiver senzMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.d(TAG, "Got message from Senz service");
-            handleMessage(intent);
+            //handleMessage(intent);
         }
     };
 
@@ -385,9 +415,10 @@ public class WalletInfo extends AppCompatActivity implements View.OnClickListene
 
         isResponseReceived = false;
         String cv = senz.getAttributes().get("COIN_VALUE");
-        Toast.makeText(WalletInfo.this, "Coin Rate is " + cv, Toast.LENGTH_SHORT).show();
+        Toast.makeText(SendCoinPeer.this, "Coin Rate is " + cv, Toast.LENGTH_SHORT).show();
+
         cv = cv + "$";
-        coinValueTextView.setText(cv);
+        coinhashTextView.setText("---------------");
 
     }
 
@@ -402,30 +433,32 @@ public class WalletInfo extends AppCompatActivity implements View.OnClickListene
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(WalletInfo.this, Home.class);
+        Intent intent = new Intent(SendCoinPeer.this, UserSelect.class);
         intent.putExtra("USER_NAME", userName);
-        WalletInfo.this.startActivity(intent);
-        WalletInfo.this.finish();
+        SendCoinPeer.this.startActivity(intent);
+        SendCoinPeer.this.finish();
     }
 
     public void goHome(View v) {
-        Intent intent = new Intent(WalletInfo.this, Home.class);
+        Intent intent = new Intent(SendCoinPeer.this, Home.class);
         intent.putExtra("USER_NAME", userName);
         startActivity(intent);
-        WalletInfo.this.finish();
+        SendCoinPeer.this.finish();
     }
     public void goBack(View v) {
-        Intent intent = new Intent(WalletInfo.this, Home.class);
+        Intent intent = new Intent(SendCoinPeer.this, UserSelect.class);
         intent.putExtra("USER_NAME", userName);
-        WalletInfo.this.startActivity(intent);
-        WalletInfo.this.finish();
+        SendCoinPeer.this.startActivity(intent);
+        SendCoinPeer.this.finish();
     }
 
     public void logout(View v) {
-        Intent intent = new Intent(WalletInfo.this, Login.class);
-        WalletInfo.this.startActivity(intent);
-        WalletInfo.this.finish();
+        Intent intent = new Intent(SendCoinPeer.this, Login.class);
+        SendCoinPeer.this.startActivity(intent);
+        SendCoinPeer.this.finish();
     }
+
+
 
 
 }

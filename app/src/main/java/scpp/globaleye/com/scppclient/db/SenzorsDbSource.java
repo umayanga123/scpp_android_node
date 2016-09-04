@@ -72,7 +72,6 @@ public class SenzorsDbSource {
             Calendar c = Calendar.getInstance();
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String dateFormat = df.format(c.getTime());
-            //String dateFormat = DateFormat.getDateTimeInstance().format(new Date((Long) (System.currentTimeMillis() / 1000)));
 
             ContentValues values = new ContentValues();
             values.put(SenzorsDbContract.WalletCoins.COLUMN_NAME_COIN, coin);
@@ -120,6 +119,38 @@ public class SenzorsDbSource {
             c.moveToFirst();
         }
         return c;
+    }
+
+
+    // Delete a row from the database, by rowId (primary key)
+    public boolean deleteRow(long rowId) {
+        String where = SenzorsDbContract.WalletCoins._ID + "=" + rowId;
+        return db.delete(SenzorsDbContract.WalletCoins.TABLE_NAME, where, null) != 0;
+    }
+
+
+    /**
+     *
+     * not used this function but we corded it to be future used.
+     * @param rowId
+     * @param coin
+     * @param s_id
+     * @return
+     */
+     public boolean updateRow(long rowId, String coin,String s_id) {
+         String where = SenzorsDbContract.WalletCoins._ID + "=" + rowId;
+
+         Calendar c = Calendar.getInstance();
+         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+         String dateFormat = df.format(c.getTime());
+
+         ContentValues newValues = new ContentValues();
+         newValues.put(SenzorsDbContract.WalletCoins.COLUMN_NAME_COIN, coin);
+         newValues.put(SenzorsDbContract.WalletCoins.COLUMN_NAME_S_ID, s_id);
+         newValues.put(SenzorsDbContract.WalletCoins.COLUMN_NAME_TIME, dateFormat);
+
+         // Insert it into the database.
+         return db.update(SenzorsDbContract.WalletCoins.TABLE_NAME, newValues, where, null) != 0;
     }
 
 

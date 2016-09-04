@@ -48,10 +48,8 @@ public class UpdateProfile extends AppCompatActivity implements View.OnClickList
         try {
             user = PreferenceUtils.getUser(this);
         } catch (NoUserException e) {
-            Toast.makeText(this, "Invalid USSER", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Invalid USER", Toast.LENGTH_LONG).show();
         }
-
-
 
         initUi();
 

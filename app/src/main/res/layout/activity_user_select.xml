@@ -19,7 +19,7 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Sender Name"
             android:id="@+id/share_lb"
-            android:layout_alignBottom="@+id/share_txt"
+            android:layout_alignBottom="@+id/share_user_name"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="62dp" />
 
@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
             android:ems="10"
-            android:id="@+id/share_txt"
+            android:id="@+id/share_user_name"
             android:layout_marginTop="128dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true" />
@@ -40,10 +40,10 @@
             android:id="@+id/shareBtn"
             android:layout_below="@+id/share_lb"
             android:layout_marginTop="25dp"
-            android:layout_alignRight="@+id/share_txt"
-            android:layout_alignEnd="@+id/share_txt"
-            android:layout_alignLeft="@+id/share_txt"
-            android:layout_alignStart="@+id/share_txt" />
+            android:layout_alignRight="@+id/share_user_name"
+            android:layout_alignEnd="@+id/share_user_name"
+            android:layout_alignLeft="@+id/share_user_name"
+            android:layout_alignStart="@+id/share_user_name" />
 
 
     </RelativeLayout>

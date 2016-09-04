@@ -1,6 +1,5 @@
 package scpp.globaleye.com.scppclient.ui;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -8,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
-import android.database.sqlite.SQLiteConstraintException;
 import android.graphics.Typeface;
 import android.os.CountDownTimer;
 import android.os.IBinder;
@@ -30,8 +28,6 @@ import java.util.HashMap;
 
 import scpp.globaleye.com.scppclient.ISenzService;
 import scpp.globaleye.com.scppclient.R;
-import scpp.globaleye.com.scppclient.db.SenzorsDbSource;
-import scpp.globaleye.com.scppclient.services.RemoteSenzService;
 import scpp.globaleye.com.scppclient.utils.ActivityUtils;
 import scpp.globaleye.com.scppclient.utils.NetworkUtil;
 import scpp.globaleye.com.scppclient.utils.NotificationUtils;
@@ -45,8 +41,8 @@ public class UserSelect extends AppCompatActivity implements View.OnClickListene
     private static final String TAG = UserSelect.class.getName();
 
     private TextView usernameLabel;
-    private EditText usernameEditText;
-    private Button logOutButton ,shareButton;
+    private EditText reciverEditText;
+    private Button shareButton;
 
     // use to track share timeout
     private SenzCountDownTimer senzCountDownTimer;
@@ -54,6 +50,7 @@ public class UserSelect extends AppCompatActivity implements View.OnClickListene
 
     // custom font
     private Typeface typeface;
+    private String userName;
 
     // service interface
     private ISenzService senzService = null;
@@ -88,10 +85,35 @@ public class UserSelect extends AppCompatActivity implements View.OnClickListene
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(null);
 
-        senzCountDownTimer = new SenzCountDownTimer(16000, 5000);
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            userName= extras.getString("USER_NAME");
+        }
+
+        senzCountDownTimer = new SenzCountDownTimer(15000, 5000);
+
         isResponseReceived = false;
         initUi();
         bindConService();
+
+
+
+    }
+
+
+
+
+    /**
+     * Initialize UI components,
+     * Set country code text
+     * set custom font for UI fields
+     */
+
+    private void initUi() {
+        usernameLabel  = (TextView)findViewById(R.id.share_lb);
+        reciverEditText = (EditText) findViewById(R.id.share_user_name);
+        shareButton = (Button) findViewById(R.id.shareBtn);
+        shareButton.setOnClickListener(UserSelect.this);
 
     }
 
@@ -106,9 +128,11 @@ public class UserSelect extends AppCompatActivity implements View.OnClickListene
         Intent intent = new Intent();
         intent.setClassName("scpp.globaleye.com.scppclient", "scpp.globaleye.com.scppclient.services.RemoteSenzService");
         bindService(intent, senzServiceConnection, Context.BIND_AUTO_CREATE);
+
         isServiceBound=true;
-        registerReceiver(senzMessageReceiver, new IntentFilter("scpp.globaleye.com.scppclient.DATA_SENZ"));
+        registerReceiver(senzMessageReceiver, new IntentFilter("scpp.globaleye.com.scppclient.PUT_SENZ"));
         registerReceiver(senzMessageReceiver, new IntentFilter("scpp.globaleye.com.scppclient.SHARE_SENZ"));
+
 
     }
 
@@ -125,24 +149,11 @@ public class UserSelect extends AppCompatActivity implements View.OnClickListene
     }
 
 
-    /**
-     * Initialize UI components,
-     * Set country code text
-     * set custom font for UI fields
-     */
-
-    private void initUi() {
-        usernameLabel = (TextView)findViewById(R.id.share_lb);
-        usernameEditText = (EditText) findViewById(R.id.share_txt);
-        shareButton = (Button) findViewById(R.id.shareBtn);
-        shareButton.setOnClickListener(UserSelect.this);
-
-    }
 
     @Override
     public void onClick(View v) {
         if(v== shareButton){
-                if (usernameEditText.getText().toString().trim().isEmpty()) {
+                if (reciverEditText.getText().toString().trim().isEmpty()) {
                     Toast.makeText(UserSelect.this, "Empty username", Toast.LENGTH_LONG).show();
                 } else {
                     if (NetworkUtil.isAvailableNetwork(UserSelect.this)) {
@@ -164,124 +175,28 @@ public class UserSelect extends AppCompatActivity implements View.OnClickListene
         try {
             // create senz attributes
             HashMap<String, String> senzAttributes = new HashMap<>();
-            senzAttributes.put("balance", "balance");
-            senzAttributes.put("msg", "msg");
+            senzAttributes.put("COIN", "COIN");
+            senzAttributes.put("MSG", "MSG");
             senzAttributes.put("time", ((Long) (System.currentTimeMillis() / 1000)).toString());
 
             // new senz
             String id = "_ID";
             String signature = "_SIGNATURE";
             SenzTypeEnum senzType = SenzTypeEnum.SHARE;
-            User receiver = new User("", usernameEditText.getText().toString().trim());
+            User sender = new User("", userName);
+            User receiver = new User("", reciverEditText.getText().toString().trim());
+
+
             //send quarry
-            Senz senz = new Senz(id, signature, senzType, null, receiver, senzAttributes);
-
+            Senz senz = new Senz(id, signature, senzType, sender , receiver, senzAttributes);
             senzService.send(senz);
+
+
         } catch (RemoteException e) {
             e.printStackTrace();
         }
     }
 
-
-    private BroadcastReceiver senzMessageReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Log.d(TAG, "Got message from Senz service");
-            handleMessage(intent);
-        }
-    };
-
-    /**
-     * Handle broadcast message receives
-     * Need to handle share success failure here
-     *
-     * @param intent intent
-     */
-    private void handleMessage(Intent intent) {
-        String action = intent.getAction();
-        Log.d(TAG ,"MY ACTION" +action);
-
-        //Toast.makeText(UserSelect.this, "Handle masage", Toast.LENGTH_LONG).show();
-        Senz senz = intent.getExtras().getParcelable("SENZ");
-        if (action.equalsIgnoreCase("scpp.globaleye.com.scppclient.DATA_SENZ")) {
-
-
-            if (senz.getAttributes().containsKey("msg")) {
-                //uma msg response received
-                ActivityUtils.cancelProgressDialog();
-                isResponseReceived = true;
-                senzCountDownTimer.cancel();
-
-                String msg = senz.getAttributes().get("msg");
-                Log.d("responce masage" , msg);
-                //Toast.makeText(UserSelect.this, "Successfully shared SenZ"+msg, Toast.LENGTH_LONG).show();
-                if (msg != null && msg.equalsIgnoreCase("ShareDone")) {
-                    onPostShare(senz);
-                } else {
-                    String user = usernameEditText.getText().toString().trim();
-                    String message = "<font color=#000000>Seems we couldn't share the senz with </font> <font color=#eada00>" + "<b>" + user + "</b>" + "</font>";
-                    displayInformationMessageDialog("#Share Fail", message);
-                }
-            }
-        }else{
-
-            Log.d("Tag", senz.getSender() + " : " + senz.getSenzType().toString());
-            if (senz != null && senz.getSenzType() == SenzTypeEnum.SHARE) {
-                NotificationUtils.showNotification(this, this.getString(R.string.new_senz), "SHARE Message Recived" + senz.getSender().getUsername());
-                String sender = senz.getSender().getUsername();
-                User sen = new User("", sender);
-                sendResponse(senzService, sen, true);
-            }
-
-        }
-    }
-
-
-    private void sendResponse(ISenzService senzService, User receiver, boolean isDone) {
-        Log.d(TAG, "send response");
-        try {
-            // create senz attributes
-            HashMap<String, String> senzAttributes = new HashMap<>();
-            senzAttributes.put("time", ((Long) (System.currentTimeMillis() / 1000)).toString());
-            if (isDone){
-                senzAttributes.put("msg", "ShareDone");
-            }else{
-                senzAttributes.put("msg", "ShareFail");
-            }
-
-            String id = "_ID";
-            String signature = "";
-            SenzTypeEnum senzType = SenzTypeEnum.DATA;
-            Senz senz = new Senz(id, signature, senzType, null, receiver, senzAttributes);
-            senzService.send(senz);
-
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-    }
-    /**
-     * Clear input fields and reset activity components
-     */
-    private void onPostShare(Senz senz) {
-
-
-        // Create user with senz sender(Data sender name save in sqllite)
-        //SenzorsDbSource dbSource = new SenzorsDbSource(UserSelect.this);
-        //dbSource.getOrCreateUser(senz.getSender().getUsername());
-
-
-        //navigate
-        Intent intent = new Intent(UserSelect.this, Wallet.class);
-        intent.putExtra("USER" , usernameEditText.getText().toString().trim());
-
-
-        usernameEditText.setText("");
-
-        Toast.makeText(UserSelect.this, "Successfully shared Request", Toast.LENGTH_LONG).show();
-        UserSelect.this.startActivity(intent);
-        UserSelect.this.finish();
-
-    }
 
 
 
@@ -310,12 +225,15 @@ public class UserSelect extends AppCompatActivity implements View.OnClickListene
 
             // display message dialog that we couldn't reach the user
             if (!isResponseReceived) {
-                String user = usernameEditText.getText().toString().trim();
+                String user = reciverEditText.getText().toString().trim();
                 String message = "<font color=#000000>Seems we couldn't reach the user </font> <font color=#eada00>" + "<b>" + user + "</b>" + "</font> <font color=#000000> at this moment</font>";
                 displayInformationMessageDialog("#Share Fail", message);
             }
+
         }
     }
+
+
 
     /**
      * Display message dialog when user request(click) to delete invoice
@@ -355,22 +273,127 @@ public class UserSelect extends AppCompatActivity implements View.OnClickListene
         dialog.show();
     }
 
+    private BroadcastReceiver senzMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.d(TAG, "Got message from Senz service");
+            handleMessage(intent);
+        }
+    };
+
+    /**
+     * Handle broadcast message receives
+     * Need to handle share success failure here
+     *
+     * @param intent intent
+     */
+    private void handleMessage(Intent intent) {
+        String action = intent.getAction();
+        Log.d(TAG ,"MY ACTION" +action);
+
+        //Toast.makeText(UserSelect.this, "Handle masage", Toast.LENGTH_LONG).show();
+        Senz senz = intent.getExtras().getParcelable("SENZ");
+        if (action.equalsIgnoreCase("scpp.globaleye.com.scppclient.PUT_SENZ")) {
+
+
+            if (senz.getAttributes().containsKey("MSG")) {
+                //uma msg response received
+                isResponseReceived = true;
+                ActivityUtils.cancelProgressDialog();
+                senzCountDownTimer.cancel();
+                String msg = senz.getAttributes().get("MSG");
+                Log.d("response masage" , msg);
+                //Toast.makeText(UserSelect.this, "Successfully shared SenZ"+msg, Toast.LENGTH_LONG).show();
+                if (msg != null && msg.equalsIgnoreCase("ShareDone")) {
+                    onPostShare(senz);
+                } else {
+                    String user = reciverEditText.getText().toString().trim();
+                    String message = "<font color=#000000>Seems we couldn't share the senz with </font> <font color=#eada00>" + "<b>" + user + "</b>" + "</font>";
+                    displayInformationMessageDialog("#Share Fail", message);
+                }
+            }
+        }else{
+
+            Log.d("Tag", senz.getSender() + " : " + senz.getSenzType().toString());
+            if (senz != null && senz.getSenzType() == SenzTypeEnum.SHARE) {
+
+
+                NotificationUtils.showNotification(this, this.getString(R.string.new_senz), "Coin accept request" + senz.getSender().getUsername(),userName);
+                String sender = senz.getSender().getUsername();
+                User sen = new User("", sender);
+                sendResponse(senzService, sen, true);
+            }
+
+        }
+    }
+
+
+    private void sendResponse(ISenzService senzService, User receiver, boolean isDone) {
+        Log.d(TAG, "send response");
+        try {
+            // create senz attributes
+            HashMap<String, String> senzAttributes = new HashMap<>();
+            senzAttributes.put("time", ((Long) (System.currentTimeMillis() / 1000)).toString());
+            if (isDone){
+                senzAttributes.put("MSG", "ShareDone");
+            }else{
+                senzAttributes.put("MSG", "ShareFail");
+            }
+
+            String id = "_ID";
+            String signature = "_SIGNATURE";
+            SenzTypeEnum senzType = SenzTypeEnum.PUT;
+            User sender = new User("", userName);
+            Senz senz = new Senz(id, signature, senzType, sender, receiver, senzAttributes);
+            senzService.send(senz);
+
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+
+    /**
+     * Clear input fields and reset activity components
+     */
+    private void onPostShare(Senz senz) {
+
+        //navigate
+        Intent intent = new Intent(UserSelect.this, SendCoinPeer.class);
+        intent.putExtra("USER_NAME", userName);
+        intent.putExtra("RECIVER" , reciverEditText.getText().toString().trim());
+
+        reciverEditText.setText("");
+        Toast.makeText(UserSelect.this, "user request coins", Toast.LENGTH_LONG).show();
+        UserSelect.this.startActivity(intent);
+        UserSelect.this.finish();
+
+    }
+
+
+
+
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         Intent intent = new Intent(UserSelect.this, Home.class);
+        intent.putExtra("USER_NAME", userName);
         UserSelect.this.startActivity(intent);
         UserSelect.this.finish();
      }
 
     public void goHome(View v) {
         Intent intent = new Intent(UserSelect.this, Home.class);
+        intent.putExtra("USER_NAME", userName);
         startActivity(intent);
         UserSelect.this.finish();
     }
     public void goBack(View v) {
         Intent intent = new Intent(UserSelect.this, Home.class);
+        intent.putExtra("USER_NAME", userName);
         UserSelect.this.startActivity(intent);
         UserSelect.this.finish();
     }
