@@ -357,7 +357,7 @@ public class BuyItemActivity extends AppCompatActivity implements View.OnClickLi
         Toast.makeText(BuyItemActivity.this, "Recived New Coin " + cv, Toast.LENGTH_LONG).show();
 
         SenzorsDbSource dbSource = new SenzorsDbSource(BuyItemActivity.this);
-        String dbState= dbSource.addCoin(cv,"2");
+        String dbState= dbSource.addCoin(cv,"2",userName);
         Toast.makeText(BuyItemActivity.this, dbState, Toast.LENGTH_LONG).show();
         btbuyItem.setEnabled(true);
         //Log.d("DB_State", dbState);

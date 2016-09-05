@@ -16,12 +16,13 @@
 
     <string name="shop_prompt">Choose a Shop</string>
     <string-array name="shop_name_spinner">
-        <item>Cargills</item>
-        <item>Kills</item>
-        <item>Fassion Bug</item>
+        <item>Cargills Food City</item>
+        <item>Keells</item>
+        <item>Fashion Bug</item>
         <item>NoLimit</item>
-        <item>UKG</item>
+        <item>Arpico Super Store</item>
         <item>MacDonalles</item>
+        <item>Laugfs Supermarket</item>
     </string-array>
 
     <string name="sccp_coin_hash">Coin :</string>

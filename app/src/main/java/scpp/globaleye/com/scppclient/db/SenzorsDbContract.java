@@ -16,6 +16,7 @@ public class SenzorsDbContract {
         public static final String COLUMN_NAME_COIN = "coin";
         public static final String COLUMN_NAME_S_ID = "s_id";
         public static final String COLUMN_NAME_TIME = "time";
+        public static final String COLUMN_NAME_USER_NAME = "user_name";
     }
 
 }

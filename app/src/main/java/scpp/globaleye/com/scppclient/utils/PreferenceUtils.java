@@ -2,24 +2,12 @@ package scpp.globaleye.com.scppclient.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-
-import android.util.Log;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-
 import scpp.globaleye.com.scppclient.R;
-
-
 import scpp.globaleye.com.scppclient.exceptions.NoUserException;
 import scpp.globaleye.com.senzc.enums.pojos.User;
 
@@ -78,7 +66,7 @@ public class PreferenceUtils {
      * @param context application context
      * @return user object
      */
-    public static User getUser(Context context ,String userName , String Password) throws NoUserException {
+    public static User getUser(Context context ,String userName , String Password) throws NoUserException ,NullPointerException {
 
         SharedPreferences preferences = context.getSharedPreferences(context.getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         String userlist= preferences.getString("User","");

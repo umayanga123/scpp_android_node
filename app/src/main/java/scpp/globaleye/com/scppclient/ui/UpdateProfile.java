@@ -1,7 +1,5 @@
 package scpp.globaleye.com.scppclient.ui;
 
-
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;

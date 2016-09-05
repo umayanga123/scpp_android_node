@@ -159,7 +159,7 @@ public class WalletInfo extends AppCompatActivity implements View.OnClickListene
      */
     private void populateListViewInDB(){
         dbSource = new SenzorsDbSource(WalletInfo.this);
-        Cursor cur= dbSource.getAllMiningDteail();
+        Cursor cur= dbSource.getAllMiningDteail(userName);
 
         startManagingCursor(cur);
 
@@ -379,11 +379,18 @@ public class WalletInfo extends AppCompatActivity implements View.OnClickListene
             if (senz.getAttributes().containsKey("COIN")) {
 
                 String sender = senz.getSender().getUsername();
-                Log.d("sedneder" , sender);
+                Log.d("sender", sender);
                 String new_coin = senz.getAttributes().get("COIN");
-                Toast.makeText(WalletInfo.this, "Coin Recived :" +new_coin, Toast.LENGTH_LONG).show();
+                Toast.makeText(WalletInfo.this, "Coin Received :" +new_coin, Toast.LENGTH_LONG).show();
+
+                //add data to ddb
+                SenzorsDbSource dbSource = new SenzorsDbSource(WalletInfo.this);
+                String dbState= dbSource.addCoin(new_coin,senz.getAttributes().get("S_ID"),userName);
+                populateListViewInDB();
+
                 User rec =new User("",sender);
                 sendResponse(senzService, rec, true);
+
 
             }
         }

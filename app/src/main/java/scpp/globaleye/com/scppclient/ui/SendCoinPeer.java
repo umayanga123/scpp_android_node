@@ -60,6 +60,7 @@ public class SendCoinPeer extends AppCompatActivity implements View.OnClickListe
     private  String userName;
     private String receiver;
     private Long recordId;
+    private String s_id;
 
 
 
@@ -166,7 +167,7 @@ public class SendCoinPeer extends AppCompatActivity implements View.OnClickListe
      */
     private void populateListViewInDB(){
         dbSource = new SenzorsDbSource(SendCoinPeer.this);
-        Cursor cur= dbSource.getAllMiningDteail();
+        Cursor cur= dbSource.getAllMiningDteail(userName);
 
         startManagingCursor(cur);
 
@@ -206,7 +207,7 @@ public class SendCoinPeer extends AppCompatActivity implements View.OnClickListe
         if (cursor.moveToFirst()) {
             String _id = cursor.getString(cursor.getColumnIndex(SenzorsDbContract.WalletCoins._ID));
             String coin = cursor.getString(cursor.getColumnIndex(SenzorsDbContract.WalletCoins.COLUMN_NAME_COIN));
-            String s_id = cursor.getString(cursor.getColumnIndex(SenzorsDbContract.WalletCoins.COLUMN_NAME_S_ID));
+            s_id = cursor.getString(cursor.getColumnIndex(SenzorsDbContract.WalletCoins.COLUMN_NAME_S_ID));
             String time = cursor.getString(cursor.getColumnIndex(SenzorsDbContract.WalletCoins.COLUMN_NAME_TIME));
 
 
@@ -267,9 +268,9 @@ public class SendCoinPeer extends AppCompatActivity implements View.OnClickListe
                 String message = "<font color=#000000>Seems we couldn't reach the  </font> <font color=#eada00>" + "<b>" + receiver+ "</b>" + "</font> <font color=#000000> at this moment</font>";
                 displayInformationMessageDialog("#Send Money Fail", message);
             }else{
-                //removeCoinFromDB();
+
                 String message = "<font color=#000000>Successfully Send Coin to </font> <font color=#eada00>" + "<b>" +receiver  + "</b>" + "</font> <font color=#000000> at this moment</font>";
-                displayInformationMessageDialog("#Send Money ", message);
+                displayInformationMessageDialog("#Send SCPP Coin ", message);
 
             }
         }
@@ -286,6 +287,8 @@ public class SendCoinPeer extends AppCompatActivity implements View.OnClickListe
             // create senz attributes
             HashMap<String, String> senzAttributes = new HashMap<>();
             senzAttributes.put("COIN",coinhashTextView.getText().toString().trim());
+            senzAttributes.put("S_ID",s_id);
+
             senzAttributes.put("MSG","OK");
             senzAttributes.put("time", ((Long) (System.currentTimeMillis() / 1000)).toString());
 
@@ -317,7 +320,7 @@ public class SendCoinPeer extends AppCompatActivity implements View.OnClickListe
             Toast.makeText(SendCoinPeer.this, "Coin :" + coinhashTextView.getText().toString()+" is Removed", Toast.LENGTH_SHORT).show();
         }
         coinhashTextView.setText("---------");
-        registerListClickCallback();
+        populateListViewInDB();
     }
 
 
@@ -410,7 +413,7 @@ public class SendCoinPeer extends AppCompatActivity implements View.OnClickListe
                 ActivityUtils.cancelProgressDialog();
                 isResponseReceived = true;
                 senzCountDownTimer.cancel();
-                onPoseRecived(senz);
+                onPostReceived(senz);
 
 
 
@@ -434,11 +437,13 @@ public class SendCoinPeer extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    private void onPoseRecived(Senz senz) {
+    private void onPostReceived(Senz senz) {
         isResponseReceived = false;
-        String cv = senz.getAttributes().get("COIN");
+        //String cv = senz.getAttributes().get("COIN");
 
-        Toast.makeText(SendCoinPeer.this, "Thank YOU", Toast.LENGTH_LONG).show();
+        removeCoinFromDB();
+
+        //Toast.makeText(SendCoinPeer.this, "Thank YOU", Toast.LENGTH_LONG).show();
 
 
     }

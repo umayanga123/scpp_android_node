@@ -462,7 +462,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener, 
         Toast.makeText(MapsActivity.this, "Recived New Coin " + cv, Toast.LENGTH_LONG).show();
 
         SenzorsDbSource dbSource = new SenzorsDbSource(MapsActivity.this);
-        String dbState= dbSource.addCoin(cv,"2");
+        String dbState= dbSource.addCoin(cv,"2",userName);
         Toast.makeText(MapsActivity.this, dbState, Toast.LENGTH_LONG).show();
         start_btn.setEnabled(true);
 

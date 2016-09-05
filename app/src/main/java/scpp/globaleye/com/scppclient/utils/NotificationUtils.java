@@ -8,8 +8,6 @@ import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 
 import scpp.globaleye.com.scppclient.R;
-import scpp.globaleye.com.scppclient.ui.UserSelect;
-import scpp.globaleye.com.scppclient.ui.Wallet;
 import scpp.globaleye.com.scppclient.ui.WalletInfo;
 
 /**

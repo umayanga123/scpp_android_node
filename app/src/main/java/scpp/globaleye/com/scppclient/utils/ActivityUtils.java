@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.view.Gravity;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -100,11 +99,8 @@ public class ActivityUtils {
      */
     public static TextView getCustomTextView(Context context, String title) {
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-       // Typeface typefaceThin = Typeface.createFromAsset(context.getAssets(), "fonts/vegur_2.otf");
-
         TextView textView = new TextView(context);
         textView.setText(title);
-       // textView.setTypeface(typefaceThin);
         textView.setTextColor(Color.parseColor("#4a4a4a"));
         textView.setGravity(Gravity.CENTER);
         textView.setTextSize(18);

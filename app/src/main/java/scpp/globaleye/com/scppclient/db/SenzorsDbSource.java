@@ -4,11 +4,9 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
+
 
 
 /**
@@ -42,7 +40,7 @@ public class SenzorsDbSource {
      * @param
      * @return Senz
      */
-    public String addCoin(String coin,String s_id) {
+    public String addCoin(String coin,String s_id,String userName) {
 
         // get matching user if exists
         db = SenzorsDbHelper.getInstance(context).getWritableDatabase();
@@ -60,6 +58,8 @@ public class SenzorsDbSource {
             String _id = cursor.getString(cursor.getColumnIndex(SenzorsDbContract.WalletCoins._ID));
             String _coin = cursor.getString(cursor.getColumnIndex(SenzorsDbContract.WalletCoins.COLUMN_NAME_COIN));
             String _time = cursor.getString(cursor.getColumnIndex(SenzorsDbContract.WalletCoins.COLUMN_NAME_TIME));
+            String _user_name = cursor.getString(cursor.getColumnIndex(SenzorsDbContract.WalletCoins.COLUMN_NAME_USER_NAME));
+
 
             // clear
             cursor.close();
@@ -77,6 +77,7 @@ public class SenzorsDbSource {
             values.put(SenzorsDbContract.WalletCoins.COLUMN_NAME_COIN, coin);
             values.put(SenzorsDbContract.WalletCoins.COLUMN_NAME_S_ID, s_id);
             values.put(SenzorsDbContract.WalletCoins.COLUMN_NAME_TIME, dateFormat);
+            values.put(SenzorsDbContract.WalletCoins.COLUMN_NAME_USER_NAME, userName);
 
             // inset data
             long id = db.insert(SenzorsDbContract.WalletCoins.TABLE_NAME, SenzorsDbContract.WalletCoins.COLUMN_NAME_COIN, values);
@@ -87,31 +88,21 @@ public class SenzorsDbSource {
     }
 
 
-    public Cursor getAllMiningDteail(){
+    public Cursor getAllMiningDteail(String userName){
         // get matching user if exists
         db = SenzorsDbHelper.getInstance(context).getWritableDatabase();
-        Cursor cursor = db.query(SenzorsDbContract.WalletCoins.TABLE_NAME, // table
-                null,null, // constraint
-                null, // prams
-                null, // order by
-                null, // group by
-                null); // join
+        String where = SenzorsDbContract.WalletCoins.COLUMN_NAME_USER_NAME + "=?";
+
+        Cursor cursor = db.query(SenzorsDbContract.WalletCoins.TABLE_NAME, ALL_KEYS, where, new String[] { userName }, null, null, null);
 
         return cursor;
     }
 
-    public Cursor getMiningRow(String coin){
-        String where = null;
-        Cursor c = 	db.query(true, SenzorsDbContract.WalletCoins.TABLE_NAME, ALL_KEYS,
-                where, null, null, null, null, null);
-        if (c != null) {
-            c.moveToFirst();
-        }
-        return c;
-    }
+
 
     // Get a specific row (by rowId)
     public Cursor getMiningRow(long rowId) {
+        db = SenzorsDbHelper.getInstance(context).getWritableDatabase();
         String where = SenzorsDbContract.WalletCoins._ID + "=" + rowId;
         Cursor c = 	db.query(true, SenzorsDbContract.WalletCoins.TABLE_NAME, ALL_KEYS,
                 where, null, null, null, null, null);
@@ -124,8 +115,10 @@ public class SenzorsDbSource {
 
     // Delete a row from the database, by rowId (primary key)
     public boolean deleteRow(long rowId) {
+        db = SenzorsDbHelper.getInstance(context).getWritableDatabase();
         String where = SenzorsDbContract.WalletCoins._ID + "=" + rowId;
         return db.delete(SenzorsDbContract.WalletCoins.TABLE_NAME, where, null) != 0;
+
     }
 
 
@@ -138,6 +131,7 @@ public class SenzorsDbSource {
      * @return
      */
      public boolean updateRow(long rowId, String coin,String s_id) {
+         db = SenzorsDbHelper.getInstance(context).getWritableDatabase();
          String where = SenzorsDbContract.WalletCoins._ID + "=" + rowId;
 
          Calendar c = Calendar.getInstance();

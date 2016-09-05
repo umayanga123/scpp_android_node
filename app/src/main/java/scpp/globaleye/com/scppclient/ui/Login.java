@@ -94,8 +94,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
     public void onClick(View v) {
         if (v == loginButton) {
             checkUserExit();
-            Toast.makeText(this, "loading app", Toast.LENGTH_LONG).show();
-            //initNavigation();
+           //initNavigation();
 
             //Intent intent = new Intent(Login.this, Home.class);
             //Login.this.startActivity(intent);
@@ -147,6 +146,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
             user = PreferenceUtils.getUser(this, username, password);
 
             if(user.getPassword().equals(password)){
+                Toast.makeText(this, "loading App", Toast.LENGTH_LONG).show();
                 onClickLogin();
             }else{
                 Toast.makeText(this, "Invalid Password", Toast.LENGTH_LONG).show();
@@ -155,6 +155,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
         } catch (NoUserException e) {
             // no user means navigate to login
             Toast.makeText(this, "Invalied User Name", Toast.LENGTH_LONG).show();
+        }catch (NullPointerException e){
+            Toast.makeText(this, "Please ,Register ", Toast.LENGTH_LONG).show();
         }
 
 
