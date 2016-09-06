@@ -124,6 +124,8 @@ public class SendCoinPeer extends AppCompatActivity implements View.OnClickListe
         isServiceBound=true;
         registerReceiver(senzMessageReceiver, new IntentFilter("scpp.globaleye.com.scppclient.SHARE_SENZ"));
         registerReceiver(senzMessageReceiver, new IntentFilter("scpp.globaleye.com.scppclient.DATA_SENZ"));
+        registerReceiver(senzMessageReceiver, new IntentFilter("scpp.globaleye.com.scppclient.PUT_SENZ"));
+
 
     }
 
@@ -408,7 +410,7 @@ public class SendCoinPeer extends AppCompatActivity implements View.OnClickListe
                     displayInformationMessageDialog("Checking Coin Value  is Fail", message);
                 }
             }
-        }else if(action.equalsIgnoreCase("scpp.globaleye.com.scppclient.DATA_SENZ")){
+        }else if(action.equalsIgnoreCase("scpp.globaleye.com.scppclient.PUT_SENZ")){
 
                 ActivityUtils.cancelProgressDialog();
                 isResponseReceived = true;

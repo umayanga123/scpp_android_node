@@ -410,7 +410,7 @@ public class WalletInfo extends AppCompatActivity implements View.OnClickListene
 
             String id = "_ID";
             String signature = "_SIGNATURE";
-            SenzTypeEnum senzType = SenzTypeEnum.DATA;
+            SenzTypeEnum senzType = SenzTypeEnum.PUT;
             User sender = new User("", userName);
             Senz senz = new Senz(id, signature, senzType, sender, rec, senzAttributes);
             senzService.send(senz);
