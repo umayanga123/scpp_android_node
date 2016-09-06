@@ -155,7 +155,9 @@ public class UserSelect extends AppCompatActivity implements View.OnClickListene
         if(v== shareButton){
                 if (reciverEditText.getText().toString().trim().isEmpty()) {
                     Toast.makeText(UserSelect.this, "Empty username", Toast.LENGTH_LONG).show();
-                } else {
+                } else if (reciverEditText.getText().toString().trim().equals(userName)){
+                    Toast.makeText(UserSelect.this, "Can't Send Coin to Your self", Toast.LENGTH_LONG).show();
+                }else {
                     if (NetworkUtil.isAvailableNetwork(UserSelect.this)) {
                         ActivityUtils.showProgressDialog(UserSelect.this, "Please wait...");
                         senzCountDownTimer.start();
