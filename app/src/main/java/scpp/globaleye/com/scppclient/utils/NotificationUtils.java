@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 import scpp.globaleye.com.scppclient.R;
 import scpp.globaleye.com.scppclient.ui.WalletInfo;
@@ -29,6 +30,7 @@ public class NotificationUtils {
     public static Notification getNotification(Context context, int icon, String title, String message,String userName) {
         // set up pending intent
         Intent intent = new Intent(context, WalletInfo.class);
+        Log.d("check notify user name", userName);
         intent.putExtra("USER_NAME", userName);
         intent.setAction(Intent.ACTION_MAIN);
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
@@ -43,6 +45,8 @@ public class NotificationUtils {
                 .setContentIntent(pendingIntent);
 
         return builder.build();
+
+
     }
 
     /**
@@ -54,7 +58,7 @@ public class NotificationUtils {
      */
     public static void showNotification(Context context, String title, String message,String userName) {
         // display notification
-        Notification notification = NotificationUtils.getNotification(context, R.drawable.notif, title, message+"from " +userName ,userName);
+        Notification notification = NotificationUtils.getNotification(context, R.drawable.notification, title, message ,userName);
         notification.flags |= Notification.FLAG_AUTO_CANCEL;
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(NotificationUtils.MESSAGE_NOTIFICATION_ID, notification);

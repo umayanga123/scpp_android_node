@@ -76,6 +76,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener, 
     // custom font
     private Typeface typeface;
     private  String userName;
+    private  double dis;
 
 
 
@@ -260,6 +261,8 @@ public class MapsActivity extends FragmentActivity implements LocationListener, 
         stop_lng = stop_loc.getLongitude();
         calcDistance();
 
+        dis = distance[0]/1000;
+
         tv.setText("Distance :" + (distance[0]/1000) +" Km");
 
     }
@@ -323,7 +326,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener, 
             HashMap<String, String> senzAttributes = new HashMap<>();
             senzAttributes.put("S_ID","1");
             senzAttributes.put("f","cc");
-            senzAttributes.put("S_PARA",tv.getText().toString().trim());
+            senzAttributes.put("S_PARA",String.valueOf(dis));
             senzAttributes.put("COIN","COIN");
 
             // new senz
@@ -465,6 +468,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener, 
         String dbState= dbSource.addCoin(cv,"2",userName);
         Toast.makeText(MapsActivity.this, dbState, Toast.LENGTH_LONG).show();
         start_btn.setEnabled(true);
+
 
 
 

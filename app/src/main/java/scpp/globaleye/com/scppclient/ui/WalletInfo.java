@@ -84,22 +84,32 @@ public class WalletInfo extends AppCompatActivity implements View.OnClickListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wallet_info);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
 
-        senzCountDownTimer = new SenzCountDownTimer(25000, 5000);
-        isResponseReceived = false;
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             userName= extras.getString("USER_NAME");
         }
 
-        initUi();
-        bindConService();
-        populateListViewInDB();
-        registerListClickCallback();
+        senzCountDownTimer = new SenzCountDownTimer(25000, 5000);
+        isResponseReceived = false;
+
+
+        if(!userName.equals("")){
+
+            initUi();
+            bindConService();
+            populateListViewInDB();
+            registerListClickCallback();
+
+        }else{
+            Toast.makeText(WalletInfo.this, "Login the System", Toast.LENGTH_LONG).show();
+        }
+
     }
 
 
@@ -467,6 +477,10 @@ public class WalletInfo extends AppCompatActivity implements View.OnClickListene
 
     public void logout(View v) {
         Intent intent = new Intent(WalletInfo.this, Login.class);
+        //intent.setAction("");
+        //intent.setData(null);
+        //intent.setFlags(0);
+        //getIntent().removeExtra("USER_NAME");
         WalletInfo.this.startActivity(intent);
         WalletInfo.this.finish();
     }
