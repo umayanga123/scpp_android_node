@@ -11,7 +11,7 @@
         tools:context=".ui.UserSelect">
 
         <include layout="@layout/activity_app_bar"
-            android:id="@+id/include2"
+            android:id="@+id/include"
              />
         <TextView
             android:layout_width="wrap_content"

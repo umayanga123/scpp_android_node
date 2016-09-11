@@ -9,6 +9,7 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.database.Cursor;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.CountDownTimer;
 import android.os.IBinder;
 import android.os.RemoteException;
@@ -475,12 +476,15 @@ public class WalletInfo extends AppCompatActivity implements View.OnClickListene
         WalletInfo.this.finish();
     }
 
+    public void goManual(View v){
+        Uri uri = Uri.parse("http://scpp.netne.net/");
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        intent.putExtra("USER_NAME", userName);
+        startActivity(intent);
+    }
+
     public void logout(View v) {
         Intent intent = new Intent(WalletInfo.this, Login.class);
-        //intent.setAction("");
-        //intent.setData(null);
-        //intent.setFlags(0);
-        //getIntent().removeExtra("USER_NAME");
         WalletInfo.this.startActivity(intent);
         WalletInfo.this.finish();
     }

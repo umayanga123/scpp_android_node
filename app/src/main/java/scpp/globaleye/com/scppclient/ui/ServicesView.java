@@ -1,6 +1,7 @@
 package scpp.globaleye.com.scppclient.ui;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -46,6 +47,8 @@ public class ServicesView extends AppCompatActivity implements View.OnClickListe
         carPoolong.setOnClickListener(ServicesView.this);
         buyItem.setOnClickListener(ServicesView.this);
     }
+
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -102,6 +105,13 @@ public class ServicesView extends AppCompatActivity implements View.OnClickListe
         intent.putExtra("USER_NAME", userName);
         ServicesView.this.startActivity(intent);
         ServicesView.this.finish();
+    }
+
+    public void goManual(View v){
+        Uri uri = Uri.parse("http://scpp.netne.net/");
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        intent.putExtra("USER_NAME", userName);
+        startActivity(intent);
     }
 
     public void logout(View v) {

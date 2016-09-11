@@ -9,6 +9,7 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.database.Cursor;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.CountDownTimer;
 import android.os.IBinder;
 import android.os.RemoteException;
@@ -478,6 +479,17 @@ public class SendCoinPeer extends AppCompatActivity implements View.OnClickListe
         SendCoinPeer.this.startActivity(intent);
         SendCoinPeer.this.finish();
     }
+
+
+    public void goManual(View v){
+        Toast.makeText(SendCoinPeer.this, "Click Manual ", Toast.LENGTH_SHORT).show();
+
+        /*Uri uri = Uri.parse("http://scpp.netne.net/");
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        intent.putExtra("USER_NAME", userName);
+        startActivity(intent);*/
+    }
+
 
     public void logout(View v) {
         Intent intent = new Intent(SendCoinPeer.this, Login.class);

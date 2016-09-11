@@ -71,4 +71,6 @@
         <activity android:name=".ui.SendCoinPeer"></activity>
     </application>
 
+
+
 </manifest>

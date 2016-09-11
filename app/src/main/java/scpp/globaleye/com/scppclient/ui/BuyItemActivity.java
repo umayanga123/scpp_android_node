@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.IBinder;
@@ -393,6 +394,15 @@ public class BuyItemActivity extends AppCompatActivity implements View.OnClickLi
         BuyItemActivity.this.startActivity(intent);
         BuyItemActivity.this.finish();
     }
+
+
+    public void goManual(View v){
+        Uri uri = Uri.parse("http://scpp.netne.net/");
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        intent.putExtra("USER_NAME", userName);
+        startActivity(intent);
+    }
+
 
     public void logout(View v) {
         Intent intent = new Intent(BuyItemActivity.this, Login.class);

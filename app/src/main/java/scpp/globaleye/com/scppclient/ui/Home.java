@@ -1,6 +1,6 @@
 package scpp.globaleye.com.scppclient.ui;
 
-import android.app.Dialog;
+
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -8,30 +8,23 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.HashMap;
 
 import scpp.globaleye.com.scppclient.ISenzService;
 import scpp.globaleye.com.scppclient.R;
-import scpp.globaleye.com.scppclient.utils.ActivityUtils;
 import scpp.globaleye.com.scppclient.utils.NotificationUtils;
 import scpp.globaleye.com.senzc.enums.enums.SenzTypeEnum;
 import scpp.globaleye.com.senzc.enums.pojos.Senz;
@@ -205,23 +198,6 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
 
 
 
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.logOut:
-                //your code here
-                Intent intent = new Intent(Home.this, Login.class);
-                Home.this.startActivity(intent);
-                Home.this.finish();
-                Toast.makeText(this, "Log Out", Toast.LENGTH_LONG).show();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-
     @Override
     public void onClick(View v) {
         if (v == profileimgButton) {
@@ -299,6 +275,13 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
 
     public void goHome(View v) {
 
+    }
+
+    public void goManual(View v){
+        Uri uri = Uri.parse("http://scpp.netne.net/");
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        intent.putExtra("USER_NAME", userName);
+        startActivity(intent);
     }
 
     public void goBack(View v) {

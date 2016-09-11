@@ -2,6 +2,7 @@ package scpp.globaleye.com.scppclient.ui;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -121,6 +122,14 @@ public class UpdateProfile extends AppCompatActivity implements View.OnClickList
         UpdateProfile.this.startActivity(intent);
         UpdateProfile.this.finish();
     }
+
+    public void goManual(View v){
+        Uri uri = Uri.parse("http://scpp.netne.net/");
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        intent.putExtra("USER_NAME", userName);
+        startActivity(intent);
+    }
+
 
     public void logout(View v) {
         Intent intent = new Intent(UpdateProfile.this, Login.class);

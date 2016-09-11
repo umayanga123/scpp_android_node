@@ -34,7 +34,7 @@
             android:id="@+id/icon1"
             android:src="@drawable/ic_maual_black"
             android:layout_height="match_parent"
-            android:onClick="goHome"/>
+            android:onClick="goManual"/>
 
 
 
