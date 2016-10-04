@@ -148,7 +148,7 @@ public class WalletInfo extends AppCompatActivity implements View.OnClickListene
     private void initUi() {
 
         btRefreshCoinValue= (Button) findViewById(R.id.btCoinTransaction);
-        coinValueTextView = (TextView) findViewById(R.id.tvCoinHash);
+        coinValueTextView = (TextView) findViewById(R.id.tvServiceLocation);
         coinList = (ListView)findViewById(R.id.CoinlistView);
 
         btRefreshCoinValue.setOnClickListener(WalletInfo.this);
@@ -177,10 +177,10 @@ public class WalletInfo extends AppCompatActivity implements View.OnClickListene
         Log.d("load cur", cur.toString());
 
         String[] filedName = new String[]
-                {SenzorsDbContract.WalletCoins.COLUMN_NAME_COIN ,
+                {SenzorsDbContract.WalletCoins.COLUMN_NAME_S_LOCATION ,
                        SenzorsDbContract.WalletCoins.COLUMN_NAME_TIME};
         int [] toViewIDs = new int[]
-                {R.id.tvCoinHash , R.id.tvDate};
+                {R.id.tvServiceLocation, R.id.tvDate};
 
 
         SimpleCursorAdapter myCursorAdaptor=new SimpleCursorAdapter(
@@ -212,12 +212,14 @@ public class WalletInfo extends AppCompatActivity implements View.OnClickListene
             String _id = cursor.getString(cursor.getColumnIndex(SenzorsDbContract.WalletCoins._ID));
             String coin = cursor.getString(cursor.getColumnIndex(SenzorsDbContract.WalletCoins.COLUMN_NAME_COIN));
             String s_id = cursor.getString(cursor.getColumnIndex(SenzorsDbContract.WalletCoins.COLUMN_NAME_S_ID));
+            String s_location = cursor.getString(cursor.getColumnIndex(SenzorsDbContract.WalletCoins.COLUMN_NAME_S_LOCATION));
             String time = cursor.getString(cursor.getColumnIndex(SenzorsDbContract.WalletCoins.COLUMN_NAME_TIME));
 
 
             String message = "ID: " + _id + "\n"
-                    + "coin: " + coin + "\n"
+                    + "coin: " + coin.substring(0,20) + "\n"
                     + "Service ID: " + s_id + "\n"
+                    + "Service :" + s_location + "\n"
                     + "Time: " + time;
             Toast.makeText(WalletInfo.this, message, Toast.LENGTH_LONG).show();
         }
@@ -392,11 +394,12 @@ public class WalletInfo extends AppCompatActivity implements View.OnClickListene
                 String sender = senz.getSender().getUsername();
                 Log.d("sender", sender);
                 String new_coin = senz.getAttributes().get("COIN");
+                String s_location = senz.getAttributes().get("S_LOCATION");
                 Toast.makeText(WalletInfo.this, "Coin Received :" +new_coin, Toast.LENGTH_LONG).show();
 
                 //add data to ddb
                 SenzorsDbSource dbSource = new SenzorsDbSource(WalletInfo.this);
-                String dbState= dbSource.addCoin(new_coin,senz.getAttributes().get("S_ID"),userName);
+                String dbState= dbSource.addCoin(new_coin,senz.getAttributes().get("S_ID"),userName,s_location);
                 populateListViewInDB();
 
                 User rec =new User("",sender);

@@ -19,6 +19,7 @@ public class SenzorsDbSource {
     private SQLiteDatabase db;
     public static final String[] ALL_KEYS = new String[] {SenzorsDbContract.WalletCoins._ID,
             SenzorsDbContract.WalletCoins.COLUMN_NAME_COIN,SenzorsDbContract.WalletCoins.COLUMN_NAME_S_ID,
+            SenzorsDbContract.WalletCoins.COLUMN_NAME_S_LOCATION,
             SenzorsDbContract.WalletCoins.COLUMN_NAME_TIME};
 
 
@@ -40,7 +41,7 @@ public class SenzorsDbSource {
      * @param
      * @return Senz
      */
-    public String addCoin(String coin,String s_id,String userName) {
+    public String addCoin(String coin,String s_id,String userName,String s_location) {
 
         // get matching user if exists
         db = SenzorsDbHelper.getInstance(context).getWritableDatabase();
@@ -58,6 +59,7 @@ public class SenzorsDbSource {
             String _id = cursor.getString(cursor.getColumnIndex(SenzorsDbContract.WalletCoins._ID));
             String _coin = cursor.getString(cursor.getColumnIndex(SenzorsDbContract.WalletCoins.COLUMN_NAME_COIN));
             String _time = cursor.getString(cursor.getColumnIndex(SenzorsDbContract.WalletCoins.COLUMN_NAME_TIME));
+            String _location = cursor.getString(cursor.getColumnIndex(SenzorsDbContract.WalletCoins.COLUMN_NAME_S_LOCATION));
             String _user_name = cursor.getString(cursor.getColumnIndex(SenzorsDbContract.WalletCoins.COLUMN_NAME_USER_NAME));
 
 
@@ -76,6 +78,7 @@ public class SenzorsDbSource {
             ContentValues values = new ContentValues();
             values.put(SenzorsDbContract.WalletCoins.COLUMN_NAME_COIN, coin);
             values.put(SenzorsDbContract.WalletCoins.COLUMN_NAME_S_ID, s_id);
+            values.put(SenzorsDbContract.WalletCoins.COLUMN_NAME_S_LOCATION,s_location);
             values.put(SenzorsDbContract.WalletCoins.COLUMN_NAME_TIME, dateFormat);
             values.put(SenzorsDbContract.WalletCoins.COLUMN_NAME_USER_NAME, userName);
 
@@ -130,7 +133,7 @@ public class SenzorsDbSource {
      * @param s_id
      * @return
      */
-     public boolean updateRow(long rowId, String coin,String s_id) {
+     public boolean updateRow(long rowId, String coin,String s_id , String s_location) {
          db = SenzorsDbHelper.getInstance(context).getWritableDatabase();
          String where = SenzorsDbContract.WalletCoins._ID + "=" + rowId;
 
@@ -141,6 +144,7 @@ public class SenzorsDbSource {
          ContentValues newValues = new ContentValues();
          newValues.put(SenzorsDbContract.WalletCoins.COLUMN_NAME_COIN, coin);
          newValues.put(SenzorsDbContract.WalletCoins.COLUMN_NAME_S_ID, s_id);
+         newValues.put(SenzorsDbContract.WalletCoins.COLUMN_NAME_S_LOCATION, s_location);
          newValues.put(SenzorsDbContract.WalletCoins.COLUMN_NAME_TIME, dateFormat);
 
          // Insert it into the database.

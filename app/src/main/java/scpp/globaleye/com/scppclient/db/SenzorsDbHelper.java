@@ -30,6 +30,7 @@ public class SenzorsDbHelper  extends SQLiteOpenHelper {
                     SenzorsDbContract.WalletCoins.COLUMN_NAME_COIN + TEXT_TYPE + " UNIQUE NOT NULL" + "," +
                     SenzorsDbContract.WalletCoins.COLUMN_NAME_TIME + TEXT_TYPE +","+
                     SenzorsDbContract.WalletCoins.COLUMN_NAME_S_ID + TEXT_TYPE +","+
+                    SenzorsDbContract.WalletCoins.COLUMN_NAME_S_LOCATION + TEXT_TYPE +","+
                     SenzorsDbContract.WalletCoins.COLUMN_NAME_USER_NAME + TEXT_TYPE +
                     " )";
 

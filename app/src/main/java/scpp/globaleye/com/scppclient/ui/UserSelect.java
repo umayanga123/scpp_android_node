@@ -180,6 +180,7 @@ public class UserSelect extends AppCompatActivity implements View.OnClickListene
             HashMap<String, String> senzAttributes = new HashMap<>();
             senzAttributes.put("COIN", "COIN");
             senzAttributes.put("S_ID","S_ID");
+            senzAttributes.put("S_LOCATION","S_LOCATION");
             senzAttributes.put("MSG", "MSG");
             senzAttributes.put("time", ((Long) (System.currentTimeMillis() / 1000)).toString());
 

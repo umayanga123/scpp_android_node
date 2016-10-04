@@ -62,6 +62,8 @@ public class SendCoinPeer extends AppCompatActivity implements View.OnClickListe
     private String receiver;
     private Long recordId;
     private String s_id;
+    private String s_location;
+    private String coin;
 
 
 
@@ -148,7 +150,7 @@ public class SendCoinPeer extends AppCompatActivity implements View.OnClickListe
     private void initUi() {
 
         btSendCoin= (Button) findViewById(R.id.btCoinTransaction);
-        coinhashTextView= (TextView) findViewById(R.id.tvCoinHash);
+        coinhashTextView= (TextView) findViewById(R.id.tvServiceLocation);
         coinList = (ListView)findViewById(R.id.CoinlistView);
 
         btSendCoin.setOnClickListener(SendCoinPeer.this);
@@ -177,10 +179,11 @@ public class SendCoinPeer extends AppCompatActivity implements View.OnClickListe
         Log.d("load cur", cur.toString());
 
         String[] filedName = new String[]
-                {SenzorsDbContract.WalletCoins.COLUMN_NAME_COIN ,
+                {SenzorsDbContract.WalletCoins.COLUMN_NAME_S_LOCATION ,
                         SenzorsDbContract.WalletCoins.COLUMN_NAME_TIME};
+
         int [] toViewIDs = new int[]
-                {R.id.tvCoinHash , R.id.tvDate};
+                {R.id.tvServiceLocation, R.id.tvDate};
 
 
         SimpleCursorAdapter myCursorAdaptor=new SimpleCursorAdapter(
@@ -209,17 +212,19 @@ public class SendCoinPeer extends AppCompatActivity implements View.OnClickListe
         Cursor cursor = dbSource.getMiningRow(idInDB);
         if (cursor.moveToFirst()) {
             String _id = cursor.getString(cursor.getColumnIndex(SenzorsDbContract.WalletCoins._ID));
-            String coin = cursor.getString(cursor.getColumnIndex(SenzorsDbContract.WalletCoins.COLUMN_NAME_COIN));
+            coin = cursor.getString(cursor.getColumnIndex(SenzorsDbContract.WalletCoins.COLUMN_NAME_COIN));
             s_id = cursor.getString(cursor.getColumnIndex(SenzorsDbContract.WalletCoins.COLUMN_NAME_S_ID));
+            s_location = cursor.getString(cursor.getColumnIndex(SenzorsDbContract.WalletCoins.COLUMN_NAME_S_LOCATION));
             String time = cursor.getString(cursor.getColumnIndex(SenzorsDbContract.WalletCoins.COLUMN_NAME_TIME));
 
 
             String message = "ID: " + _id + "\n"
-                    + "coin: " + coin + "\n"
+                    + "coin: " + coin.substring(0,20) + "\n"
                     + "Service ID: " + s_id + "\n"
+                    + "Service :" + s_location +"" + "\n"
                     + "Time: " + time;
 
-            coinhashTextView.setText(coin);
+            coinhashTextView.setText(coin.substring(0,20));
             recordId  = idInDB;
             Toast.makeText(SendCoinPeer.this, message, Toast.LENGTH_LONG).show();
         }
@@ -289,9 +294,9 @@ public class SendCoinPeer extends AppCompatActivity implements View.OnClickListe
         try {
             // create senz attributes
             HashMap<String, String> senzAttributes = new HashMap<>();
-            senzAttributes.put("COIN",coinhashTextView.getText().toString().trim());
+            senzAttributes.put("COIN",coin);
             senzAttributes.put("S_ID",s_id);
-
+            senzAttributes.put("S_LOCATION" ,s_location);
             senzAttributes.put("MSG","OK");
             senzAttributes.put("time", ((Long) (System.currentTimeMillis() / 1000)).toString());
 
@@ -482,12 +487,10 @@ public class SendCoinPeer extends AppCompatActivity implements View.OnClickListe
 
 
     public void goManual(View v){
-        Toast.makeText(SendCoinPeer.this, "Click Manual ", Toast.LENGTH_SHORT).show();
-
-        /*Uri uri = Uri.parse("http://scpp.netne.net/");
+        Uri uri = Uri.parse("http://scpp.netne.net/");
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
         intent.putExtra("USER_NAME", userName);
-        startActivity(intent);*/
+        startActivity(intent);
     }
 
 

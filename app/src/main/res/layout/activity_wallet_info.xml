@@ -39,7 +39,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/coin_Value"
-        android:id="@+id/tvCoinHash"
+        android:id="@+id/tvServiceLocation"
         android:textColor="#090909"
         android:layout_alignTop="@+id/textView2"
         android:layout_centerHorizontal="true" />
@@ -49,9 +49,9 @@
         android:layout_height="wrap_content"
         android:text="Refresh"
         android:id="@+id/btCoinTransaction"
-        android:layout_below="@+id/tvCoinHash"
-        android:layout_alignLeft="@+id/tvCoinHash"
-        android:layout_alignStart="@+id/tvCoinHash" />
+        android:layout_below="@+id/tvServiceLocation"
+        android:layout_alignLeft="@+id/tvServiceLocation"
+        android:layout_alignStart="@+id/tvServiceLocation" />
 
     <ListView
         android:layout_width="wrap_content"
