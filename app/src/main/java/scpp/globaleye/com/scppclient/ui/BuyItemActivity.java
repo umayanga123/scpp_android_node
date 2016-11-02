@@ -27,12 +27,16 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 
 import scpp.globaleye.com.scppclient.ISenzService;
 import scpp.globaleye.com.scppclient.R;
 import scpp.globaleye.com.scppclient.db.SenzorsDbSource;
 import scpp.globaleye.com.scppclient.utils.ActivityUtils;
+import scpp.globaleye.com.scppclient.utils.AeSimpleSHA1;
 import scpp.globaleye.com.scppclient.utils.NetworkUtil;
 import scpp.globaleye.com.senzc.enums.enums.SenzTypeEnum;
 import scpp.globaleye.com.senzc.enums.pojos.Senz;
@@ -220,7 +224,7 @@ public class BuyItemActivity extends AppCompatActivity implements View.OnClickLi
             senzAttributes.put("f","cc");
             senzAttributes.put("S_PARA",etBillAmount.getText().toString());
             senzAttributes.put("COIN","COIN");
-            //senzAttributes.put("time", ((Long) (System.currentTimeMillis() / 1000)).toString());
+            senzAttributes.put("TIME", ((Long) (System.currentTimeMillis() / 1000)).toString());
 
             // new senz
             String id = "_ID";
@@ -304,6 +308,20 @@ public class BuyItemActivity extends AppCompatActivity implements View.OnClickLi
                 senzCountDownTimer.cancel();
 
                 String cv = senz.getAttributes().get("COIN");
+                String format_date = senz.getAttributes().get("TIME");
+
+                Log.d("para", cv + " : " + format_date + " :" + userName + " : " + etBillAmount.getText().toString());
+                String coin_para = etBillAmount.getText().toString()+""+format_date+""+userName;
+                //write hash function
+                try {
+                    String s = AeSimpleSHA1.SHA1(coin_para);
+                    Log.d("RE_GENERATED_HASH" , s);  //ea6793c63c46b4432abc1e9c078970eb09bc4e85
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+
 
                 if (cv != null) {
                     onPostShare(senz);

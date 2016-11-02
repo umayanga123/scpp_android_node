@@ -34,6 +34,19 @@ public class SenzorsDbHelper  extends SQLiteOpenHelper {
                     SenzorsDbContract.WalletCoins.COLUMN_NAME_USER_NAME + TEXT_TYPE +
                     " )";
 
+
+    private static final String SQL_CREATE_VERIFY_COINS =
+            "CREATE TABLE " + SenzorsDbContract.VerifyCoins.TABLE_NAME + " (" +
+                    SenzorsDbContract.VerifyCoins._ID + " INTEGER PRIMARY KEY AUTOINCREMENT" + "," +
+                    SenzorsDbContract.VerifyCoins.COLUMN_NAME_COIN + TEXT_TYPE + " UNIQUE NOT NULL" + "," +
+                    SenzorsDbContract.VerifyCoins.COLUMN_NAME_SPARA + TEXT_TYPE +","+
+                    SenzorsDbContract.VerifyCoins.COLUMN_NAME_S_ID + TEXT_TYPE +","+
+                    SenzorsDbContract.VerifyCoins.COLUMN_NAME_GENERETED_DATE + TEXT_TYPE +","+
+                    SenzorsDbContract.VerifyCoins.COLUMN_NAME_CREATER + TEXT_TYPE +","+
+                    SenzorsDbContract.VerifyCoins.COLUMN_NAME_VerifyState + TEXT_TYPE +
+                    " )";
+
+
     /**
      * Init context
      * Init database
@@ -61,6 +74,7 @@ public class SenzorsDbHelper  extends SQLiteOpenHelper {
         Log.d(TAG, "OnCreate: creating db helper, db version - " + DATABASE_VERSION);
         Log.d(TAG, SQL_CREATE_MINING_DETAIL);
         db.execSQL(SQL_CREATE_MINING_DETAIL);
+        db.execSQL(SQL_CREATE_VERIFY_COINS);
     }
 
     @Override
