@@ -46,7 +46,7 @@ public class SenzorsDbSource {
 
 
     /**
-     * Check Coin if exists in the database, other wise stor a coin in db
+     * Check Coin if exists in the database, other wise store a coin in db
      *
      * @param
      * @return Senz
@@ -168,12 +168,12 @@ public class SenzorsDbSource {
      * @param
      * @return Senz
      */
-    public String addVerifyCoin(String coin,String s_id,String userNamen) {
+    public String addVerifyCoin(String coin,String s_para,String s_id,String create_date,String userName,String state) {
 
         // get matching user if exists
-        /*db = SenzorsDbHelper.getInstance(context).getWritableDatabase();
-        Cursor cursor = db.query(SenzorsDbContract.WalletCoins.TABLE_NAME, // table
-                null, SenzorsDbContract.WalletCoins.COLUMN_NAME_COIN + "=?", // constraint
+        db = SenzorsDbHelper.getInstance(context).getWritableDatabase();
+        Cursor cursor = db.query(SenzorsDbContract.VerifyCoins.TABLE_NAME, // table
+                null, SenzorsDbContract.VerifyCoins.COLUMN_NAME_COIN + "=?", // constraint
                 new String[]{coin}, // prams
                 null, // order by
                 null, // group by
@@ -183,39 +183,37 @@ public class SenzorsDbSource {
             // have matching user
             // so get user data
             // we return id as password since we no storing users password in database
-            String _id = cursor.getString(cursor.getColumnIndex(SenzorsDbContract.WalletCoins._ID));
-            String _coin = cursor.getString(cursor.getColumnIndex(SenzorsDbContract.WalletCoins.COLUMN_NAME_COIN));
-            String _time = cursor.getString(cursor.getColumnIndex(SenzorsDbContract.WalletCoins.COLUMN_NAME_TIME));
-            String _location = cursor.getString(cursor.getColumnIndex(SenzorsDbContract.WalletCoins.COLUMN_NAME_S_LOCATION));
-            String _user_name = cursor.getString(cursor.getColumnIndex(SenzorsDbContract.WalletCoins.COLUMN_NAME_USER_NAME));
+            String _id = cursor.getString(cursor.getColumnIndex(SenzorsDbContract.VerifyCoins._ID));
+            String _coin = cursor.getString(cursor.getColumnIndex(SenzorsDbContract.VerifyCoins.COLUMN_NAME_COIN));
+            String _para = cursor.getString(cursor.getColumnIndex(SenzorsDbContract.VerifyCoins.COLUMN_NAME_SPARA));
+            String _s_id = cursor.getString(cursor.getColumnIndex(SenzorsDbContract.VerifyCoins.COLUMN_NAME_S_ID));
+            String _generated_date = cursor.getString(cursor.getColumnIndex(SenzorsDbContract.VerifyCoins.COLUMN_NAME_GENERETED_DATE));
+            String _creator = cursor.getString(cursor.getColumnIndex(SenzorsDbContract.VerifyCoins.COLUMN_NAME_CREATER));
+            String _state = cursor.getString(cursor.getColumnIndex(SenzorsDbContract.VerifyCoins.COLUMN_NAME_VerifyState));
 
 
             // clear
             cursor.close();
             db.close();
 
-            return "Coin Already Exist in Wallet";
+            return "Coin Already Already Verified";
         } else {
-            // no matching user
-            // so create user
-            Calendar c = Calendar.getInstance();
-            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String dateFormat = df.format(c.getTime());
+            // no matching details
 
             ContentValues values = new ContentValues();
-            values.put(SenzorsDbContract.WalletCoins.COLUMN_NAME_COIN, coin);
-            values.put(SenzorsDbContract.WalletCoins.COLUMN_NAME_S_ID, s_id);
-            values.put(SenzorsDbContract.WalletCoins.COLUMN_NAME_S_LOCATION,s_location);
-            values.put(SenzorsDbContract.WalletCoins.COLUMN_NAME_TIME, dateFormat);
-            values.put(SenzorsDbContract.WalletCoins.COLUMN_NAME_USER_NAME, userName);
+            values.put(SenzorsDbContract.VerifyCoins.COLUMN_NAME_COIN, coin);
+            values.put(SenzorsDbContract.VerifyCoins.COLUMN_NAME_SPARA, s_para);
+            values.put(SenzorsDbContract.VerifyCoins.COLUMN_NAME_S_ID, s_id);
+            values.put(SenzorsDbContract.VerifyCoins.COLUMN_NAME_GENERETED_DATE,create_date);
+            values.put(SenzorsDbContract.VerifyCoins.COLUMN_NAME_CREATER, userName);
+            values.put(SenzorsDbContract.VerifyCoins.COLUMN_NAME_VerifyState, state);
 
             // inset data
-            long id = db.insert(SenzorsDbContract.WalletCoins.TABLE_NAME, SenzorsDbContract.WalletCoins.COLUMN_NAME_COIN, values);
+            long id = db.insert(SenzorsDbContract.VerifyCoins.TABLE_NAME, SenzorsDbContract.VerifyCoins.COLUMN_NAME_COIN, values);
             cursor.close();
             db.close();
-            return "Save Coin To wallet Successfully";
-        }*/
-        return null;
+            return "Save Verified Successfully";
+        }
     }
 
 

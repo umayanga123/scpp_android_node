@@ -316,20 +316,19 @@ public class BuyItemActivity extends AppCompatActivity implements View.OnClickLi
                 try {
                     String s = AeSimpleSHA1.SHA1(coin_para);
                     Log.d("RE_GENERATED_HASH" , s);  //ea6793c63c46b4432abc1e9c078970eb09bc4e85
+                    if(cv.equals(s) && cv!= null){
+                        onPostShare(senz);
+                        sendResponse(senzService);
+                    }else{
+                        String message = "<font color=#000000>Seems we couldn't take coin contact with miners in this moment </font> <font color=#eada00>" + "<b>" + "</font>";
+                        displayInformationMessageDialog("Coin Mining Fail", message);
+                    }
                 } catch (NoSuchAlgorithmException e) {
                     e.printStackTrace();
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
 
-
-                if (cv != null) {
-                    onPostShare(senz);
-                    sendResponse(senzService);
-                } else {
-                    String message = "<font color=#000000>Seems we couldn't take coin contact with miners in this moment </font> <font color=#eada00>" + "<b>" + "</font>";
-                    displayInformationMessageDialog("Coin Mining Fail", message);
-                }
             }
         }
     }
@@ -373,10 +372,15 @@ public class BuyItemActivity extends AppCompatActivity implements View.OnClickLi
 
         isResponseReceived = false;
         String cv = senz.getAttributes().get("COIN");
+        String format_date = senz.getAttributes().get("TIME");
+        String s_para=etBillAmount.getText().toString();
+
         Toast.makeText(BuyItemActivity.this, "Recived New Coin " + cv, Toast.LENGTH_LONG).show();
 
         SenzorsDbSource dbSource = new SenzorsDbSource(BuyItemActivity.this);
         String dbState= dbSource.addCoin(cv,"2",userName ,shopNameSpiner.getSelectedItem().toString());
+        dbSource.addVerifyCoin(cv,s_para ,"2",userName,format_date,"verify_coin");
+
         Toast.makeText(BuyItemActivity.this, dbState, Toast.LENGTH_LONG).show();
         btbuyItem.setEnabled(true);
         //Log.d("DB_State", dbState);
