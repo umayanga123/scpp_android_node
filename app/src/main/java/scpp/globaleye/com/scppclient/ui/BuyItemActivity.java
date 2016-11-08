@@ -322,6 +322,7 @@ public class BuyItemActivity extends AppCompatActivity implements View.OnClickLi
                     }else{
                         String message = "<font color=#000000>Seems we couldn't take coin contact with miners in this moment </font> <font color=#eada00>" + "<b>" + "</font>";
                         displayInformationMessageDialog("Coin Mining Fail", message);
+                        // implement roll back protocol
                     }
                 } catch (NoSuchAlgorithmException e) {
                     e.printStackTrace();

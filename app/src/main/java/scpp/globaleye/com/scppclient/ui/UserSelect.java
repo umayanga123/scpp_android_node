@@ -183,6 +183,8 @@ public class UserSelect extends AppCompatActivity implements View.OnClickListene
             senzAttributes.put("S_LOCATION","S_LOCATION");
             senzAttributes.put("MSG", "MSG");
             senzAttributes.put("time", ((Long) (System.currentTimeMillis() / 1000)).toString());
+            senzAttributes.put("f","ctr"); //flag - coin transaction record
+
 
             // new senz
             String id = "_ID";
@@ -190,11 +192,15 @@ public class UserSelect extends AppCompatActivity implements View.OnClickListene
             SenzTypeEnum senzType = SenzTypeEnum.SHARE;
             User sender = new User("", userName);
             User receiver = new User("", reciverEditText.getText().toString().trim());
-
+            User base = new User("", "baseNode");
 
             //send quarry
             Senz senz = new Senz(id, signature, senzType, sender , receiver, senzAttributes);
             senzService.send(senz);
+
+            //send_base_transaction_request
+            Senz base_senz = new Senz(id, signature, senzType, sender ,base, senzAttributes);
+            senzService.send(base_senz);
 
 
         } catch (RemoteException e) {

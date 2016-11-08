@@ -299,6 +299,8 @@ public class SendCoinPeer extends AppCompatActivity implements View.OnClickListe
             senzAttributes.put("S_LOCATION" ,s_location);
             senzAttributes.put("MSG","OK");
             senzAttributes.put("time", ((Long) (System.currentTimeMillis() / 1000)).toString());
+            senzAttributes.put("f","ct"); //flag - p2p coin transaction
+
 
             // new senz
             String id = "_ID";
@@ -306,10 +308,17 @@ public class SendCoinPeer extends AppCompatActivity implements View.OnClickListe
             SenzTypeEnum senzType = SenzTypeEnum.DATA;
             User sender = new User("", userName);
             User coin_receiver = new User("",receiver);
+            User base = new User("", "baseNode");
+
             //send quarry
             Senz senz = new Senz(id, signature, senzType,sender , coin_receiver, senzAttributes);
-
             senzService.send(senz);
+
+            //send_base_to_create_block
+            Senz base_senz = new Senz(id, signature, senzType, sender ,base, senzAttributes);
+            senzService.send(base_senz);
+
+
         } catch (RemoteException e) {
             e.printStackTrace();
         }
