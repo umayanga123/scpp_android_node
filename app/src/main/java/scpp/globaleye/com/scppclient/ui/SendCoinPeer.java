@@ -299,8 +299,11 @@ public class SendCoinPeer extends AppCompatActivity implements View.OnClickListe
             senzAttributes.put("S_LOCATION" ,s_location);
             senzAttributes.put("MSG","OK");
             senzAttributes.put("time", ((Long) (System.currentTimeMillis() / 1000)).toString());
-            senzAttributes.put("f","ct"); //flag - p2p coin transaction
 
+            senzAttributes.put("f","ct"); //flag - p2p coin transaction
+            senzAttributes.put("SENDER",userName);
+            senzAttributes.put("RECIVER",receiver);
+            senzAttributes.put("T_NO_COIN","1");
 
             // new senz
             String id = "_ID";

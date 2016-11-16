@@ -183,8 +183,11 @@ public class UserSelect extends AppCompatActivity implements View.OnClickListene
             senzAttributes.put("S_LOCATION","S_LOCATION");
             senzAttributes.put("MSG", "MSG");
             senzAttributes.put("time", ((Long) (System.currentTimeMillis() / 1000)).toString());
-            senzAttributes.put("f","ctr"); //flag - coin transaction record
 
+            senzAttributes.put("f","ctr"); //flag - coin transaction record
+            senzAttributes.put("SENDER",userName);
+            senzAttributes.put("RECIVER",reciverEditText.getText().toString().trim());
+            senzAttributes.put("T_NO_COIN","T_NO_COIN");
 
             // new senz
             String id = "_ID";
