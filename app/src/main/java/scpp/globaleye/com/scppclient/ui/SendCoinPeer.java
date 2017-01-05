@@ -104,6 +104,7 @@ public class SendCoinPeer extends AppCompatActivity implements View.OnClickListe
         if (extras != null) {
             userName= extras.getString("USER_NAME");
             receiver = extras.getString("RECIVER");
+            Log.d(TAG, "#RECIVER" + receiver);
 
         }
 
@@ -141,7 +142,7 @@ public class SendCoinPeer extends AppCompatActivity implements View.OnClickListe
         super.onDestroy();
         if (isServiceBound) {
             unbindService(senzServiceConnection);
-            Log.d("unbind" , "call on destrot");
+            Log.d("unbind" , "call on destroy");
         }
         unregisterReceiver(senzMessageReceiver);
     }
@@ -311,15 +312,32 @@ public class SendCoinPeer extends AppCompatActivity implements View.OnClickListe
             SenzTypeEnum senzType = SenzTypeEnum.DATA;
             User sender = new User("", userName);
             User coin_receiver = new User("",receiver);
-            User base = new User("", "baseNode");
+            //User base = new User("", "baseNode");
+            //User node1 = new User("" ,"node1");
+
+
 
             //send quarry
             Senz senz = new Senz(id, signature, senzType,sender , coin_receiver, senzAttributes);
             senzService.send(senz);
 
+            senzAttributes.put("f","b_ct"); //flag-send share request to miners
+            User node1 = new User("" ,"node1");
+            User node3 = new User("" ,"node3");
+
+
             //send_base_to_create_block
-            Senz base_senz = new Senz(id, signature, senzType, sender ,base, senzAttributes);
-            senzService.send(base_senz);
+            //Senz base_senz = new Senz(id, signature, senzType, sender ,base, senzAttributes);
+            //senzService.send(base_senz);
+
+            //send_node1_to_create_block
+            Senz node1_senz = new Senz(id, signature, senzType, sender ,node1, senzAttributes);
+            senzService.send(node1_senz);
+
+            //send_node3_to_create_block
+            Senz node3_senz = new Senz(id, signature, senzType, sender ,node3, senzAttributes);
+            senzService.send(node3_senz);
+
 
 
         } catch (RemoteException e) {

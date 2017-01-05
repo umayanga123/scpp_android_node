@@ -195,15 +195,25 @@ public class UserSelect extends AppCompatActivity implements View.OnClickListene
             SenzTypeEnum senzType = SenzTypeEnum.SHARE;
             User sender = new User("", userName);
             User receiver = new User("", reciverEditText.getText().toString().trim());
-            User base = new User("", "baseNode");
+            //User base = new User("", "baseNode");
 
             //send quarry
             Senz senz = new Senz(id, signature, senzType, sender , receiver, senzAttributes);
             senzService.send(senz);
 
             //send_base_transaction_request
-            Senz base_senz = new Senz(id, signature, senzType, sender ,base, senzAttributes);
-            senzService.send(base_senz);
+            //Senz base_senz = new Senz(id, signature, senzType, sender ,base, senzAttributes);
+            //senzService.send(base_senz);
+
+            senzAttributes.put("f","b_ct"); //flag-send share request to miners
+            User node1 = new User("", "node1");
+            User node3 = new User("", "node3");
+
+            Senz node1_senz = new Senz(id, signature, senzType, sender ,node1, senzAttributes);
+            senzService.send(node1_senz);
+
+            Senz node3_senz = new Senz(id, signature, senzType, sender ,node3, senzAttributes);
+            senzService.send(node3_senz);
 
 
         } catch (RemoteException e) {
