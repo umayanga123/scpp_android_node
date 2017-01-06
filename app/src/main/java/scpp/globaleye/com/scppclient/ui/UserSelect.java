@@ -188,6 +188,8 @@ public class UserSelect extends AppCompatActivity implements View.OnClickListene
             senzAttributes.put("SENDER",userName);
             senzAttributes.put("RECIVER",reciverEditText.getText().toString().trim());
             senzAttributes.put("T_NO_COIN","T_NO_COIN");
+            //senzAttributes.put("PROB_VALUE","PROB_VALUE");
+
 
             // new senz
             String id = "_ID";

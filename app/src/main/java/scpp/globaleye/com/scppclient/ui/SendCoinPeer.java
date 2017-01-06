@@ -289,7 +289,7 @@ public class SendCoinPeer extends AppCompatActivity implements View.OnClickListe
 
     /**
      *
-     * SHARE #COIN_VALUE @baseNode
+     * SHARE #COIN_VALUE @baseNode ,miner one, miner two
      */
     private void sendCoin() {
         try {
@@ -305,6 +305,8 @@ public class SendCoinPeer extends AppCompatActivity implements View.OnClickListe
             senzAttributes.put("SENDER",userName);
             senzAttributes.put("RECIVER",receiver);
             senzAttributes.put("T_NO_COIN","1");
+           // senzAttributes.put("PROB_VALUE","PROB_VALUE");
+
 
             // new senz
             String id = "_ID";
@@ -329,6 +331,8 @@ public class SendCoinPeer extends AppCompatActivity implements View.OnClickListe
             //send_base_to_create_block
             //Senz base_senz = new Senz(id, signature, senzType, sender ,base, senzAttributes);
             //senzService.send(base_senz);
+
+
 
             //send_node1_to_create_block
             Senz node1_senz = new Senz(id, signature, senzType, sender ,node1, senzAttributes);
@@ -477,12 +481,14 @@ public class SendCoinPeer extends AppCompatActivity implements View.OnClickListe
 
     private void onPostReceived(Senz senz) {
         isResponseReceived = false;
-        //String cv = senz.getAttributes().get("COIN");
-
-        removeCoinFromDB();
+        String msg = senz.getAttributes().get("MSG");
+        if(msg.equals("Transaction_Success")){
+            removeCoinFromDB();
+        }else{
+            Toast.makeText(SendCoinPeer.this,msg, Toast.LENGTH_LONG).show();
+        }
 
         //Toast.makeText(SendCoinPeer.this, "Thank YOU", Toast.LENGTH_LONG).show();
-
 
     }
 

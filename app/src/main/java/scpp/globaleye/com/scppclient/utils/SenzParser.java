@@ -16,6 +16,8 @@ public class SenzParser {
     public static Senz parse(String senzMessage) {
 
         Log.d("Parser Masages" , senzMessage);
+
+
         // init sez with
         Senz senz = new Senz();
         senz.setAttributes(new HashMap<String, String>());

@@ -30,6 +30,7 @@ import android.widget.Toast;
 
 import java.util.HashMap;
 
+
 import scpp.globaleye.com.scppclient.ISenzService;
 import scpp.globaleye.com.scppclient.R;
 import scpp.globaleye.com.scppclient.db.SenzorsDbContract;
@@ -59,6 +60,8 @@ public class WalletInfo extends AppCompatActivity implements View.OnClickListene
     private Typeface typeface;
     private  String userName;
 
+    //probability value
+    private  int prob_value;
 
 
     // service interface
@@ -98,6 +101,7 @@ public class WalletInfo extends AppCompatActivity implements View.OnClickListene
 
         senzCountDownTimer = new SenzCountDownTimer(25000, 5000);
         isResponseReceived = false;
+        prob_value = 0;
 
 
         if(!userName.equals("")){
@@ -127,6 +131,8 @@ public class WalletInfo extends AppCompatActivity implements View.OnClickListene
         isServiceBound=true;
         registerReceiver(senzMessageReceiver, new IntentFilter("scpp.globaleye.com.scppclient.PUT_SENZ"));
         registerReceiver(senzMessageReceiver, new IntentFilter("scpp.globaleye.com.scppclient.DATA_SENZ"));
+        registerReceiver(senzMessageReceiver, new IntentFilter("scpp.globaleye.com.scppclient.SHARE_SENZ"));
+
 
     }
 
@@ -197,13 +203,13 @@ public class WalletInfo extends AppCompatActivity implements View.OnClickListene
 
     private void registerListClickCallback() {
          coinList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View viewClicked,
-                                    int position, long idInDB) {
+             @Override
+             public void onItemClick(AdapterView<?> parent, View viewClicked,
+                                     int position, long idInDB) {
 
-                displayToastForId(idInDB);
-            }
-        });
+                 displayToastForId(idInDB);
+             }
+         });
     }
 
     private void displayToastForId(long idInDB) {
@@ -371,7 +377,7 @@ public class WalletInfo extends AppCompatActivity implements View.OnClickListene
 
         if(action.equalsIgnoreCase("scpp.globaleye.com.scppclient.PUT_SENZ")) {
             boolean a =senz.getAttributes().containsKey("COIN_VALUE");
-
+            Log.d("b_cvt" , senz.getAttributes().get("f"));
             if (senz.getAttributes().containsKey("COIN_VALUE")) {
 
                 ActivityUtils.cancelProgressDialog();
@@ -387,6 +393,9 @@ public class WalletInfo extends AppCompatActivity implements View.OnClickListene
                     String message = "<font color=#000000>Seems we couldn't take coin value in this time </font> <font color=#eada00>" + "<b>" + "</font>";
                     displayInformationMessageDialog("Checking Coin Value  is Fail", message);
                 }
+            }else if(senz.getAttributes().get("f").equals("b_vct")){
+                this.prob_value =this.prob_value + 1 ;
+                Log.d("prob_value a", this.prob_value  + "");
             }
         }else if (senz != null && senz.getSenzType() == SenzTypeEnum.DATA) {
             if (senz.getAttributes().containsKey("COIN")) {
@@ -397,15 +406,39 @@ public class WalletInfo extends AppCompatActivity implements View.OnClickListene
                 String s_location = senz.getAttributes().get("S_LOCATION");
                 Toast.makeText(WalletInfo.this, "Coin Received :" +new_coin, Toast.LENGTH_LONG).show();
 
-                //add data to ddb
-                SenzorsDbSource dbSource = new SenzorsDbSource(WalletInfo.this);
-                String dbState= dbSource.addCoin(new_coin,senz.getAttributes().get("S_ID"),userName,s_location);
-                populateListViewInDB();
+                //probability check
+                check_tranaction_validity(senzService, new_coin,sender);
 
+                /*try {
+                    Thread.sleep(4500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }*/
+
+                double prob_level;
                 User rec =new User("",sender);
-                sendResponse(senzService, rec, true);
 
+                if(s_location.equals("Keels")){
+                    prob_level= (1/2.0)*100;
+                    Log.d("prob_level", prob_level + " " + this.prob_value);
+                }else{
+                    prob_level= (2/2.0)*100;
+                    Log.d("prob_level", prob_level + " " + this.prob_value);
 
+                }
+
+                if(prob_level >= 75.0){
+                    //add data to ddb
+                    SenzorsDbSource dbSource = new SenzorsDbSource(WalletInfo.this);
+                    String dbState= dbSource.addCoin(new_coin,senz.getAttributes().get("S_ID"),userName,s_location);
+                    populateListViewInDB(); //list refresh
+                    sendResponse(senzService, rec, true);
+                }else{
+                    //verification fail ack
+                    Toast.makeText(WalletInfo.this, "Transaction Verification Level Fail : " + String.valueOf(prob_level), Toast.LENGTH_LONG).show();
+                    sendResponse(senzService, rec, false);
+                    sendFaildAck(senzService,new_coin,sender,userName);
+                }
             }
         }
     }
@@ -417,24 +450,103 @@ public class WalletInfo extends AppCompatActivity implements View.OnClickListene
             HashMap<String, String> senzAttributes = new HashMap<>();
             senzAttributes.put("time", ((Long) (System.currentTimeMillis() / 1000)).toString());
             if (isDone){
-                senzAttributes.put("MSG", "Recived_Coin");
+                senzAttributes.put("MSG", "Transaction_Success");
             }else{
-                senzAttributes.put("MSG", "Not_Recived_Coin");
+                senzAttributes.put("MSG", "Transaction_Fail");
             }
 
             String id = "_ID";
             String signature = "_SIGNATURE";
             SenzTypeEnum senzType = SenzTypeEnum.PUT;
             User sender = new User("", userName);
+
             Senz senz = new Senz(id, signature, senzType, sender, rec, senzAttributes);
             senzService.send(senz);
+
+
 
         } catch (RemoteException e) {
             e.printStackTrace();
         }
     }
 
+    /***
+     *
+     * send Fails Ack to miners
+     *
+     * */
+    private void sendFaildAck(ISenzService senzService, String coin ,String sender ,String reciver) {
+        Log.d(TAG, "send fail ack to miner");
+        try {
+            // create senz attributes
+            HashMap<String, String> senzAttributes = new HashMap<>();
+            senzAttributes.put("COIN", coin);
+            senzAttributes.put("f","b_ct_ack"); //flag - coin transaction record
+            senzAttributes.put("COIN_SENDER",sender);
+            senzAttributes.put("COIN_RECIVER",reciver);
 
+            // new senz
+            String id = "_ID";
+            String signature = "_SIGNATURE";
+            SenzTypeEnum senzType = SenzTypeEnum.SHARE;
+            User coin_sender = new User("", userName);
+            User node1 = new User("", "node1");
+            User node3 = new User("", "node3");
+
+            Senz node1_senz = new Senz(id, signature, senzType, coin_sender ,node1, senzAttributes);
+            senzService.send(node1_senz);
+
+            Senz node3_senz = new Senz(id, signature, senzType, coin_sender ,node3, senzAttributes);
+            senzService.send(node3_senz);
+
+
+
+
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+    /**
+     *
+     * checking tranaction validity using Probability method
+     *
+     */
+    private void check_tranaction_validity(ISenzService senzService, String coin ,String coin_Sender){
+        Log.d("probaility_check", "request probability check");
+        this.prob_value = 0;
+
+        try {
+            // create senz attributes
+            HashMap<String, String> senzAttributes = new HashMap<>();
+            senzAttributes.put("COIN", "COIN");
+            senzAttributes.put("f","b_vct"); //flag - coin transaction record
+            senzAttributes.put("PROB_VALUE","PROB_VALUE");
+            senzAttributes.put("COIN_SENDER",coin_Sender);
+
+            // new senz
+            String id = "_ID";
+            String signature = "_SIGNATURE";
+            SenzTypeEnum senzType = SenzTypeEnum.SHARE;
+            User sender = new User("", userName);
+            User node1 = new User("", "node1");
+            User node3 = new User("", "node3");
+
+            Senz node1_senz = new Senz(id, signature, senzType, sender ,node1, senzAttributes);
+            senzService.send(node1_senz);
+
+            Senz node3_senz = new Senz(id, signature, senzType, sender ,node3, senzAttributes);
+            senzService.send(node3_senz);
+
+
+
+
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * Clear input fields and reset activity components
