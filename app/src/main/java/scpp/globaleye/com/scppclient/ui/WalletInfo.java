@@ -377,7 +377,7 @@ public class WalletInfo extends AppCompatActivity implements View.OnClickListene
 
         if(action.equalsIgnoreCase("scpp.globaleye.com.scppclient.PUT_SENZ")) {
             boolean a =senz.getAttributes().containsKey("COIN_VALUE");
-            Log.d("b_cvt" , senz.getAttributes().get("f"));
+            //Log.d("b_cvt" , senz.getAttributes().get("f"));
             if (senz.getAttributes().containsKey("COIN_VALUE")) {
 
                 ActivityUtils.cancelProgressDialog();
@@ -393,10 +393,10 @@ public class WalletInfo extends AppCompatActivity implements View.OnClickListene
                     String message = "<font color=#000000>Seems we couldn't take coin value in this time </font> <font color=#eada00>" + "<b>" + "</font>";
                     displayInformationMessageDialog("Checking Coin Value  is Fail", message);
                 }
-            }else if(senz.getAttributes().get("f").equals("b_vct")){
+            }/*else if(senz.getAttributes().get("f").equals("b_vct")){
                 this.prob_value =this.prob_value + 1 ;
                 Log.d("prob_value a", this.prob_value  + "");
-            }
+            }*/
         }else if (senz != null && senz.getSenzType() == SenzTypeEnum.DATA) {
             if (senz.getAttributes().containsKey("COIN")) {
 
