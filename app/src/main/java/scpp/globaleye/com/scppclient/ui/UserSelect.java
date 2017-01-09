@@ -207,15 +207,33 @@ public class UserSelect extends AppCompatActivity implements View.OnClickListene
             //Senz base_senz = new Senz(id, signature, senzType, sender ,base, senzAttributes);
             //senzService.send(base_senz);
 
-            senzAttributes.put("f","b_ct"); //flag-send share request to miners
+
+
             User node1 = new User("", "node1");
             User node3 = new User("", "node3");
 
-            Senz node1_senz = new Senz(id, signature, senzType, sender ,node1, senzAttributes);
-            senzService.send(node1_senz);
+            Log.d("Reciver text" ,reciverEditText.getText().toString().trim().equals("node1")+"");
 
-            Senz node3_senz = new Senz(id, signature, senzType, sender ,node3, senzAttributes);
-            senzService.send(node3_senz);
+            if(reciverEditText.getText().toString().trim().equals("node1")){
+                senzAttributes.put("f","ctr");
+                Senz node1_senz = new Senz(id, signature, senzType, sender ,node3, senzAttributes);
+                senzService.send(node1_senz);
+
+            }else if(reciverEditText.getText().toString().trim().equals("node3")){
+                senzAttributes.put("f","ctr");
+                Senz node1_senz = new Senz(id, signature, senzType, sender ,node1, senzAttributes);
+                senzService.send(node1_senz);
+
+            }else{
+                senzAttributes.put("f","b_ct"); //flag-send share request to miners
+                Senz node1_senz = new Senz(id, signature, senzType, sender ,node1, senzAttributes);
+                senzService.send(node1_senz);
+
+                Senz node3_senz = new Senz(id, signature, senzType, sender ,node3, senzAttributes);
+                senzService.send(node3_senz);
+
+            }
+
 
 
         } catch (RemoteException e) {
@@ -391,7 +409,7 @@ public class UserSelect extends AppCompatActivity implements View.OnClickListene
         intent.putExtra("USER_NAME", userName);
         intent.putExtra("RECIVER" , reciverEditText.getText().toString().trim());
 
-        reciverEditText.setText("");
+        //reciverEditText.setText("");
         Toast.makeText(UserSelect.this, "user request coins", Toast.LENGTH_LONG).show();
         UserSelect.this.startActivity(intent);
         UserSelect.this.finish();

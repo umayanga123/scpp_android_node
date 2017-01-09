@@ -323,7 +323,7 @@ public class SendCoinPeer extends AppCompatActivity implements View.OnClickListe
             Senz senz = new Senz(id, signature, senzType,sender , coin_receiver, senzAttributes);
             senzService.send(senz);
 
-            senzAttributes.put("f","b_ct"); //flag-send share request to miners
+
             User node1 = new User("" ,"node1");
             User node3 = new User("" ,"node3");
 
@@ -332,15 +332,35 @@ public class SendCoinPeer extends AppCompatActivity implements View.OnClickListe
             //Senz base_senz = new Senz(id, signature, senzType, sender ,base, senzAttributes);
             //senzService.send(base_senz);
 
+            Log.d("Reciver text" ,receiver+"");
 
 
-            //send_node1_to_create_block
-            Senz node1_senz = new Senz(id, signature, senzType, sender ,node1, senzAttributes);
-            senzService.send(node1_senz);
+            if(receiver.equals("node1")){
+                senzAttributes.put("f","ct"); //flag-send share request to miners
+                //send_node3_to_create_block
+                Senz node3_senz = new Senz(id, signature, senzType, sender ,node3, senzAttributes);
+                senzService.send(node3_senz);
 
-            //send_node3_to_create_block
-            Senz node3_senz = new Senz(id, signature, senzType, sender ,node3, senzAttributes);
-            senzService.send(node3_senz);
+
+            }else if(receiver.equals("node3")){
+                senzAttributes.put("f","ct"); //flag-send share request to miners
+                //send_node1_to_create_block
+                Senz node1_senz = new Senz(id, signature, senzType, sender ,node1, senzAttributes);
+                senzService.send(node1_senz);
+
+
+            }else{
+
+                senzAttributes.put("f","b_ct"); //flag-send share request to miners
+                //send_node1_to_create_block
+                Senz node1_senz = new Senz(id, signature, senzType, sender ,node1, senzAttributes);
+                senzService.send(node1_senz);
+
+                //send_node3_to_create_block
+                Senz node3_senz = new Senz(id, signature, senzType, sender ,node3, senzAttributes);
+                senzService.send(node3_senz);
+            }
+
 
 
 
