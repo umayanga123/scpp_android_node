@@ -134,7 +134,7 @@ public class BuyItemActivity extends AppCompatActivity implements View.OnClickLi
         super.onDestroy();
         if (isServiceBound) {
             unbindService(senzServiceConnection);
-            Log.d("unbind" , "call on destrot");
+            Log.d("unbind" , "call on destroy");
         }
         unregisterReceiver(senzMessageReceiver);
     }

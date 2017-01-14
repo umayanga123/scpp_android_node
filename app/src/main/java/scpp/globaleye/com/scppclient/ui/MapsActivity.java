@@ -40,12 +40,15 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 
 
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 
 import scpp.globaleye.com.scppclient.ISenzService;
 import scpp.globaleye.com.scppclient.R;
 import scpp.globaleye.com.scppclient.db.SenzorsDbSource;
 import scpp.globaleye.com.scppclient.utils.ActivityUtils;
+import scpp.globaleye.com.scppclient.utils.AeSimpleSHA1;
 import scpp.globaleye.com.scppclient.utils.NetworkUtil;
 import scpp.globaleye.com.senzc.enums.enums.SenzTypeEnum;
 import scpp.globaleye.com.senzc.enums.pojos.Senz;
@@ -161,7 +164,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener, 
         super.onDestroy();
         if (isServiceBound) {
             unbindService(senzServiceConnection);
-            Log.d("unbind" , "call on destrot");
+            Log.d("unbind" , "call on destroy");
         }
         unregisterReceiver(senzMessageReceiver);
     }
@@ -263,7 +266,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener, 
 
         dis = distance[0]/1000;
 
-        tv.setText("Distance :" + (distance[0]/1000) +" Km");
+        tv.setText("Distance :" + (distance[0] / 1000) + " Km");
 
     }
 
@@ -328,6 +331,8 @@ public class MapsActivity extends FragmentActivity implements LocationListener, 
             senzAttributes.put("f","cc");
             senzAttributes.put("S_PARA",String.valueOf(dis));
             senzAttributes.put("COIN","COIN");
+            senzAttributes.put("TIME", ((Long) (System.currentTimeMillis() / 1000)).toString());
+
 
             // new senz
             String id = "_ID";
@@ -411,13 +416,22 @@ public class MapsActivity extends FragmentActivity implements LocationListener, 
                 senzCountDownTimer.cancel();
 
                 String cv = senz.getAttributes().get("COIN");
+                String format_date = senz.getAttributes().get("TIME");
+                String coin_para = String.valueOf(dis)+""+format_date+""+userName;
 
-                if (cv != null) {
-                    onPostShare(senz);
-                    sendResponse(senzService);
-                } else {
-                    String message = "<font color=#000000>Seems we couldn't take coin contact with miners in this moment </font> <font color=#eada00>" + "<b>" + "</font>";
-                    displayInformationMessageDialog("Coin Mining Fail", message);
+                try {
+                    String s = AeSimpleSHA1.SHA1(coin_para);
+                    if (cv.equals(s) && cv != null) {
+                        onPostShare(senz);
+                        sendResponse(senzService);
+                    } else {
+                        String message = "<font color=#000000>Seems we couldn't take coin contact with miners in this moment </font> <font color=#eada00>" + "<b>" + "</font>";
+                        displayInformationMessageDialog("Coin Mining Fail", message);
+                    }
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
                 }
             }
         }
