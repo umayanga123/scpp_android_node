@@ -339,7 +339,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener, 
             String signature = "_SIGNATURE";
             SenzTypeEnum senzType = SenzTypeEnum.SHARE;
             User sender = new User("", userName);
-            User receiver = new User("", "node1");
+            User receiver = new User("", "node3");
             //send quarry
             Senz senz = new Senz(id, signature, senzType,sender , receiver, senzAttributes);
 
