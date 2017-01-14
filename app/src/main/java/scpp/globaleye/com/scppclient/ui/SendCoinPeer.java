@@ -320,7 +320,7 @@ public class SendCoinPeer extends AppCompatActivity implements View.OnClickListe
 
 
             //send quarry
-            Senz senz = new Senz(id, signature, senzType,sender , coin_receiver, senzAttributes);
+            Senz senz = new Senz(id, signature, senzType, sender , coin_receiver, senzAttributes);
             senzService.send(senz);
 
 
@@ -332,17 +332,19 @@ public class SendCoinPeer extends AppCompatActivity implements View.OnClickListe
             //Senz base_senz = new Senz(id, signature, senzType, sender ,base, senzAttributes);
             //senzService.send(base_senz);
 
-            Log.d("Reciver text" ,receiver+"");
+            Log.d("Reciver text" ,receiver.equals("node3")+"");
 
 
             if(receiver.equals("node1")){
-                senzAttributes.put("f","ct"); //flag-send share request to miners
+                Log.d("node_id","node1");
+                senzAttributes.put("f", "ct"); //flag-send share request to miners
                 //send_node3_to_create_block
                 Senz node3_senz = new Senz(id, signature, senzType, sender ,node3, senzAttributes);
                 senzService.send(node3_senz);
 
 
             }else if(receiver.equals("node3")){
+                Log.d("node_id","node3");
                 senzAttributes.put("f","ct"); //flag-send share request to miners
                 //send_node1_to_create_block
                 Senz node1_senz = new Senz(id, signature, senzType, sender ,node1, senzAttributes);
@@ -350,7 +352,7 @@ public class SendCoinPeer extends AppCompatActivity implements View.OnClickListe
 
 
             }else{
-
+                Log.d("node_id","else wada");
                 senzAttributes.put("f","b_ct"); //flag-send share request to miners
                 //send_node1_to_create_block
                 Senz node1_senz = new Senz(id, signature, senzType, sender ,node1, senzAttributes);
