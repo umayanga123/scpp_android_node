@@ -90,16 +90,14 @@ public class MapsActivity extends FragmentActivity implements LocationListener, 
     // service connection
     private ServiceConnection senzServiceConnection = new ServiceConnection() {
         public void onServiceConnected(ComponentName className, IBinder service) {
-            Log.d("TAG", "Connected with senz service");
+            //Log.d("TAG", "Connected with senz service");
             senzService = ISenzService.Stub.asInterface(service);
 
         }
 
         public void onServiceDisconnected(ComponentName className) {
             senzService = null;
-            Log.d("TAG", "Disconnected from senz service");
-
-
+            //Log.d("TAG", "Disconnected from senz service");
         }
     };
 
@@ -123,8 +121,6 @@ public class MapsActivity extends FragmentActivity implements LocationListener, 
 
         init();
         bindConService();
-
-
     }
 
 
@@ -164,7 +160,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener, 
         super.onDestroy();
         if (isServiceBound) {
             unbindService(senzServiceConnection);
-            Log.d("unbind" , "call on destroy");
+            //Log.d("unbind" , "call on destroy");
         }
         unregisterReceiver(senzMessageReceiver);
     }
@@ -194,9 +190,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener, 
 
     @Override
     public void onLocationChanged(Location loc) {
-
         location = loc;
-
     }
 
     @Override
@@ -245,7 +239,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener, 
 
         if(location!=null){
             Toast.makeText(this,"GPS FIXED", Toast.LENGTH_LONG).show();
-             lat=location.getLatitude();
+            lat=location.getLatitude();
             lng=location.getLongitude();
         }
         locationManager.requestLocationUpdates(provider,0,0, this);
@@ -300,7 +294,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener, 
             // if response not received yet, resend share
             if (!isResponseReceived) {
                 miningCoin();
-                Log.d(TAG, "Response not received yet");
+                //Log.d(TAG, "Response not received yet");
             }
         }
 
@@ -391,7 +385,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener, 
     private BroadcastReceiver senzMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.d(TAG, "Got message from Senz service");
+            //Log.d(TAG, "Got message from Senz service");
             handleMessage(intent);
         }
     };
@@ -472,8 +466,6 @@ public class MapsActivity extends FragmentActivity implements LocationListener, 
      */
     private void onPostShare(Senz senz) {
 
-
-
         isResponseReceived = false;
         String cv = senz.getAttributes().get("COIN");
         Toast.makeText(MapsActivity.this, "Recived New Coin " + cv, Toast.LENGTH_LONG).show();
@@ -482,10 +474,6 @@ public class MapsActivity extends FragmentActivity implements LocationListener, 
         String dbState= dbSource.addCoin(cv,"2",userName ,"Ride " + tv.getText().toString());
         Toast.makeText(MapsActivity.this, dbState, Toast.LENGTH_LONG).show();
         start_btn.setEnabled(true);
-
-
-
-
     }
 
 
@@ -497,6 +485,5 @@ public class MapsActivity extends FragmentActivity implements LocationListener, 
         MapsActivity.this.startActivity(intent);
         MapsActivity.this.finish();
     }
-
 
 }

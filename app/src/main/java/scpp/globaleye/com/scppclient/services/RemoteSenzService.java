@@ -65,7 +65,7 @@ public class RemoteSenzService extends Service {
             ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo netInfo = cm.getActiveNetworkInfo();
 
-            Log.d(TAG, "Network status changed");
+            //Log.d(TAG, "Network status changed");
 
             //should check null because in air plan mode it will be null
             if (netInfo != null && netInfo.isConnected()) {
@@ -79,7 +79,7 @@ public class RemoteSenzService extends Service {
     private final BroadcastReceiver pingAlarmReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.d(TAG, "Ping alarm received in senz service");
+            //Log.d(TAG, "Ping alarm received in senz service");
             sendPingMessage();
         }
     };
@@ -89,7 +89,7 @@ public class RemoteSenzService extends Service {
 
         @Override
         public void send(Senz senz) throws RemoteException {
-            Log.d(TAG, "Senz service call with senz " + senz.getId());
+            //Log.d(TAG, "Senz service call with senz " + senz.getId());
             sendSenzMessage(senz);
         }
 
@@ -99,7 +99,6 @@ public class RemoteSenzService extends Service {
                 return PreferenceUtils.getUser(RemoteSenzService.this).getUsername();
             } catch (NoUserException e) {
                 //e.printStackTrace();
-
                 return null;
             }
         }
@@ -135,10 +134,9 @@ public class RemoteSenzService extends Service {
      */
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d(TAG, "Start service");
+        //Log.d(TAG, "Start service");
         initUdpSocket();
         initUdpListener();
-
 
         // If we get killed, after returning from here, restart
         return START_STICKY;
@@ -149,7 +147,7 @@ public class RemoteSenzService extends Service {
      */
     @Override
     public void onDestroy() {
-        Log.d(TAG, "Destroyed");
+        //Log.d(TAG, "Destroyed");
 
         // unregister connectivity listener
         unregisterReceiver(networkStatusReceiver);
@@ -261,7 +259,7 @@ public class RemoteSenzService extends Service {
                         String senzSignature = RSAUtils.getDigitalSignature(senzPayload.replaceAll(" ", ""), privateKey);
                         message = SenzParser.getSenzMessage(senzPayload, senzSignature);
 
-                        Log.d(TAG, "Ping to be send: " + message);
+                        //Log.d(TAG, "Ping to be send: " + message);
 
                         // send message
                         if (address == null) address = InetAddress.getByName(SENZ_HOST);
@@ -269,7 +267,7 @@ public class RemoteSenzService extends Service {
                         socket.send(sendPacket);
                     } catch (IOException | NoSuchAlgorithmException | NoUserException | SignatureException | InvalidKeyException | InvalidKeySpecException e) {
                         //e.printStackTrace();
-                        Log.i(TAG, "Wait For Registration" + e);
+                        Log.e(TAG, "Wait For Registration" + e);
                     }
                 } else {
                     Log.e(TAG, "Cannot send ping, No connection available");
@@ -300,7 +298,7 @@ public class RemoteSenzService extends Service {
                         String senzSignature = RSAUtils.getDigitalSignature(senzPayload.replaceAll(" ", ""), privateKey);
                         String message = SenzParser.getSenzMessage(senzPayload, senzSignature);
 
-                        Log.d(TAG, "Senz to be send: " + message);
+                        //Log.d(TAG, "Senz to be send: " + message);
 
                         // send message
                         if (address == null) address = InetAddress.getByName(SENZ_HOST);

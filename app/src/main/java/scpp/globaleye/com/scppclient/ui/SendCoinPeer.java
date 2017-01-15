@@ -54,8 +54,6 @@ public class SendCoinPeer extends AppCompatActivity implements View.OnClickListe
     private SenzCountDownTimer senzCountDownTimer;
     private boolean isResponseReceived;
 
-
-
     // custom font
     private Typeface typeface;
     private  String userName;
@@ -65,9 +63,6 @@ public class SendCoinPeer extends AppCompatActivity implements View.OnClickListe
     private String s_location;
     private String coin;
 
-
-
-
     // service interface
     private ISenzService senzService = null;
     private boolean isServiceBound = false;
@@ -75,16 +70,14 @@ public class SendCoinPeer extends AppCompatActivity implements View.OnClickListe
     // service connection
     private ServiceConnection senzServiceConnection = new ServiceConnection() {
         public void onServiceConnected(ComponentName className, IBinder service) {
-            Log.d("TAG", "Connected with senz service");
+            //Log.d("TAG", "Connected with senz service");
             senzService = ISenzService.Stub.asInterface(service);
 
         }
 
         public void onServiceDisconnected(ComponentName className) {
             senzService = null;
-            Log.d("TAG", "Disconnected from senz service");
-
-
+            //Log.d("TAG", "Disconnected from senz service");
         }
     };
 
@@ -104,8 +97,7 @@ public class SendCoinPeer extends AppCompatActivity implements View.OnClickListe
         if (extras != null) {
             userName= extras.getString("USER_NAME");
             receiver = extras.getString("RECIVER");
-            Log.d(TAG, "#RECIVER" + receiver);
-
+            //Log.d(TAG, "#RECIVER" + receiver);
         }
 
         initUi();
@@ -129,8 +121,6 @@ public class SendCoinPeer extends AppCompatActivity implements View.OnClickListe
         registerReceiver(senzMessageReceiver, new IntentFilter("scpp.globaleye.com.scppclient.SHARE_SENZ"));
         registerReceiver(senzMessageReceiver, new IntentFilter("scpp.globaleye.com.scppclient.DATA_SENZ"));
         registerReceiver(senzMessageReceiver, new IntentFilter("scpp.globaleye.com.scppclient.PUT_SENZ"));
-
-
     }
 
     /**
@@ -142,7 +132,7 @@ public class SendCoinPeer extends AppCompatActivity implements View.OnClickListe
         super.onDestroy();
         if (isServiceBound) {
             unbindService(senzServiceConnection);
-            Log.d("unbind" , "call on destroy");
+            //Log.d("unbind" , "call on destroy");
         }
         unregisterReceiver(senzMessageReceiver);
     }
@@ -159,11 +149,7 @@ public class SendCoinPeer extends AppCompatActivity implements View.OnClickListe
         TextView textView = new TextView(this);
         textView.setText("Your Coins");
         coinList.addHeaderView(textView);
-
-
         coinhashTextView.setText("---------");
-
-
 
     }
 
@@ -264,7 +250,7 @@ public class SendCoinPeer extends AppCompatActivity implements View.OnClickListe
             // if response not received yet, resend share
             if (!isResponseReceived) {
                 sendCoin();
-                Log.d(TAG, "Response not received yet");
+                //Log.d(TAG, "Response not received yet");
             }
         }
 
@@ -318,7 +304,6 @@ public class SendCoinPeer extends AppCompatActivity implements View.OnClickListe
             //User node1 = new User("" ,"node1");
 
 
-
             //send quarry
             Senz senz = new Senz(id, signature, senzType, sender , coin_receiver, senzAttributes);
             senzService.send(senz);
@@ -332,27 +317,25 @@ public class SendCoinPeer extends AppCompatActivity implements View.OnClickListe
             //Senz base_senz = new Senz(id, signature, senzType, sender ,base, senzAttributes);
             //senzService.send(base_senz);
 
-            Log.d("Reciver text" ,receiver.equals("node3")+"");
+            //Log.d("Reciver text" ,receiver.equals("node3")+"");
 
 
             if(receiver.equals("node1")){
-                Log.d("node_id","node1");
+                //Log.d("node_id","node1");
                 senzAttributes.put("f", "ct"); //flag-send share request to miners
                 //send_node3_to_create_block
                 Senz node3_senz = new Senz(id, signature, senzType, sender ,node3, senzAttributes);
                 senzService.send(node3_senz);
 
-
             }else if(receiver.equals("node3")){
-                Log.d("node_id","node3");
+                //Log.d("node_id","node3");
                 senzAttributes.put("f","ct"); //flag-send share request to miners
                 //send_node1_to_create_block
                 Senz node1_senz = new Senz(id, signature, senzType, sender ,node1, senzAttributes);
                 senzService.send(node1_senz);
 
-
             }else{
-                Log.d("node_id","else wada");
+                //Log.d("node_id","else wada");
                 senzAttributes.put("f","b_ct"); //flag-send share request to miners
                 //send_node1_to_create_block
                 Senz node1_senz = new Senz(id, signature, senzType, sender ,node1, senzAttributes);
@@ -362,10 +345,6 @@ public class SendCoinPeer extends AppCompatActivity implements View.OnClickListe
                 Senz node3_senz = new Senz(id, signature, senzType, sender ,node3, senzAttributes);
                 senzService.send(node3_senz);
             }
-
-
-
-
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -434,7 +413,7 @@ public class SendCoinPeer extends AppCompatActivity implements View.OnClickListe
     private BroadcastReceiver senzMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.d(TAG, "Got message from Senz service");
+            //Log.d(TAG, "Got message from Senz service");
             handleMessage(intent);
         }
     };
@@ -447,21 +426,18 @@ public class SendCoinPeer extends AppCompatActivity implements View.OnClickListe
      */
     private void handleMessage(Intent intent) {
         String action = intent.getAction();
-        Log.d(TAG, "MY ACTION" + action);
-
+        //Log.d(TAG, "MY ACTION" + action);
 
         //Toast.makeText(WalletInfo.this, "Handle masage", Toast.LENGTH_LONG).show();
         Senz senz = intent.getExtras().getParcelable("SENZ");
 
         if(action.equalsIgnoreCase("scpp.globaleye.com.scppclient.SHARE_SENZ")) {
             boolean a =senz.getAttributes().containsKey("MSG");
-
             if (senz.getAttributes().containsKey("MSG")) {
 
                 ActivityUtils.cancelProgressDialog();
                 isResponseReceived = true;
                 senzCountDownTimer.cancel();
-
                 String cv = senz.getAttributes().get("COIN");
 
                 if (cv != null) {
@@ -478,10 +454,6 @@ public class SendCoinPeer extends AppCompatActivity implements View.OnClickListe
                 isResponseReceived = true;
                 senzCountDownTimer.cancel();
                 onPostReceived(senz);
-
-
-
-
         }
     }
 
@@ -495,7 +467,6 @@ public class SendCoinPeer extends AppCompatActivity implements View.OnClickListe
         isResponseReceived = false;
         String cv = senz.getAttributes().get("MSG");
         Toast.makeText(SendCoinPeer.this, "Send Coin Successfully ", Toast.LENGTH_SHORT).show();
-
         cv = cv + "$";
         coinhashTextView.setText("---------------");
 
@@ -509,9 +480,7 @@ public class SendCoinPeer extends AppCompatActivity implements View.OnClickListe
         }else{
             Toast.makeText(SendCoinPeer.this,msg, Toast.LENGTH_LONG).show();
         }
-
         //Toast.makeText(SendCoinPeer.this, "Thank YOU", Toast.LENGTH_LONG).show();
-
     }
 
 
@@ -557,8 +526,4 @@ public class SendCoinPeer extends AppCompatActivity implements View.OnClickListe
         SendCoinPeer.this.startActivity(intent);
         SendCoinPeer.this.finish();
     }
-
-
-
-
 }

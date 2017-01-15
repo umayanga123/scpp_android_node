@@ -2,6 +2,7 @@ package scpp.globaleye.com.scppclient.exceptions;
 
 /**
  * Created by umayanga on 6/15/16.
+ * using session validation
  */
 public class NoUserException extends  Exception{
 

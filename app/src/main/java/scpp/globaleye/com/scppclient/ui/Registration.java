@@ -54,7 +54,6 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
     private Button signUpButton;
     private Typeface typeface;
 
-
     // use to track registration timeout
     private SenzCountDownTimer senzCountDownTimer;
     private boolean isResponseReceived;
@@ -66,17 +65,15 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
     // service connection
     private ServiceConnection senzServiceConnection = new ServiceConnection() {
         public void onServiceConnected(ComponentName className, IBinder service) {
-            Log.d(TAG, "Connected with senz service");
+            //Log.d(TAG, "Connected with senz service");
             isServiceBound = true;
             senzService = ISenzService.Stub.asInterface(service);
-
             isResponseReceived = false;
             senzCountDownTimer.start();
         }
 
         public void onServiceDisconnected(ComponentName className) {
-            Log.d("TAG", "Disconnected from senz service");
-
+            //Log.d("TAG", "Disconnected from senz service");
             senzService = null;
             isServiceBound = false;
         }
@@ -87,9 +84,7 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
-
         typeface = Typeface.createFromAsset(getAssets(), "fonts/vegur_2.otf");
-
         senzCountDownTimer = new SenzCountDownTimer(20000, 5000); //16000
         initUi();
         registerReceiver(senzMessageReceiver, new IntentFilter("scpp.globaleye.com.scppclient.DATA_SENZ"));
@@ -121,13 +116,10 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
         editTextConfrimPasword =(EditText)findViewById(R.id.etUPConfirmPasswordeditText);
         signUpButton = (Button) findViewById(R.id.rbutton);
         signUpButton.setOnClickListener(Registration.this);
-
         editTextUsername.setTypeface(typeface, Typeface.NORMAL);
-
-
-
-
     }
+
+
 
     /**
      * {@inheritDoc}
@@ -136,7 +128,6 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         if (v == signUpButton) {
             if (NetworkUtil.isAvailableNetwork(this)) {
-
                 onClickRegister();
             } else {
                 Toast.makeText(this, "No network connection available", Toast.LENGTH_LONG).show();
@@ -151,7 +142,6 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
      */
     private void onClickRegister() {
         ActivityUtils.hideSoftKeyboard(this);
-
         // crate user
         String username = editTextUsername.getText().toString().trim();
         String password =editTextPasword.getText().toString().trim();
@@ -170,8 +160,6 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
         }else{
             Toast.makeText(this, "password and confirm password not equal", Toast.LENGTH_LONG).show();
         }
-
-
     }
 
     /**
@@ -199,11 +187,7 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
         }catch (NoSuchProviderException | NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-
-
     }
-
-
 
     /**
      * Create register senz
@@ -244,7 +228,7 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
             // if response not received yet, resend share
             if (!isResponseReceived) {
                 doRegistration();
-                Log.d(TAG, "Response not received yet");
+                //Log.d(TAG, "Response not received yet");
             }
         }
 
@@ -267,7 +251,7 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
     private BroadcastReceiver senzMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-                Log.d(TAG, "Got message from Senz service" + intent.getAction());
+                //Log.d(TAG, "Got message from Senz service" + intent.getAction());
                 handleMessage(intent);
         }
     };
@@ -402,7 +386,6 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
                 dialog.cancel();
             }
         });
-
         dialog.show();
     }
 
@@ -417,6 +400,4 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
         Registration.this.startActivity(intent);
         Registration.this.finish();
     }
-
-
 }

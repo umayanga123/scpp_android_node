@@ -47,41 +47,36 @@ public class BuyItemActivity extends AppCompatActivity implements View.OnClickLi
 
     private static final String TAG = BuyItemActivity.class.getName();
 
-
     private Button btbuyItem;
     private EditText etBillId;
     private EditText etBillAmount;
     private Spinner shopNameSpiner;
 
-
     // use to track share timeout
     private SenzCountDownTimer senzCountDownTimer;
     private boolean isResponseReceived;
-
 
     // custom font
     private Typeface typeface;
     private  String userName;
 
-
-
     // service interface
     private ISenzService senzService = null;
     private boolean isServiceBound = false;
 
+
+
     // service connection
     private ServiceConnection senzServiceConnection = new ServiceConnection() {
         public void onServiceConnected(ComponentName className, IBinder service) {
-            Log.d("TAG", "Connected with senz service");
+            //Log.d("TAG", "Connected with senz service");
             senzService = ISenzService.Stub.asInterface(service);
 
         }
 
         public void onServiceDisconnected(ComponentName className) {
             senzService = null;
-            Log.d("TAG", "Disconnected from senz service");
-
-
+            //Log.d("TAG", "Disconnected from senz service");
         }
     };
 
@@ -134,7 +129,7 @@ public class BuyItemActivity extends AppCompatActivity implements View.OnClickLi
         super.onDestroy();
         if (isServiceBound) {
             unbindService(senzServiceConnection);
-            Log.d("unbind" , "call on destroy");
+            //Log.d("unbind" , "call on destroy");
         }
         unregisterReceiver(senzMessageReceiver);
     }
@@ -193,7 +188,7 @@ public class BuyItemActivity extends AppCompatActivity implements View.OnClickLi
             // if response not received yet, resend share
             if (!isResponseReceived) {
                 miningCoin();
-                Log.d(TAG, "Response not received yet");
+                //Log.d(TAG, "Response not received yet");
             }
         }
 
@@ -283,7 +278,7 @@ public class BuyItemActivity extends AppCompatActivity implements View.OnClickLi
     private BroadcastReceiver senzMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.d(TAG, "Got message from Senz service");
+            //Log.d(TAG, "Got message from Senz service");
             handleMessage(intent);
         }
     };
@@ -310,12 +305,12 @@ public class BuyItemActivity extends AppCompatActivity implements View.OnClickLi
                 String cv = senz.getAttributes().get("COIN");
                 String format_date = senz.getAttributes().get("TIME");
 
-                Log.d("para", cv + " : " + format_date + " :" + userName + " : " + etBillAmount.getText().toString());
+                //Log.d("para", cv + " : " + format_date + " :" + userName + " : " + etBillAmount.getText().toString());
                 String coin_para = etBillAmount.getText().toString()+""+format_date+""+userName;
                 //write hash function
                 try {
                     String s = AeSimpleSHA1.SHA1(coin_para);
-                    Log.d("RE_GENERATED_HASH" , s);  //ea6793c63c46b4432abc1e9c078970eb09bc4e85
+                    //Log.d("RE_GENERATED_HASH" , s);  //ea6793c63c46b4432abc1e9c078970eb09bc4e85
                     if(cv.equals(s) && cv!= null){
                         onPostShare(senz);
                         sendResponse(senzService);
@@ -392,7 +387,7 @@ public class BuyItemActivity extends AppCompatActivity implements View.OnClickLi
 
     /**
      *
-     * navigation function
+     * navigation functions back ,home page, manual and logout
      *
      */
 

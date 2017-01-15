@@ -71,16 +71,14 @@ public class WalletInfo extends AppCompatActivity implements View.OnClickListene
     // service connection
     private ServiceConnection senzServiceConnection = new ServiceConnection() {
         public void onServiceConnected(ComponentName className, IBinder service) {
-            Log.d("TAG", "Connected with senz service");
+            //Log.d("TAG", "Connected with senz service");
             senzService = ISenzService.Stub.asInterface(service);
 
         }
 
         public void onServiceDisconnected(ComponentName className) {
             senzService = null;
-            Log.d("TAG", "Disconnected from senz service");
-
-
+            //Log.d("TAG", "Disconnected from senz service");
         }
     };
 
@@ -145,7 +143,7 @@ public class WalletInfo extends AppCompatActivity implements View.OnClickListene
         super.onDestroy();
         if (isServiceBound) {
             unbindService(senzServiceConnection);
-            Log.d("unbind" , "call on destrot");
+            //Log.d("unbind" , "call on destrot");
         }
         unregisterReceiver(senzMessageReceiver);
     }
@@ -156,24 +154,18 @@ public class WalletInfo extends AppCompatActivity implements View.OnClickListene
         btRefreshCoinValue= (Button) findViewById(R.id.btCoinTransaction);
         coinValueTextView = (TextView) findViewById(R.id.tvServiceLocation);
         coinList = (ListView)findViewById(R.id.CoinlistView);
-
         btRefreshCoinValue.setOnClickListener(WalletInfo.this);
 
         TextView textView = new TextView(this);
         textView.setText("Your Coins");
         coinList.addHeaderView(textView);
-
-
         coinValueTextView.setText("$");
-
-
-
     }
 
-    /*
-        this some function is Deprecate but not do refatoring this
-        stage
-     */
+    /**
+     * this some function is Deprecate but not do refactoring this stage
+     *
+     **/
     private void populateListViewInDB(){
         dbSource = new SenzorsDbSource(WalletInfo.this);
         Cursor cur= dbSource.getAllMiningDteail(userName);
@@ -197,7 +189,6 @@ public class WalletInfo extends AppCompatActivity implements View.OnClickListene
                 toViewIDs
         );
         coinList.setAdapter(myCursorAdaptor);
-
     }
 
 
@@ -233,8 +224,6 @@ public class WalletInfo extends AppCompatActivity implements View.OnClickListene
     }
 
 
-
-
     @Override
     public void onClick(View v) {
         if(v==btRefreshCoinValue){
@@ -264,7 +253,7 @@ public class WalletInfo extends AppCompatActivity implements View.OnClickListene
             // if response not received yet, resend share
             if (!isResponseReceived) {
                 refreshCoinValue();
-                Log.d(TAG, "Response not received yet");
+                //Log.d(TAG, "Response not received yet");
             }
         }
 
@@ -302,7 +291,7 @@ public class WalletInfo extends AppCompatActivity implements View.OnClickListene
             //send quarry
             Senz senz = new Senz(id, signature, senzType,sender , receiver, senzAttributes);
 
-            Log.d(TAG, "send Massage" + senz);
+            //Log.d(TAG, "send Massage" + senz);
             senzService.send(senz);
         } catch (RemoteException e) {
             e.printStackTrace();
@@ -356,7 +345,7 @@ public class WalletInfo extends AppCompatActivity implements View.OnClickListene
     private BroadcastReceiver senzMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.d(TAG, "Got message from Senz service");
+            //Log.d(TAG, "Got message from Senz service");
             handleMessage(intent);
         }
     };
@@ -369,8 +358,7 @@ public class WalletInfo extends AppCompatActivity implements View.OnClickListene
      */
     private void handleMessage(Intent intent) {
         String action = intent.getAction();
-        Log.d(TAG, "MY ACTION" + action);
-
+        //Log.d(TAG, "MY ACTION" + action);
 
         //Toast.makeText(WalletInfo.this, "Handle masage", Toast.LENGTH_LONG).show();
         Senz senz = intent.getExtras().getParcelable("SENZ");
@@ -393,15 +381,12 @@ public class WalletInfo extends AppCompatActivity implements View.OnClickListene
                     String message = "<font color=#000000>Seems we couldn't take coin value in this time </font> <font color=#eada00>" + "<b>" + "</font>";
                     displayInformationMessageDialog("Checking Coin Value  is Fail", message);
                 }
-            }/*else if(senz.getAttributes().get("f").equals("b_vct")){
-                this.prob_value =this.prob_value + 1 ;
-                Log.d("prob_value a", this.prob_value  + "");
-            }*/
+            }
         }else if (senz != null && senz.getSenzType() == SenzTypeEnum.DATA) {
             if (senz.getAttributes().containsKey("COIN")) {
 
                 String sender = senz.getSender().getUsername();
-                Log.d("sender", sender);
+                //Log.d("sender", sender);
                 String new_coin = senz.getAttributes().get("COIN");
                 String s_location = senz.getAttributes().get("S_LOCATION");
                 Toast.makeText(WalletInfo.this, "Coin Received :" +new_coin, Toast.LENGTH_LONG).show();
@@ -420,10 +405,10 @@ public class WalletInfo extends AppCompatActivity implements View.OnClickListene
 
                 if(s_location.equals("Keels")){
                     prob_level= (1/2.0)*100;
-                    Log.d("prob_level", prob_level + " " + this.prob_value);
+                    //Log.d("prob_level", prob_level + " " + this.prob_value);
                 }else{
                     prob_level= (2/2.0)*100;
-                    Log.d("prob_level", prob_level + " " + this.prob_value);
+                    //Log.d("prob_level", prob_level + " " + this.prob_value);
 
                 }
 
@@ -444,7 +429,7 @@ public class WalletInfo extends AppCompatActivity implements View.OnClickListene
     }
 
     private void sendResponse(ISenzService senzService, User rec, boolean isDone) {
-        Log.d(TAG, "send response"+rec.getUsername() + ""+userName);
+        //Log.d(TAG, "send response"+rec.getUsername() + ""+userName);
         try {
             // create senz attributes
             HashMap<String, String> senzAttributes = new HashMap<>();
@@ -464,7 +449,6 @@ public class WalletInfo extends AppCompatActivity implements View.OnClickListene
             senzService.send(senz);
 
 
-
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -476,7 +460,7 @@ public class WalletInfo extends AppCompatActivity implements View.OnClickListene
      *
      * */
     private void sendFaildAck(ISenzService senzService, String coin ,String sender ,String reciver) {
-        Log.d(TAG, "send fail ack to miner");
+        //Log.d(TAG, "send fail ack to miner");
         try {
             // create senz attributes
             HashMap<String, String> senzAttributes = new HashMap<>();
@@ -500,8 +484,6 @@ public class WalletInfo extends AppCompatActivity implements View.OnClickListene
             senzService.send(node3_senz);
 
 
-
-
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -515,7 +497,7 @@ public class WalletInfo extends AppCompatActivity implements View.OnClickListene
      *
      */
     private void check_tranaction_validity(ISenzService senzService, String coin ,String coin_Sender){
-        Log.d("probaility_check", "request probability check");
+        //Log.d("probaility_check", "request probability check");
         this.prob_value = 0;
 
         try {
@@ -539,8 +521,6 @@ public class WalletInfo extends AppCompatActivity implements View.OnClickListene
 
             Senz node3_senz = new Senz(id, signature, senzType, sender ,node3, senzAttributes);
             senzService.send(node3_senz);
-
-
 
 
         } catch (RemoteException e) {
@@ -603,6 +583,4 @@ public class WalletInfo extends AppCompatActivity implements View.OnClickListene
         WalletInfo.this.startActivity(intent);
         WalletInfo.this.finish();
     }
-
-
 }

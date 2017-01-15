@@ -30,7 +30,7 @@ public class NotificationUtils {
     public static Notification getNotification(Context context, int icon, String title, String message,String userName) {
         // set up pending intent
         Intent intent = new Intent(context, WalletInfo.class);
-        Log.d("check notify user name", userName);
+        //Log.d("check notify user name", userName);
         intent.putExtra("USER_NAME", userName);
         intent.setAction(Intent.ACTION_MAIN);
         intent.addCategory(Intent.CATEGORY_LAUNCHER);

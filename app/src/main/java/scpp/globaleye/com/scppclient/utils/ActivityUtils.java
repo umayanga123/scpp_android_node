@@ -47,7 +47,6 @@ public class ActivityUtils {
         progressDialog = ProgressDialog.show(context, null, message, true);
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.setCancelable(true);
-
         progressDialog.show();
     }
 
@@ -75,7 +74,6 @@ public class ActivityUtils {
         if (user.getUsername().isEmpty()) {
             throw new InvalidInputFieldsException();
         }
-
         return true;
     }
 
@@ -105,7 +103,6 @@ public class ActivityUtils {
         textView.setGravity(Gravity.CENTER);
         textView.setTextSize(18);
         textView.setLayoutParams(layoutParams);
-
         return textView;
     }
 

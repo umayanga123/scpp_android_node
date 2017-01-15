@@ -62,8 +62,6 @@ public class UpdateProfile extends AppCompatActivity implements View.OnClickList
         confirmPassword =(EditText) findViewById(R.id.etUPConfirmPasswordeditText);
         updateProfile.setOnClickListener(UpdateProfile.this);
 
-
-
         updateUserName.setText(user.getUsername());
         updatePassword.setText(user.getPassword());
         updateUserName.setEnabled(false);
@@ -116,6 +114,7 @@ public class UpdateProfile extends AppCompatActivity implements View.OnClickList
         startActivity(intent);
         UpdateProfile.this.finish();
     }
+
     public void goBack(View v) {
         Intent intent = new Intent(UpdateProfile.this, Home.class);
         intent.putExtra("USER_NAME", userName);
@@ -129,7 +128,6 @@ public class UpdateProfile extends AppCompatActivity implements View.OnClickList
         intent.putExtra("USER_NAME", userName);
         startActivity(intent);
     }
-
 
     public void logout(View v) {
         Intent intent = new Intent(UpdateProfile.this, Login.class);

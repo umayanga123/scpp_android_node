@@ -60,16 +60,14 @@ public class UserSelect extends AppCompatActivity implements View.OnClickListene
     // service connection
     private ServiceConnection senzServiceConnection = new ServiceConnection() {
         public void onServiceConnected(ComponentName className, IBinder service) {
-            Log.d("TAG", "Connected with senz service");
+            //Log.d("TAG", "Connected with senz service");
             senzService = ISenzService.Stub.asInterface(service);
 
         }
 
         public void onServiceDisconnected(ComponentName className) {
             senzService = null;
-            Log.d("TAG", "Disconnected from senz service");
-
-
+            //Log.d("TAG", "Disconnected from senz service");
         }
     };
 
@@ -92,12 +90,9 @@ public class UserSelect extends AppCompatActivity implements View.OnClickListene
         }
 
         senzCountDownTimer = new SenzCountDownTimer(15000, 5000);
-
         isResponseReceived = false;
         initUi();
         bindConService();
-
-
 
     }
 
@@ -129,12 +124,9 @@ public class UserSelect extends AppCompatActivity implements View.OnClickListene
         Intent intent = new Intent();
         intent.setClassName("scpp.globaleye.com.scppclient", "scpp.globaleye.com.scppclient.services.RemoteSenzService");
         bindService(intent, senzServiceConnection, Context.BIND_AUTO_CREATE);
-
         isServiceBound=true;
         registerReceiver(senzMessageReceiver, new IntentFilter("scpp.globaleye.com.scppclient.PUT_SENZ"));
         registerReceiver(senzMessageReceiver, new IntentFilter("scpp.globaleye.com.scppclient.SHARE_SENZ"));
-
-
     }
 
     /**
@@ -154,19 +146,19 @@ public class UserSelect extends AppCompatActivity implements View.OnClickListene
     @Override
     public void onClick(View v) {
         if(v== shareButton){
-                if (reciverEditText.getText().toString().trim().isEmpty()) {
-                    Toast.makeText(UserSelect.this, "Empty username", Toast.LENGTH_LONG).show();
-                } else if (reciverEditText.getText().toString().trim().equals(userName)){
-                    Toast.makeText(UserSelect.this, "Can't Send Coin to Your self", Toast.LENGTH_LONG).show();
-                }else {
-                    if (NetworkUtil.isAvailableNetwork(UserSelect.this)) {
-                        ActivityUtils.showProgressDialog(UserSelect.this, "Please wait...");
-                        senzCountDownTimer.start();
-                    } else {
-                        Toast.makeText(UserSelect.this, "No network connection available", Toast.LENGTH_LONG).show();
-                    }
+            if (reciverEditText.getText().toString().trim().isEmpty()) {
+                Toast.makeText(UserSelect.this, "Empty username", Toast.LENGTH_LONG).show();
+            } else if (reciverEditText.getText().toString().trim().equals(userName)){
+                Toast.makeText(UserSelect.this, "Can't Send Coin to Your self", Toast.LENGTH_LONG).show();
+            }else {
+                if (NetworkUtil.isAvailableNetwork(UserSelect.this)) {
+                    ActivityUtils.showProgressDialog(UserSelect.this, "Please wait...");
+                    senzCountDownTimer.start();
+                } else {
+                    Toast.makeText(UserSelect.this, "No network connection available", Toast.LENGTH_LONG).show();
                 }
             }
+        }
     }
 
 
@@ -212,7 +204,7 @@ public class UserSelect extends AppCompatActivity implements View.OnClickListene
             User node1 = new User("", "node1");
             User node3 = new User("", "node3");
 
-            Log.d("Reciver text" ,reciverEditText.getText().toString().trim().equals("node1")+"");
+            //Log.d("Reciver text" ,reciverEditText.getText().toString().trim().equals("node1")+"");
 
             if(reciverEditText.getText().toString().trim().equals("node1")){
                 senzAttributes.put("f","ctr");
@@ -233,9 +225,6 @@ public class UserSelect extends AppCompatActivity implements View.OnClickListene
                 senzService.send(node3_senz);
 
             }
-
-
-
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -258,7 +247,7 @@ public class UserSelect extends AppCompatActivity implements View.OnClickListene
             // if response not received yet, resend share
             if (!isResponseReceived) {
                 share();
-                Log.d(TAG, "Response not received yet");
+                //Log.d(TAG, "Response not received yet");
             }
         }
 
@@ -320,7 +309,7 @@ public class UserSelect extends AppCompatActivity implements View.OnClickListene
     private BroadcastReceiver senzMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.d(TAG, "Got message from Senz service");
+            //Log.d(TAG, "Got message from Senz service");
             handleMessage(intent);
         }
     };
@@ -333,7 +322,7 @@ public class UserSelect extends AppCompatActivity implements View.OnClickListene
      */
     private void handleMessage(Intent intent) {
         String action = intent.getAction();
-        Log.d(TAG ,"MY ACTION" +action);
+        //Log.d(TAG ,"MY ACTION" +action);
 
         //Toast.makeText(UserSelect.this, "Handle masage", Toast.LENGTH_LONG).show();
         Senz senz = intent.getExtras().getParcelable("SENZ");
@@ -346,7 +335,7 @@ public class UserSelect extends AppCompatActivity implements View.OnClickListene
                 ActivityUtils.cancelProgressDialog();
                 senzCountDownTimer.cancel();
                 String msg = senz.getAttributes().get("MSG");
-                Log.d("response masage" , msg);
+                //Log.d("response masage" , msg);
                 //Toast.makeText(UserSelect.this, "Successfully shared SenZ"+msg, Toast.LENGTH_LONG).show();
                 if (msg != null && msg.equalsIgnoreCase("ShareDone")) {
                     onPostShare(senz);
@@ -360,8 +349,6 @@ public class UserSelect extends AppCompatActivity implements View.OnClickListene
 
             Log.d("Tag", senz.getSender() + " : " + senz.getSenzType().toString());
             if (senz != null && senz.getSenzType() == SenzTypeEnum.SHARE) {
-
-
                 NotificationUtils.showNotification(this, this.getString(R.string.new_senz), "Coin accept request" + senz.getSender().getUsername(),userName);
                 String sender = senz.getSender().getUsername();
                 User sen = new User("", sender);
@@ -373,7 +360,7 @@ public class UserSelect extends AppCompatActivity implements View.OnClickListene
 
 
     private void sendResponse(ISenzService senzService, User receiver, boolean isDone) {
-        Log.d(TAG, "send response");
+        //Log.d(TAG, "send response");
         try {
             // create senz attributes
             HashMap<String, String> senzAttributes = new HashMap<>();
@@ -415,10 +402,6 @@ public class UserSelect extends AppCompatActivity implements View.OnClickListene
         UserSelect.this.finish();
 
     }
-
-
-
-
 
     @Override
     public void onBackPressed() {

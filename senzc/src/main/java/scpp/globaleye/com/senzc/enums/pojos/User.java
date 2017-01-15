@@ -9,8 +9,6 @@ import android.os.Parcelable;
  */
 public class User implements Parcelable {
 
-
-
     String id;
     String username;
     String password;

@@ -14,7 +14,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.d(TAG, "Alarm received");
+        //Log.d(TAG, "Alarm received");
         Intent alarmIntent = new Intent("PING_ALARM");
         context.sendBroadcast(alarmIntent);
     }

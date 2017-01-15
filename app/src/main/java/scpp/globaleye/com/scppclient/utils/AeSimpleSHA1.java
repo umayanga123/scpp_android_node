@@ -28,7 +28,6 @@ public class AeSimpleSHA1 {
         md.update(textBytes, 0, textBytes.length);
         byte[] sha1hash = md.digest();
         return convertToHex(sha1hash);
-
     }
 
 }

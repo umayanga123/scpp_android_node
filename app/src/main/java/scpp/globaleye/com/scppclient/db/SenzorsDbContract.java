@@ -4,6 +4,7 @@ import android.provider.BaseColumns;
 
 /**
  * Created by umayanga on 6/23/16.
+ * Sqllite DB table structure creating within this class
  */
 public class SenzorsDbContract {
 
@@ -20,7 +21,7 @@ public class SenzorsDbContract {
         public static final String COLUMN_NAME_USER_NAME = "user_name";
     }
 
-    /* Inner class that defines the verfycoins table contents */
+    /* Inner class that defines the verify coins table contents */
     public static abstract class VerifyCoins implements BaseColumns {
         public static final String TABLE_NAME = "verify_coin_details";
         public static final String COLUMN_NAME_COIN = "coin";

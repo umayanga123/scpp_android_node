@@ -56,16 +56,14 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
     // service connection
     private ServiceConnection senzServiceConnection = new ServiceConnection() {
         public void onServiceConnected(ComponentName className, IBinder service) {
-            Log.d("TAG", "Connected with senz service");
+            //Log.d("TAG", "Connected with senz service");
             senzService = ISenzService.Stub.asInterface(service);
 
         }
 
         public void onServiceDisconnected(ComponentName className) {
             senzService = null;
-            Log.d("TAG", "Disconnected from senz service");
-
-
+            //Log.d("TAG", "Disconnected from senz service");
         }
     };
 
@@ -144,7 +142,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
     private BroadcastReceiver senzMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.d(TAG, "Got message from Senz service");
+            //Log.d(TAG, "Got message from Senz service");
             handleMessage(intent);
         }
     };
@@ -158,7 +156,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
     private void handleMessage(Intent intent) {
         String action = intent.getAction();
         Senz senz = intent.getExtras().getParcelable("SENZ");
-        Log.d("Tag", senz.getSender() + " : " + senz.getSenzType().toString());
+        //Log.d("Tag", senz.getSender() + " : " + senz.getSenzType().toString());
         if (senz != null && senz.getSenzType() == SenzTypeEnum.SHARE) {
             NotificationUtils.showNotification(this, this.getString(R.string.new_senz), "Coin accept request from" + senz.getSender().getUsername(), userName);
             String sender = senz.getSender().getUsername();
@@ -170,7 +168,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
 
 
     private void sendResponse(ISenzService senzService, User receiver, boolean isDone) {
-        Log.d(TAG, "send response");
+        //Log.d(TAG, "send response");
         try {
             // create senz attributes
             HashMap<String, String> senzAttributes = new HashMap<>();
@@ -194,10 +192,6 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
     }
 
 
-
-
-
-
     @Override
     public void onClick(View v) {
         if (v == profileimgButton) {
@@ -212,7 +206,10 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
 
     }
 
-
+    /**
+     * Home page navigation functions
+     *
+     */
     private void navigateToTransaction() {
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -290,7 +287,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
 
 
     @Override
-    public void onBackPressed() {        // to prevent irritating accidental logouts
+    public void onBackPressed() {        // to prevent irritating accidental logout
         long t = System.currentTimeMillis();
         if (t - backPressedTime > 2000) {    // 2 secs
             backPressedTime = t;

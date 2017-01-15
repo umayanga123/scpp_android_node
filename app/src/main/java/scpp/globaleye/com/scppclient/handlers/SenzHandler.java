@@ -9,6 +9,7 @@ import scpp.globaleye.com.senzc.enums.pojos.Senz;
 
 /**
  * Created by umayanga on 6/15/16.
+ * protocol handler main class
  */
 public class SenzHandler {
 
@@ -30,6 +31,12 @@ public class SenzHandler {
         return instance;
     }
 
+    /**
+     *
+     * @param senzMessage
+     * This method using to take protocol request and according to request type ,it
+     * switch protocol to relevant method.
+     */
     public void handleSenz(String senzMessage) {
         // parse and verify senz
         Senz senz = SenzParser.parse(senzMessage);
@@ -40,28 +47,34 @@ public class SenzHandler {
                 broadcastSenz(senz, new Intent("scpp.globaleye.com.scppclient.PING_SENZ"));
                 break;
             case SHARE:
-                Log.d(TAG, "SHARE received");
+                //Log.d(TAG, "SHARE received");
                 broadcastSenz(senz, new Intent("scpp.globaleye.com.scppclient.SHARE_SENZ"));
                 break;
             case GET:
-                Log.d(TAG, "GET received");
+                //Log.d(TAG, "GET received");
                 broadcastSenz(senz, new Intent("scpp.globaleye.com.scppclient.GET_SENZ"));
                 break;
             case DATA:
-                Log.d(TAG, "DATA received");
+                //Log.d(TAG, "DATA received");
                 broadcastSenz(senz, new Intent("scpp.globaleye.com.scppclient.DATA_SENZ"));
                 break;
             case PUT:
-                Log.d(TAG, "PUT received");
+                //Log.d(TAG, "PUT received");
                 broadcastSenz(senz, new Intent("scpp.globaleye.com.scppclient.PUT_SENZ"));
                 break;
             case UNSHARE:
-                Log.d(TAG, "UNSHARE received");
+                //Log.d(TAG, "UNSHARE received");
                 broadcastSenz(senz, new Intent("scpp.globaleye.com.scppclient.UNSHARE_SENZ"));
                 break;
         }
     }
 
+    /**
+     *
+     * Broadcast receiving protocol to relevant interface.
+     * @param senz
+     * @param intent
+     */
     private void broadcastSenz(Senz senz, Intent intent) {
         intent.putExtra("SENZ", senz);
         Log.d(TAG,"brodcast" + senz.getAttributes());

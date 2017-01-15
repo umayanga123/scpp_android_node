@@ -25,12 +25,11 @@ public class ServicesView extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_services_view);
-
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(null);
-
         Bundle extras = getIntent().getExtras();
+
         if (extras != null) {
             userName= extras.getString("USER_NAME");
         }

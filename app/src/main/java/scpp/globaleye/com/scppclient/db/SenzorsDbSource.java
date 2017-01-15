@@ -195,8 +195,8 @@ public class SenzorsDbSource {
             // clear
             cursor.close();
             db.close();
-
             return "Coin Already Already Verified";
+
         } else {
             // no matching details
 

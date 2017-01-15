@@ -71,8 +71,8 @@ public class SenzorsDbHelper  extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        Log.d(TAG, "OnCreate: creating db helper, db version - " + DATABASE_VERSION);
-        Log.d(TAG, SQL_CREATE_MINING_DETAIL);
+        //Log.d(TAG, "OnCreate: creating db helper, db version - " + DATABASE_VERSION);
+        //Log.d(TAG, SQL_CREATE_MINING_DETAIL);
         db.execSQL(SQL_CREATE_MINING_DETAIL);
         db.execSQL(SQL_CREATE_VERIFY_COINS);
     }
@@ -86,7 +86,7 @@ public class SenzorsDbHelper  extends SQLiteOpenHelper {
     public void onConfigure(SQLiteDatabase db) {
         super.onConfigure(db);
         // enable foreign key constraint here
-        Log.d(TAG, "OnConfigure: Enable foreign key constraint");
+        //Log.d(TAG, "OnConfigure: Enable foreign key constraint");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             db.setForeignKeyConstraintsEnabled(true);
         }
